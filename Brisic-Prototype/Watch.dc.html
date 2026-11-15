@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>
+var __c = 'Watch.dc.html';
+(function () { try { var st = JSON.parse(localStorage.getItem('brisic-stack') || '[]'); var back = localStorage.getItem('brisic-back') === '1'; localStorage.setItem('brisic-back', '0'); if (st[st.length - 1] !== __c) { if (back && st.length >= 2 && st[st.length - 2] === __c) { st.pop(); } else { st.push(__c); } } if (st.length > 40) st = st.slice(-40); localStorage.setItem('brisic-stack', JSON.stringify(st)); } catch (e) {} })();
+window.brisicPrev = function (fb) { try { var st = JSON.parse(localStorage.getItem('brisic-stack') || '[]'); if (st.length >= 2 && st[st.length - 1] === __c) { var p = st[st.length - 2]; if (p && p !== __c && p !== 'Splash.dc.html') return p; } } catch (e) {} return fb; };
+(function () {
+function fix() { try { var l = document.querySelectorAll('a[aria-label="Back"]'); for (var i = 0; i < l.length; i++) { var a = l[i]; if (!a.getAttribute('data-o')) a.setAttribute('data-o', a.getAttribute('href') || 'Home.dc.html'); var t = window.brisicPrev(a.getAttribute('data-o')); if (a.getAttribute('href') !== t) a.setAttribute('href', t); } } catch (e) {} }
+document.addEventListener('DOMContentLoaded', fix); window.addEventListener('load', fix);
+try { new MutationObserver(function () { fix(); }).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
+document.addEventListener('click', function (e) { try { var a = e.target.closest && e.target.closest('a[href*="Main.dc.html?"]'); if (!a) return; var q = new URLSearchParams((a.getAttribute('href').split('?')[1] || '')); if (q.get('t')) localStorage.setItem('brisic-now', JSON.stringify({ t: q.get('t').slice(0, 80), a: (q.get('a') || 'Unknown Artist').slice(0, 60) })); } catch (x) {} }, true);
+document.addEventListener('click', function (e) { try { if (e.target.closest && e.target.closest('[aria-label="Back"]')) localStorage.setItem('brisic-back', '1'); } catch (x) {} }, true);
+})();
+</script>
+
+<title>Watch</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{text-decoration:none;color:inherit}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #bbf7d0;outline-offset:3px}
+input::placeholder{color:#8fa398;opacity:1}
+</style>
+</helmet>
+<div style="width: 520px; height: 1022px; position: relative; overflow: hidden; background: radial-gradient(90% 60% at 50% 40%, #12201a 0%, #060a08 100%)">
+
+<div style="position: absolute; left: 30px; top: 214px; width: 5px; height: 30px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; left: 30px; top: 280px; width: 5px; height: 56px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; left: 30px; top: 352px; width: 5px; height: 56px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; right: 30px; top: 310px; width: 5px; height: 96px; border-radius: 0 3px 3px 0; background: linear-gradient(270deg, #1b201e, #3a4540)"></div>
+
+<div style="position: absolute; left: 33px; top: 33px; width: 454px; height: 956px; box-sizing: border-box; border-radius: 74px; padding: 12px; background: linear-gradient(145deg, #4b5651 0%, #1a201d 30%, #0b0e0d 60%, #3b4640 100%); box-shadow: 0 0 0 2px #2a322e, 0 30px 70px rgba(0,0,0,0.7), 0 0 60px rgba(74,222,128,0.12)">
+
+<div style="width: 430px; height: 932px; box-sizing: border-box; border-radius: 62px; position: relative; overflow: hidden; background: radial-gradient(100% 50% at 50% 0%, #0f2c18 0%, #050a07 60%, #030504 100%); font-family: 'Outfit', system-ui, sans-serif; color: #e9f2ec; box-shadow: inset 0 0 0 4px #000">
+
+<div style="position: absolute; left: 0; top: 0; width: 430px; height: 54px; z-index: 6">
+<div style="position: absolute; left: 56px; top: 17px; font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif; font-size: 16px; font-weight: 600; color: #fff">10:00 AM</div>
+<div style="position: absolute; right: 38px; top: 19px; display: flex; align-items: center; gap: 6px">
+<svg viewBox="0 0 19 12" width="19" height="12" fill="#fff" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="0.8"/><rect x="5" y="5.5" width="3" height="6.5" rx="0.8"/><rect x="10" y="3" width="3" height="9" rx="0.8"/><rect x="15" y="0" width="3" height="12" rx="0.8"/></svg>
+<svg viewBox="0 0 17 12" width="17" height="12" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M1 4.3a11 11 0 0 1 15 0M3.6 7a7.3 7.3 0 0 1 9.8 0"/><circle cx="8.5" cy="10" r="1.3" fill="#fff" stroke="none"/></svg>
+<svg viewBox="0 0 27 13" width="27" height="13" fill="none" aria-hidden="true"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#fff" stroke-opacity="0.45"/><rect x="2" y="2" width="19" height="9" rx="2.2" fill="#fff"/><path d="M24.5 4.5v4c.9-.3 1.5-1.2 1.5-2s-.6-1.7-1.5-2z" fill="#fff" fill-opacity="0.5"/></svg>
+</div>
+</div>
+<div style="position: absolute; left: 152px; top: 11px; width: 126px; height: 37px; border-radius: 20px; background: #000; z-index: 7">
+<div style="position: absolute; right: 13px; top: 10px; width: 17px; height: 17px; border-radius: 50%; background: radial-gradient(circle at 40% 38%, #243257 0%, #0a0f1d 45%, #020306 100%)"></div>
+</div>
+
+<a href="SearchAll.dc.html" aria-label="Back" style="position: absolute; z-index: 12; left: 22px; top: 74px; width: 40px; height: 40px; box-sizing: border-box; border-radius: 50%; border: 1.5px solid #7ee08a; display: flex; align-items: center; justify-content: center">
+<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#c6f5cc" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+</a>
+<div style="position: absolute; left: 70px; right: 24px; top: 68px; height: 52px; display: flex; flex-direction: column; justify-content: center">
+<div style="font-size: 22px; font-weight: 700; color: #fff; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{showName}}</div>
+<div style="font-size: 14px; color: #9fd8aa; font-weight: 300">Video podcast</div>
+</div>
+<div style="position: absolute; left: 0; right: 0; top: 130px; height: 756px; overflow-y: auto; scrollbar-width: none"><div style="padding: 0 16px 60px">
+<div style="position: relative; width: 100%; height: 218px; border-radius: 18px; overflow: hidden; background: linear-gradient(160deg, #2a0f45, #0b0614); border: 1px solid #2d4a37">
+<sc-if value="{{showVideo}}" hint-placeholder-val="true">
+<svg viewBox="0 0 390 218" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" aria-hidden="true" style="position: absolute; inset: 0">
+<rect width="390" height="218" fill="{{sceneBg}}"/>
+<circle cx="70" cy="40" r="46" fill="rgba(255,255,255,0.06)"/><circle cx="330" cy="170" r="60" fill="rgba(255,255,255,0.05)"/>
+<rect x="0" y="170" width="390" height="48" fill="rgba(0,0,0,0.35)"/>
+<circle cx="125" cy="92" r="26" fill="#7a4a34"/><path d="M80 190 C80 140 100 124 125 124 C150 124 170 140 170 190 Z" fill="#1d3a2a"/><path d="M100 88 C98 62 116 60 125 60 C136 60 152 64 150 88 C146 78 138 74 125 74 C112 74 104 78 100 88 Z" fill="#0d0807"/>
+<circle cx="265" cy="94" r="26" fill="#9a6446"/><path d="M220 190 C220 142 240 126 265 126 C290 126 310 142 310 190 Z" fill="#7a2a8a"/><path d="M240 92 C238 66 254 62 265 62 C278 62 292 66 290 92 C287 80 278 76 265 76 C252 76 244 80 240 92 Z" fill="#1a1210"/>
+<rect x="118" y="132" width="14" height="34" rx="6" fill="#222"/><rect x="258" y="134" width="14" height="34" rx="6" fill="#222"/>
+<rect x="150" y="176" width="90" height="8" rx="4" fill="rgba(255,255,255,0.18)"/>
+</svg>
+</sc-if>
+<sc-if value="{{audioOnly}}" hint-placeholder-val="false"><div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(160deg, #1a0a2a, #05030a); color: #cfe0d5"><svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="#7ee08a" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 11v2M8 7v10M12 3v18M16 8v8M20 10v4"/></svg><div style="margin-top: 8px; font-size: 14px">Audio only</div></div></sc-if>
+<sc-if value="{{captionsOn}}" hint-placeholder-val="false"><div style="position: absolute; left: 14px; right: 14px; bottom: 46px; text-align: center"><span style="display: inline-block; padding: 4px 10px; border-radius: 6px; background: rgba(0,0,0,0.7); color: #fff; font-size: 14px; line-height: 1.35">{{caption}}</span></div></sc-if>
+<button onClick="{{toggle}}" aria-label="Play or pause" style="position: absolute; left: 50%; top: 50%; margin: -32px 0 0 -32px; width: 64px; height: 64px; border-radius: 50%; border: 2px solid #fff; background: rgba(0,0,0,0.45); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0">
+<sc-if value="{{playing}}" hint-placeholder-val="false"><svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></sc-if>
+<sc-if value="{{paused}}" hint-placeholder-val="true"><svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true" style="margin-left: 3px"><path d="M7 4.5v15L20 12z"/></svg></sc-if>
+</button>
+<div style="position: absolute; left: 12px; right: 12px; bottom: 10px; display: flex; align-items: center; gap: 8px; font-size: 12px; color: #fff"><span>{{timeNow}}</span><input type="range" min="0" max="100" value="{{prog}}" onInput="{{seek}}" aria-label="Seek" style="flex: 1; accent-color: #7ee08a"><span>{{timeTotal}}</span></div>
+<sc-if value="{{locked}}" hint-placeholder-val="false">
+<div style="position: absolute; inset: 0; z-index: 4; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 18px; text-align: center; background: rgba(6,4,12,0.9)">
+<svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#ffd28a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+<div style="font-size: 17px; font-weight: 600; color: #fff">The creator locked this video</div>
+<div style="font-size: 13px; color: #b6cfc2; font-weight: 300">{{lockNote}}</div>
+<div style="display: flex; gap: 8px; margin-top: 4px">
+<button onClick="{{unlock}}" style="height: 40px; padding: 0 16px; border-radius: 20px; border: 0; background: #ffd28a; color: #2a1a00; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer">{{unlockLabel}}</button>
+<a href="Gifts.dc.html" style="height: 40px; padding: 0 16px; box-sizing: border-box; border-radius: 20px; border: 1.5px solid #ffd28a; color: #ffd28a; display: flex; align-items: center; font-size: 14px; font-weight: 600">Tip to watch</a>
+</div>
+</div>
+</sc-if>
+</div>
+<div style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap">
+<button onClick="{{cycleSpeed}}" style="{{pill}}">Speed {{speed}}x</button>
+<button onClick="{{toggleCaps}}" style="{{capsPill}}">Captions</button>
+<button onClick="{{toggleAudio}}" style="{{audioPill}}">Audio only</button>
+<button onClick="{{back15}}" style="{{pill}}">-15s</button>
+<button onClick="{{fwd15}}" style="{{pill}}">+15s</button>
+</div>
+<div style="margin-top: 16px; font-size: 22px; font-weight: 700; color: #fff; line-height: 1.25">{{epTitle}}</div>
+<div style="margin-top: 4px; font-size: 14px; color: #9fd8aa; font-weight: 300">{{epMeta}}</div>
+<div style="margin-top: 8px; font-size: 14.5px; line-height: 1.5; color: #b6cfc2; font-weight: 300">{{epDesc}}</div>
+<div style="display: flex; gap: 10px; margin-top: 14px"><a href="Show.dc.html" style="flex: 1; height: 42px; border-radius: 21px; border: 1.5px solid #4fae63; display: flex; align-items: center; justify-content: center; color: #e9f2ec; font-size: 15px; font-weight: 600">View show</a><a href="Gifts.dc.html" style="flex: 1; height: 42px; border-radius: 21px; background: #7ee08a; color: #06200e; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600">Support</a></div>
+<div style="margin: 20px 0 10px; font-size: 18px; font-weight: 600; color: #fff">More episodes</div>
+<sc-for list="{{eps}}" as="e" hint-placeholder-count="5">
+<button onClick="{{e.pick}}" style="{{e.style}}"><div style="width: 54px; height: 54px; border-radius: 10px; flex-shrink: 0; background: {{e.bg}}"></div><div style="flex: 1; min-width: 0; text-align: left"><div style="font-size: 15.5px; color: #f1f7f3; font-weight: 500">{{e.title}}</div><div style="font-size: 12.5px; color: #8fb09b; font-weight: 300">{{e.meta}}</div></div></button>
+</sc-for>
+</div></div>
+<div style="position: absolute; left: 148px; bottom: 9px; width: 134px; height: 5px; border-radius: 3px; background: rgba(240,255,245,0.9); z-index: 6"></div>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":520,"height":1022}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { ep: 0, un: this.readUn(), coins: this.readCoins(), playing: false, prog: 0, speed: 1, caps: true, audio: false };
+this._t = setInterval(() => { const s = this.state; if (!s.playing) return; const total = this.eps()[s.ep][2]; const np = s.prog + (100 / total) * s.speed; if (np >= 100) this.setState({ playing: false, prog: 100 }); else this.setState({ prog: np }); }, 1000);
+}
+eps() {
+return [
+['Behind the Music, Ep. 4', 'The early days, the studio nights and the people who believed first.', 2700, 'linear-gradient(135deg,#7a2a8a,#2a0f45)', '#2a0f45'],
+['The Come Up, Ep. 12', 'Stories of emerging artists breaking out of their city.', 2100, 'linear-gradient(135deg,#d6841a,#5a2a08)', '#3a1d08'],
+['Afro Talks, Ep. 31', 'Music, culture and the news that moved the week.', 1800, 'linear-gradient(135deg,#1c6be0,#0a2a7a)', '#0a1d4a'],
+['Faith & Frequency, Ep. 8', 'Faith stories told through the songs that carried people.', 2400, 'linear-gradient(135deg,#2f8a3a,#0c3a1a)', '#0c2a14'],
+['Studio Session Vault, Ep. 2', 'Raw studio footage and unfinished ideas from the album.', 1500, 'linear-gradient(135deg,#2f7a34,#10381a)', '#0b2a12']
+];
+}
+readUn() { try { return JSON.parse(localStorage.getItem('brisic-unlocked') || '[]'); } catch (e) { return []; } }
+readCoins() { try { var c = localStorage.getItem('brisic-coins'); return c === null ? 0 : Number(c); } catch (e) { return 0; } }
+lockCost(i) { return { 2: 60, 4: 100 }[i] || 0; }
+isLocked(i) { return this.lockCost(i) > 0 && this.state.un.indexOf(i) < 0; }
+fmt(sec) { const m = Math.floor(sec / 60), r = Math.floor(sec % 60); return m + ':' + (r < 10 ? '0' : '') + r; }
+renderVals() {
+const s = this.state; const E = this.eps(); const cur = E[s.ep]; const total = cur[2];
+const lk = this.isLocked(s.ep); const cost = this.lockCost(s.ep); const enough = s.coins >= cost;
+const pill = (on) => 'height: 34px; padding: 0 14px; border-radius: 17px; font-family: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer; border: 1.5px solid #7ee08a; ' + (on ? 'background: #7ee08a; color: #06200e' : 'background: transparent; color: #e9f2ec');
+const caps = ['Welcome back to the show.', 'Today we talk about how it all started.', 'It began in a small room with a borrowed mic.', 'Every song was a letter to the people who believed.', 'Let us get into it.'];
+return {
+locked: lk, lockNote: enough ? 'Unlock it with coins or send a tip. Your balance: ' + s.coins + ' B-Coins' : 'You need ' + (cost - s.coins) + ' more B-Coins. Tip or top up to watch.', unlockLabel: 'Unlock for ' + cost + ' coins',
+unlock: () => { const c = this.state; if (c.coins < cost) return; const nu = c.un.concat([c.ep]); const nc = c.coins - cost; try { localStorage.setItem('brisic-unlocked', JSON.stringify(nu)); localStorage.setItem('brisic-coins', String(nc)); } catch (e) {} this.setState({ un: nu, coins: nc }); },
+showName: cur[0].split(',')[0],
+epTitle: cur[0], epDesc: cur[1], epMeta: 'Video podcast \u00b7 ' + Math.round(total / 60) + ' min',
+sceneBg: cur[4], showVideo: !s.audio, audioOnly: s.audio, captionsOn: s.caps && !s.audio, caption: caps[Math.floor(s.prog / 8) % caps.length],
+playing: s.playing, paused: !s.playing, prog: Math.round(s.prog), timeNow: this.fmt(total * s.prog / 100), timeTotal: this.fmt(total), speed: s.speed,
+pill: pill(false), capsPill: pill(s.caps), audioPill: pill(s.audio),
+toggle: () => this.isLocked(this.state.ep) ? null : this.setState({ playing: !this.state.playing, prog: this.state.prog >= 100 ? 0 : this.state.prog }),
+seek: (e) => this.setState({ prog: Number(e.target.value) }),
+cycleSpeed: () => { const o = [1, 1.25, 1.5, 2]; this.setState({ speed: o[(o.indexOf(this.state.speed) + 1) % o.length] }); },
+toggleCaps: () => this.setState({ caps: !this.state.caps }), toggleAudio: () => this.setState({ audio: !this.state.audio }),
+back15: () => this.setState({ prog: Math.max(0, this.state.prog - 1500 / total) }), fwd15: () => this.setState({ prog: Math.min(100, this.state.prog + 1500 / total) }),
+eps: E.map((x, i) => ({ title: x[0], meta: Math.round(x[2] / 60) + ' min \u00b7 Video' + (this.isLocked(i) ? ' \u00b7 Locked \u00b7 ' + this.lockCost(i) + ' coins' : ''), bg: x[3], style: 'width: 100%; display: flex; align-items: center; gap: 12px; padding: 10px; margin-bottom: 8px; border-radius: 14px; font-family: inherit; cursor: pointer; border: 1px solid ' + (i === s.ep ? '#7ee08a' : '#233229') + '; background: ' + (i === s.ep ? 'rgba(30,60,40,0.8)' : 'rgba(18,30,24,0.85)'), pick: () => this.setState({ ep: i, prog: 0, playing: true }) }))
+};
+}
+}
+</script>
+</body>
+</html>

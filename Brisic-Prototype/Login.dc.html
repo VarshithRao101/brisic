@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+
+
+<script>
+var __c = 'Login.dc.html';
+(function () { try { var st = JSON.parse(localStorage.getItem('brisic-stack') || '[]'); var back = localStorage.getItem('brisic-back') === '1'; localStorage.setItem('brisic-back', '0'); if (st[st.length - 1] !== __c) { if (back && st.length >= 2 && st[st.length - 2] === __c) { st.pop(); } else { st.push(__c); } } if (st.length > 40) st = st.slice(-40); localStorage.setItem('brisic-stack', JSON.stringify(st)); } catch (e) {} })();
+window.brisicPrev = function (fb) { try { var st = JSON.parse(localStorage.getItem('brisic-stack') || '[]'); if (st.length >= 2 && st[st.length - 1] === __c) { var p = st[st.length - 2]; if (p && p !== __c && p !== 'Splash.dc.html') return p; } } catch (e) {} return fb; };
+(function () {
+function fix() { try { var l = document.querySelectorAll('a[aria-label="Back"]'); for (var i = 0; i < l.length; i++) { var a = l[i]; if (!a.getAttribute('data-o')) a.setAttribute('data-o', a.getAttribute('href') || 'Home.dc.html'); var t = window.brisicPrev(a.getAttribute('data-o')); if (a.getAttribute('href') !== t) a.setAttribute('href', t); } } catch (e) {} }
+document.addEventListener('DOMContentLoaded', fix); window.addEventListener('load', fix);
+try { new MutationObserver(function () { fix(); }).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
+document.addEventListener('click', function (e) { try { var a = e.target.closest && e.target.closest('a[href*="Main.dc.html?"]'); if (!a) return; var q = new URLSearchParams((a.getAttribute('href').split('?')[1] || '')); if (q.get('t')) localStorage.setItem('brisic-now', JSON.stringify({ t: q.get('t').slice(0, 80), a: (q.get('a') || 'Unknown Artist').slice(0, 60) })); } catch (x) {} }, true);
+document.addEventListener('click', function (e) { try { if (e.target.closest && e.target.closest('[aria-label="Back"]')) localStorage.setItem('brisic-back', '1'); } catch (x) {} }, true);
+})();
+</script>
+
+<title>Login</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{text-decoration:none;color:inherit}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #bbf7d0;outline-offset:3px}
+input::placeholder{color:#8fa398;opacity:1}
+</style>
+</helmet>
+<div style="width: 520px; height: 1022px; position: relative; overflow: hidden; background: radial-gradient(90% 60% at 50% 40%, #12201a 0%, #060a08 100%)">
+
+<div style="position: absolute; left: 30px; top: 214px; width: 5px; height: 30px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; left: 30px; top: 280px; width: 5px; height: 56px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; left: 30px; top: 352px; width: 5px; height: 56px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; right: 30px; top: 310px; width: 5px; height: 96px; border-radius: 0 3px 3px 0; background: linear-gradient(270deg, #1b201e, #3a4540)"></div>
+
+<div style="position: absolute; left: 33px; top: 33px; width: 454px; height: 956px; box-sizing: border-box; border-radius: 74px; padding: 12px; background: linear-gradient(145deg, #4b5651 0%, #1a201d 30%, #0b0e0d 60%, #3b4640 100%); box-shadow: 0 0 0 2px #2a322e, 0 30px 70px rgba(0,0,0,0.7), 0 0 60px rgba(74,222,128,0.12)">
+
+<div style="width: 430px; height: 932px; box-sizing: border-box; border-radius: 62px; position: relative; overflow: hidden; background: radial-gradient(100% 50% at 50% 0%, #0f2c18 0%, #050a07 60%, #030504 100%); font-family: 'Outfit', system-ui, sans-serif; color: #e9f2ec; box-shadow: inset 0 0 0 4px #000">
+
+<div style="position: absolute; left: 0; top: 0; width: 430px; height: 54px; z-index: 6">
+<div style="position: absolute; left: 56px; top: 17px; font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif; font-size: 16px; font-weight: 600; color: #fff">10:00 AM</div>
+<div style="position: absolute; right: 38px; top: 19px; display: flex; align-items: center; gap: 6px">
+<svg viewBox="0 0 19 12" width="19" height="12" fill="#fff" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="0.8"/><rect x="5" y="5.5" width="3" height="6.5" rx="0.8"/><rect x="10" y="3" width="3" height="9" rx="0.8"/><rect x="15" y="0" width="3" height="12" rx="0.8"/></svg>
+<svg viewBox="0 0 17 12" width="17" height="12" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M1 4.3a11 11 0 0 1 15 0M3.6 7a7.3 7.3 0 0 1 9.8 0"/><circle cx="8.5" cy="10" r="1.3" fill="#fff" stroke="none"/></svg>
+<svg viewBox="0 0 27 13" width="27" height="13" fill="none" aria-hidden="true"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#fff" stroke-opacity="0.45"/><rect x="2" y="2" width="19" height="9" rx="2.2" fill="#fff"/><path d="M24.5 4.5v4c.9-.3 1.5-1.2 1.5-2s-.6-1.7-1.5-2z" fill="#fff" fill-opacity="0.5"/></svg>
+</div>
+</div>
+<div style="position: absolute; left: 152px; top: 11px; width: 126px; height: 37px; border-radius: 20px; background: #000; z-index: 7">
+<div style="position: absolute; right: 13px; top: 10px; width: 17px; height: 17px; border-radius: 50%; background: radial-gradient(circle at 40% 38%, #243257 0%, #0a0f1d 45%, #020306 100%)"></div>
+</div>
+
+<div style="position: absolute; left: 0; right: 0; top: 58px; bottom: 0; display: flex; flex-direction: column; align-items: center; padding: 0 26px; box-sizing: border-box">
+<img src="assets/logo-b-glow.png" alt="Brisic" style="height: 104px; width: auto; display: block">
+<div style="margin-top: 8px; font-size: 27px; font-weight: 600; color: #fff; text-align: center">{{heading}}</div>
+<div style="margin-top: 4px; font-size: 14.5px; color: #9fd8aa; font-weight: 300; text-align: center">Music that understands you.</div>
+<div style="margin-top: 14px; width: 100%; display: flex; flex-direction: column; gap: 10px">
+<sc-if value="{{isSignup}}" hint-placeholder-val="{{ false }}">
+<input type="text" placeholder="Full name" style="width: 100%; box-sizing: border-box; height: 50px; padding: 0 18px; border-radius: 25px; border: 1.5px solid #2d4a37; background: rgba(14,24,18,0.9); color: #f1f7f3; font-family: inherit; font-size: 16px; outline: 0">
+</sc-if>
+<input type="text" placeholder="Email or phone" style="width: 100%; box-sizing: border-box; height: 50px; padding: 0 18px; border-radius: 25px; border: 1.5px solid #2d4a37; background: rgba(14,24,18,0.9); color: #f1f7f3; font-family: inherit; font-size: 16px; outline: 0">
+<input type="password" placeholder="Password" style="width: 100%; box-sizing: border-box; height: 50px; padding: 0 18px; border-radius: 25px; border: 1.5px solid #2d4a37; background: rgba(14,24,18,0.9); color: #f1f7f3; font-family: inherit; font-size: 16px; outline: 0">
+
+</div>
+<sc-if value="{{isLogin}}" hint-placeholder-val="{{ true }}"><div style="width: 100%; text-align: right; margin-top: 8px; font-size: 13.5px; color: #7ee08a">Forgot password?</div></sc-if>
+<a href="{{mainHref}}" style="margin-top: 14px; width: 100%; height: 52px; box-sizing: border-box; border-radius: 26px; background: #7ee08a; color: #06200e; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 600">{{mainBtn}}</a>
+<div style="margin-top: 14px; width: 100%; text-align: center; font-size: 14.5px; color: #8fb09b; font-weight: 300">{{swapText}} <button onClick="{{swap}}" style="padding: 0; border: 0; background: transparent; color: #7ee08a; font-family: inherit; font-size: 14.5px; font-weight: 600; cursor: pointer">{{swapLabel}}</button></div>
+<div style="margin: 14px 0 14px; width: 100%; display: flex; align-items: center; gap: 12px; color: #7f9d8b; font-size: 13.5px"><div style="flex: 1; height: 1px; background: #26332b"></div>or continue with<div style="flex: 1; height: 1px; background: #26332b"></div></div>
+<div style="width: 100%; display: flex; flex-direction: column; gap: 10px">
+<button onClick="{{pickApple}}" style="width: 100%; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 12px; height: 52px; box-sizing: border-box; border-radius: 26px; border: 1.5px solid #2d4a37; background: rgba(255,255,255,0.05); color: #f1f7f3; font-size: 16.5px; font-weight: 500"><svg viewBox="0 0 24 24" width="24" height="24" fill="#fff" aria-hidden="true"><path d="M16.4 12.6c0-2.4 2-3.5 2.1-3.6-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9s-1.9-.9-3.1-.8C6.6 7.2 5.2 8.1 4.4 9.5 2.8 12.3 4 16.4 5.5 18.7c.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.8 3-.8s1.8.8 3 .7 2-1.1 2.8-2.2c.9-1.3 1.2-2.5 1.3-2.6-.1 0-2.3-.9-2.3-3.5zM14.1 5.5c.6-.8 1.1-1.8 1-2.9-.9 0-2 .6-2.7 1.4-.6.7-1.1 1.8-1 2.8 1 .1 2-.5 2.7-1.3z"/></svg>Apple account</button>
+<button onClick="{{pickGoogle}}" style="width: 100%; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 12px; height: 52px; box-sizing: border-box; border-radius: 26px; border: 1.5px solid #2d4a37; background: rgba(255,255,255,0.05); color: #f1f7f3; font-size: 16.5px; font-weight: 500"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="#4285F4" d="M22 12.2c0-.7-.1-1.4-.2-2H12v3.9h5.6a4.8 4.8 0 0 1-2.1 3.1v2.6h3.4c2-1.8 3.1-4.5 3.1-7.6z"/><path fill="#34A853" d="M12 22c2.8 0 5.2-.9 6.9-2.5l-3.4-2.6c-.9.6-2.1 1-3.5 1-2.7 0-5-1.8-5.8-4.3H2.7v2.7A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.2 13.6a6 6 0 0 1 0-3.8V7.1H2.7a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 6c1.5 0 2.9.5 4 1.6l3-3A10 10 0 0 0 2.7 7.1l3.5 2.7C7 7.8 9.3 6 12 6z"/></svg>Google account</button>
+<button onClick="{{pickFacebook}}" style="width: 100%; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 12px; height: 52px; box-sizing: border-box; border-radius: 26px; border: 1.5px solid #2d4a37; background: rgba(255,255,255,0.05); color: #f1f7f3; font-size: 16.5px; font-weight: 500"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#1877F2"/><path fill="#fff" d="M13.3 20v-6.8h2.3l.4-2.7h-2.7V8.8c0-.8.2-1.3 1.3-1.3H16V5.1c-.2 0-1.1-.1-2.1-.1-2.1 0-3.5 1.3-3.5 3.6v2h-2.3v2.7h2.3V20z"/></svg>Facebook account</button>
+
+</div>
+<div style="margin-top: 14px; text-align: center; font-size: 12px; color: #6f8c7b; font-weight: 300; line-height: 1.5">By continuing you agree to Brisic's Terms and Privacy Policy.</div>
+</div>
+<sc-if value="{{sheetOpen}}" hint-placeholder-val="false">
+<div style="position: absolute; left: 0; top: 0; width: 430px; height: 932px; z-index: 15; background: rgba(0,0,0,0.6); display: flex; align-items: flex-end">
+<div style="width: 100%; box-sizing: border-box; padding: 22px 22px 40px; border-radius: 28px 28px 0 0; background: #0b1a11; border-top: 1.5px solid #2d4a37; display: flex; flex-direction: column; gap: 12px">
+<div style="font-size: 22px; font-weight: 600; color: #fff">Continue with {{provider}}</div>
+<div style="font-size: 13.5px; color: #8fb09b; font-weight: 300; line-height: 1.45">{{hint}}</div>
+<input type="{{idType}}" placeholder="{{idPlaceholder}}" style="width: 100%; box-sizing: border-box; height: 50px; padding: 0 18px; border-radius: 25px; border: 1.5px solid #2d4a37; background: rgba(14,24,18,0.9); color: #f1f7f3; font-family: inherit; font-size: 16px; outline: 0">
+<input type="password" placeholder="{{provider}} password" style="width: 100%; box-sizing: border-box; height: 50px; padding: 0 18px; border-radius: 25px; border: 1.5px solid #2d4a37; background: rgba(14,24,18,0.9); color: #f1f7f3; font-family: inherit; font-size: 16px; outline: 0">
+<a href="{{socialHref}}" style="height: 52px; border-radius: 26px; background: #7ee08a; color: #06200e; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 600">Link my {{provider}} account</a>
+<button onClick="{{closeSheet}}" style="height: 40px; border: 0; background: transparent; color: #cfe0d5; font-family: inherit; font-size: 15px; cursor: pointer">Cancel</button>
+<div style="font-size: 11.5px; color: #6f8c7b; text-align: center; line-height: 1.4">Prototype screen: in the real app, {{provider}} shows its own secure sign-in page and Brisic never sees your password.</div>
+</div></div>
+</sc-if>
+<div style="position: absolute; left: 148px; bottom: 9px; width: 134px; height: 5px; border-radius: 3px; background: rgba(240,255,245,0.9); z-index: 6"></div>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":520,"height":1022}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+let m = 'signup'; try { if (new URLSearchParams(location.search).get('m') === 'login') m = 'login'; } catch (e) {}
+this.state = { mode: m, provider: '' };
+}
+renderVals() {
+const s = this.state;
+const tab = (on) => 'flex: 1; height: 100%; border: 0; border-radius: 19px; font-family: inherit; font-size: 15.5px; font-weight: 600; cursor: pointer; ' + (on ? 'background: #7ee08a; color: #06200e' : 'background: transparent; color: #cfe0d5');
+const login = s.mode === 'login';
+const pv = s.provider;
+const hints = { Apple: 'Enter your Apple ID email and password to link your account.', Google: 'Enter your Gmail address and password to link your account.', Facebook: 'Enter the email or phone number on your Facebook account, and your password, to link it.' };
+return {
+sheetOpen: !!pv, provider: pv, hint: hints[pv] || '',
+idType: pv === 'Facebook' ? 'text' : 'email',
+idPlaceholder: pv === 'Facebook' ? 'Email or phone number' : (pv === 'Google' ? 'Gmail address' : 'Apple ID email'),
+pickApple: () => this.setState({ provider: 'Apple' }), pickGoogle: () => this.setState({ provider: 'Google' }), pickFacebook: () => this.setState({ provider: 'Facebook' }),
+closeSheet: () => this.setState({ provider: '' }),
+isLogin: login, isSignup: !login,
+heading: login ? 'Welcome back' : 'Join Brisic',
+mainHref: login ? 'Home.dc.html' : 'CreateAccount.dc.html',
+socialHref: login ? 'Home.dc.html' : 'CreateAccount.dc.html',
+mainBtn: login ? 'Log in' : 'Create account',
+swapText: login ? 'New to Brisic?' : 'Already have an account?', swapLabel: login ? 'Sign up' : 'Log in',
+swap: () => this.setState({ mode: this.state.mode === 'login' ? 'signup' : 'login' }),
+showLogin: () => this.setState({ mode: 'login' }),
+showSignup: () => this.setState({ mode: 'signup' })
+};
+}
+}
+</script>
+</body>
+</html>

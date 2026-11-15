@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>
+var __c = 'Premium.dc.html';
+(function () { try { var st = JSON.parse(localStorage.getItem('brisic-stack') || '[]'); var back = localStorage.getItem('brisic-back') === '1'; localStorage.setItem('brisic-back', '0'); if (st[st.length - 1] !== __c) { if (back && st.length >= 2 && st[st.length - 2] === __c) { st.pop(); } else { st.push(__c); } } if (st.length > 40) st = st.slice(-40); localStorage.setItem('brisic-stack', JSON.stringify(st)); } catch (e) {} })();
+window.brisicPrev = function (fb) { try { var st = JSON.parse(localStorage.getItem('brisic-stack') || '[]'); if (st.length >= 2 && st[st.length - 1] === __c) { var p = st[st.length - 2]; if (p && p !== __c && p !== 'Splash.dc.html') return p; } } catch (e) {} return fb; };
+(function () {
+function fix() { try { var l = document.querySelectorAll('a[aria-label="Back"]'); for (var i = 0; i < l.length; i++) { var a = l[i]; if (!a.getAttribute('data-o')) a.setAttribute('data-o', a.getAttribute('href') || 'Home.dc.html'); var t = window.brisicPrev(a.getAttribute('data-o')); if (a.getAttribute('href') !== t) a.setAttribute('href', t); } } catch (e) {} }
+document.addEventListener('DOMContentLoaded', fix); window.addEventListener('load', fix);
+try { new MutationObserver(function () { fix(); }).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
+document.addEventListener('click', function (e) { try { var a = e.target.closest && e.target.closest('a[href*="Main.dc.html?"]'); if (!a) return; var q = new URLSearchParams((a.getAttribute('href').split('?')[1] || '')); if (q.get('t')) localStorage.setItem('brisic-now', JSON.stringify({ t: q.get('t').slice(0, 80), a: (q.get('a') || 'Unknown Artist').slice(0, 60) })); } catch (x) {} }, true);
+document.addEventListener('click', function (e) { try { if (e.target.closest && e.target.closest('[aria-label="Back"]')) localStorage.setItem('brisic-back', '1'); } catch (x) {} }, true);
+})();
+</script>
+
+<title>Premium</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{text-decoration:none;color:inherit}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #bbf7d0;outline-offset:3px}
+input::placeholder{color:#8fa398;opacity:1}
+</style>
+</helmet>
+<div style="width: 520px; height: 1022px; position: relative; overflow: hidden; background: radial-gradient(90% 60% at 50% 40%, #12201a 0%, #060a08 100%)">
+
+<div style="position: absolute; left: 30px; top: 214px; width: 5px; height: 30px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; left: 30px; top: 280px; width: 5px; height: 56px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; left: 30px; top: 352px; width: 5px; height: 56px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; right: 30px; top: 310px; width: 5px; height: 96px; border-radius: 0 3px 3px 0; background: linear-gradient(270deg, #1b201e, #3a4540)"></div>
+
+<div style="position: absolute; left: 33px; top: 33px; width: 454px; height: 956px; box-sizing: border-box; border-radius: 74px; padding: 12px; background: linear-gradient(145deg, #4b5651 0%, #1a201d 30%, #0b0e0d 60%, #3b4640 100%); box-shadow: 0 0 0 2px #2a322e, 0 30px 70px rgba(0,0,0,0.7), 0 0 60px rgba(74,222,128,0.12)">
+
+<div style="width: 430px; height: 932px; box-sizing: border-box; border-radius: 62px; position: relative; overflow: hidden; background: radial-gradient(100% 50% at 50% 0%, #0f2c18 0%, #050a07 60%, #030504 100%); font-family: 'Outfit', system-ui, sans-serif; color: #e9f2ec; box-shadow: inset 0 0 0 4px #000">
+
+<div style="position: absolute; left: 0; top: 0; width: 430px; height: 54px; z-index: 6">
+<div style="position: absolute; left: 56px; top: 17px; font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif; font-size: 16px; font-weight: 600; color: #fff">10:00 AM</div>
+<div style="position: absolute; right: 38px; top: 19px; display: flex; align-items: center; gap: 6px">
+<svg viewBox="0 0 19 12" width="19" height="12" fill="#fff" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="0.8"/><rect x="5" y="5.5" width="3" height="6.5" rx="0.8"/><rect x="10" y="3" width="3" height="9" rx="0.8"/><rect x="15" y="0" width="3" height="12" rx="0.8"/></svg>
+<svg viewBox="0 0 17 12" width="17" height="12" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M1 4.3a11 11 0 0 1 15 0M3.6 7a7.3 7.3 0 0 1 9.8 0"/><circle cx="8.5" cy="10" r="1.3" fill="#fff" stroke="none"/></svg>
+<svg viewBox="0 0 27 13" width="27" height="13" fill="none" aria-hidden="true"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#fff" stroke-opacity="0.45"/><rect x="2" y="2" width="19" height="9" rx="2.2" fill="#fff"/><path d="M24.5 4.5v4c.9-.3 1.5-1.2 1.5-2s-.6-1.7-1.5-2z" fill="#fff" fill-opacity="0.5"/></svg>
+</div>
+</div>
+<div style="position: absolute; left: 152px; top: 11px; width: 126px; height: 37px; border-radius: 20px; background: #000; z-index: 7">
+<div style="position: absolute; right: 13px; top: 10px; width: 17px; height: 17px; border-radius: 50%; background: radial-gradient(circle at 40% 38%, #243257 0%, #0a0f1d 45%, #020306 100%)"></div>
+</div>
+
+<a href="Profile.dc.html" aria-label="Back" style="position: absolute; z-index: 12; left: 22px; top: 74px; width: 40px; height: 40px; box-sizing: border-box; border-radius: 50%; border: 1.5px solid #7ee08a; display: flex; align-items: center; justify-content: center">
+<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#c6f5cc" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+</a>
+<div style="position: absolute; left: 70px; right: 24px; top: 68px; height: 52px; display: flex; flex-direction: column; justify-content: center">
+<div style="display: flex; align-items: center; gap: 8px; font-size: 26px; font-weight: 700; color: #fff; line-height: 1.15"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#7ee08a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 17l6-6 4 4 9-9M15 6h6v6"/></svg>Brisic Premium</div>
+<div style="font-size: 14px; color: #9fd8aa; font-weight: 300">Listen without limits</div>
+</div>
+<div style="position: absolute; left: 0; right: 0; top: 130px; height: 756px; overflow-y: auto; scrollbar-width: none">
+<div style="padding: 0 18px 60px">
+<sc-if value="{{done}}" hint-placeholder-val="false"><div style="margin-bottom: 14px; padding: 14px 16px; border-radius: 16px; background: rgba(126,224,138,0.14); border: 1.5px solid #7ee08a; font-size: 15px; line-height: 1.4; color: #e9f2ec"><b style="color: #7ee08a">You're Premium (demo).</b> {{doneText}} No real payment was taken.</div></sc-if>
+<div style="height: 44px; box-sizing: border-box; padding: 4px; border-radius: 22px; border: 1.5px solid #2d4a37; background: rgba(14,24,18,0.9); display: flex">
+<button onClick="{{showMonthly}}" style="{{monthTab}}">Monthly</button>
+<button onClick="{{showYearly}}" style="{{yearTab}}">Yearly &middot; save 20%</button>
+</div>
+<div style="margin-top: 14px; display: flex; flex-direction: column; gap: 10px">
+<sc-for list="{{plans}}" as="p" hint-placeholder-count="4">
+<button onClick="{{p.pick}}" style="{{p.style}}">
+<div style="display: flex; align-items: center; justify-content: space-between"><div style="font-size: 18px; font-weight: 600; color: #fff">{{p.name}}</div><div style="font-size: 14px; font-weight: 700; color: #7ee08a; text-align: right">{{p.price}}</div></div>
+<div style="margin-top: 3px; font-size: 13px; color: #9fd8aa; font-weight: 300">{{p.desc}}</div>
+</button>
+</sc-for>
+</div>
+<div style="margin-top: 18px; font-size: 17px; font-weight: 600; color: #fff">What you get</div>
+<div style="margin-top: 8px; display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{perks}}" as="k" hint-placeholder-count="5">
+<div style="display: flex; align-items: center; gap: 10px; font-size: 14.5px; color: #d6e6dc"><div style="width: 22px; height: 22px; border-radius: 50%; background: #7ee08a; flex-shrink: 0; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#06200e" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>{{k.text}}</div>
+</sc-for>
+</div>
+<div style="margin-top: 18px; font-size: 17px; font-weight: 600; color: #fff">Pay with</div>
+<div style="margin-top: 8px; display: flex; gap: 8px">
+<sc-for list="{{methods}}" as="m" hint-placeholder-count="3"><button onClick="{{m.pick}}" style="{{m.style}}">{{m.name}}</button></sc-for>
+</div>
+<button onClick="{{subscribe}}" style="margin-top: 18px; width: 100%; height: 52px; border: 0; border-radius: 26px; background: #7ee08a; color: #06200e; font-family: inherit; font-size: 17px; font-weight: 600; cursor: pointer">{{cta}}</button>
+<div style="margin-top: 10px; text-align: center; font-size: 12px; color: #6f8c7b; line-height: 1.5">Demo screen. Prices show in your country's currency using approximate rates, and are placeholders and no payment is taken. Cancel anytime in the real app.</div>
+</div></div>
+<sc-if value="{{sheetOpen}}" hint-placeholder-val="false">
+<div style="position: absolute; left: 0; top: 0; width: 430px; height: 932px; z-index: 15; background: rgba(0,0,0,0.65); display: flex; align-items: flex-end">
+<div style="width: 100%; box-sizing: border-box; padding: 22px 22px 40px; border-radius: 28px 28px 0 0; background: #0b1a11; border-top: 1.5px solid #2d4a37; display: flex; flex-direction: column; gap: 11px">
+<div style="display: flex; align-items: center; justify-content: space-between"><div style="font-size: 22px; font-weight: 600; color: #fff">Pay with Paystack</div><div style="padding: 4px 12px; border-radius: 14px; background: rgba(126,224,138,0.15); color: #7ee08a; font-size: 13.5px; font-weight: 600">Test mode</div></div>
+<div style="font-size: 14px; color: #9fd8aa">{{summary}}</div>
+<div style="padding: 14px 16px; border-radius: 16px; border: 1.5px solid #2d4a37; background: rgba(14,24,18,0.9); font-size: 14.5px; color: #cfe0d5; line-height: 1.5">You will pay on Paystack's secure page, where you can choose card, bank transfer or mobile money. Card details are typed there, never in this app.</div>
+<a href="{{payHref}}" target="_blank" rel="noopener" style="height: 52px; box-sizing: border-box; border-radius: 26px; background: #7ee08a; color: #06200e; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 600">Continue to Paystack</a>
+<button onClick="{{paidNow}}" style="height: 46px; border-radius: 23px; border: 1.5px solid #7ee08a; background: transparent; color: #c6f5cc; font-family: inherit; font-size: 15px; cursor: pointer">I have paid</button>
+<button onClick="{{closeSheet}}" style="height: 38px; border: 0; background: transparent; color: #cfe0d5; font-family: inherit; font-size: 15px; cursor: pointer">Cancel</button>
+<div style="font-size: 11.5px; color: #6f8c7b; text-align: center; line-height: 1.4">Test mode: use Paystack's test card, not a real card. No real money moves.</div>
+</div></div>
+</sc-if>
+<div style="position: absolute; left: 148px; bottom: 9px; width: 134px; height: 5px; border-radius: 3px; background: rgba(240,255,245,0.9); z-index: 6"></div>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":520,"height":1022}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+let ci = 0, det = false;
+try {
+const names = ['Nigeria', 'Ghana', 'Senegal', 'Kenya', 'Tanzania', 'Uganda', 'South Africa', 'Zambia', 'Zimbabwe'];
+const tzMap = { 'Africa/Lagos': 'Nigeria', 'Africa/Accra': 'Ghana', 'Africa/Dakar': 'Senegal', 'Africa/Nairobi': 'Kenya', 'Africa/Dar_es_Salaam': 'Tanzania', 'Africa/Kampala': 'Uganda', 'Africa/Johannesburg': 'South Africa', 'Africa/Lusaka': 'Zambia', 'Africa/Harare': 'Zimbabwe', 'Africa/Abidjan': 'Ivory Coast', 'Africa/Douala': 'Cameroon', 'Africa/Kigali': 'Rwanda', 'Africa/Addis_Ababa': 'Ethiopia', 'Africa/Gaborone': 'Botswana', 'Africa/Cairo': 'Egypt', 'Africa/Casablanca': 'Morocco', 'Europe/London': 'United Kingdom' };
+const regMap = { NG: 'Nigeria', GH: 'Ghana', SN: 'Senegal', KE: 'Kenya', TZ: 'Tanzania', UG: 'Uganda', ZA: 'South Africa', ZM: 'Zambia', ZW: 'Zimbabwe', CI: 'Ivory Coast', CM: 'Cameroon', RW: 'Rwanda', ET: 'Ethiopia', BW: 'Botswana', EG: 'Egypt', MA: 'Morocco', GB: 'United Kingdom', US: 'United States' };
+let name = tzMap[Intl.DateTimeFormat().resolvedOptions().timeZone];
+if (!name) { const m = (navigator.language || '').split('-')[1]; name = regMap[(m || '').toUpperCase()]; }
+this.detectedName = name;
+this.state = { yearly: false, plan: 0, method: 0, done: false, country: -1, sheet: false, num: '', name: '', exp: '', cvv: '' };
+} catch (e) { this.state = { yearly: false, plan: 0, method: 0, done: false, country: -1, sheet: false, num: '', name: '', exp: '', cvv: '' }; }
+this.autoDetect = true;
+}
+renderVals() {
+const s = this.state;
+const det0 = false; let det = false;
+const C = [['Nigeria', 'West Africa', 0.99, '\u20A6', 1600], ['Ghana', 'West Africa', 0.99, 'GH\u20B5', 15], ['Senegal', 'West Africa', 0.99, 'CFA ', 600], ['Kenya', 'East Africa', 1.49, 'KSh ', 130], ['Tanzania', 'East Africa', 1.49, 'TSh ', 2600], ['Uganda', 'East Africa', 1.49, 'USh ', 3700], ['South Africa', 'Southern Africa', 2.99, 'R', 18], ['Zambia', 'Southern Africa', 2.99, 'ZK', 27], ['Zimbabwe', 'Southern Africa', 2.99, 'US$', 1], ['Ivory Coast', 'West Africa', 0.99, 'CFA ', 600], ['Cameroon', 'Central Africa', 1.99, 'CFA ', 600], ['Rwanda', 'East Africa', 1.49, 'RF ', 1400], ['Ethiopia', 'East Africa', 1.49, 'Br ', 120], ['Botswana', 'Southern Africa', 2.99, 'P', 13.5], ['Egypt', 'North Africa', 1.99, 'E\u00A3', 49], ['Morocco', 'North Africa', 1.99, 'MAD ', 10], ['United Kingdom', 'Rest of the world', 4.99, '\u00A3', 0.78], ['United States', 'Rest of the world', 4.99, 'US$', 1], ['Other countries', 'Rest of the world', 4.99, 'US$', 1]];
+let idx = s.country;
+if (idx < 0) { idx = C.findIndex((x) => x[0] === this.detectedName); det = idx >= 0; if (idx < 0) idx = 0; }
+const cc = C[idx];
+const P = [['Individual', 'For one person. Everything, no ads.', 1], ['Student', 'Verified students get a lower price.', 0.6], ['Duo', 'Two accounts, one bill.', 1.4], ['Family', 'Up to 6 accounts under one plan.', 1.8]];
+const price = (m) => { const usd = cc[2] * m * (s.yearly ? 12 * 0.8 : 1); const local = usd * cc[4]; const loc = cc[4] === 1 ? 'US$' + usd.toFixed(2) : cc[3] + (local >= 100 ? Math.round(local / 10) * 10 : local.toFixed(0)).toLocaleString('en-US'); return cc[4] === 1 ? loc + (s.yearly ? '/yr' : '/mo') : loc + (s.yearly ? '/yr' : '/mo') + ' (\u2248US$' + usd.toFixed(2) + ')'; };
+const countries = C.map((x, i) => ({ name: x[0], style: 'flex-shrink: 0; height: 36px; padding: 0 14px; border-radius: 18px; font-family: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer; white-space: nowrap; border: 1.5px solid ' + (idx === i ? '#7ee08a' : '#2d4a37') + '; background: ' + (idx === i ? '#7ee08a' : 'transparent') + '; color: ' + (idx === i ? '#06200e' : '#cfe0d5'), pick: () => this.setState({ country: i, done: false }) }));
+const plans = P.map((p, i) => ({ name: p[0], desc: p[1], price: price(p[2]),
+style: 'text-align: left; font-family: inherit; cursor: pointer; padding: 14px 16px; border-radius: 16px; color: #e9f2ec; border: 1.5px solid ' + (s.plan === i ? '#7ee08a' : '#2d4a37') + '; background: ' + (s.plan === i ? 'rgba(30,60,40,0.9)' : 'rgba(14,24,18,0.9)'),
+pick: () => this.setState({ plan: i, done: false }) }));
+const M = ['Card', 'Bank transfer', 'Mobile money'];
+const methods = M.map((n, i) => ({ name: n, style: 'flex: 1; height: 44px; border-radius: 22px; font-family: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer; border: 1.5px solid ' + (s.method === i ? '#7ee08a' : '#2d4a37') + '; background: ' + (s.method === i ? '#7ee08a' : 'transparent') + '; color: ' + (s.method === i ? '#06200e' : '#cfe0d5'), pick: () => this.setState({ method: i, done: false }) }));
+const tab = (on) => 'flex: 1; height: 100%; border: 0; border-radius: 18px; font-family: inherit; font-size: 14.5px; font-weight: 600; cursor: pointer; ' + (on ? 'background: #7ee08a; color: #06200e' : 'background: transparent; color: #cfe0d5');
+const digits = s.num.replace(/\D/g, '');
+let brand = 'Card';
+if (/^4/.test(digits)) brand = 'Visa'; else if (/^(5[1-5]|2[2-7])/.test(digits)) brand = 'Mastercard'; else if (/^(5061|6500)/.test(digits)) brand = 'Verve'; else if (/^3[47]/.test(digits)) brand = 'Amex';
+const fmt = (v) => v.replace(/\D/g, '').slice(0, 19).replace(/(.{4})/g, '$1 ').trim();
+const fmtExp = (v) => { const d = v.replace(/\D/g, '').slice(0, 4); return d.length > 2 ? d.slice(0, 2) + '/' + d.slice(2) : d; };
+return {
+sheetOpen: s.sheet, brand, num: s.num, name: s.name, exp: s.exp, cvv: s.cvv,
+summary: P[s.plan][0] + ' plan, ' + (s.yearly ? 'yearly' : 'monthly'),
+payLabel: 'Pay ' + price(P[s.plan][2]).split(' (')[0],
+setNum: (e) => this.setState({ num: fmt(e.target.value) }), setName: (e) => this.setState({ name: e.target.value }), setExp: (e) => this.setState({ exp: fmtExp(e.target.value) }), setCvv: (e) => this.setState({ cvv: e.target.value.replace(/\D/g, '').slice(0, 4) }),
+closeSheet: () => this.setState({ sheet: false }),
+payNow: () => this.setState({ sheet: false, done: true }),
+paidNow: () => this.setState({ sheet: false, done: true }),
+payHref: 'https://paystack.shop/pay/lliagm4ofp',
+countries, regionNote: cc[1] + ' pricing' + (det ? ' \u00B7 detected from your device' : ''),
+plans, methods,
+perks: [{ text: 'Ad-free listening' }, { text: 'Offline downloads' }, { text: 'High-quality audio' }, { text: 'Skip as much as you like' }, { text: 'Early access to exclusive drops' }],
+monthTab: tab(!s.yearly), yearTab: tab(s.yearly),
+showMonthly: () => this.setState({ yearly: false, done: false }), showYearly: () => this.setState({ yearly: true, done: false }),
+done: s.done, doneText: P[s.plan][0] + ' plan paid with ' + M[s.method] + '.',
+cta: 'Get ' + P[s.plan][0] + ' for ' + price(P[s.plan][2]),
+subscribe: () => this.setState({ sheet: true })
+};
+}
+}
+</script>
+</body>
+</html>

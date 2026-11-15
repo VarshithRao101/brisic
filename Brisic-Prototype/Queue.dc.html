@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>
+var __c = 'Queue.dc.html';
+(function () { try { var st = JSON.parse(localStorage.getItem('brisic-stack') || '[]'); var back = localStorage.getItem('brisic-back') === '1'; localStorage.setItem('brisic-back', '0'); if (st[st.length - 1] !== __c) { if (back && st.length >= 2 && st[st.length - 2] === __c) { st.pop(); } else { st.push(__c); } } if (st.length > 40) st = st.slice(-40); localStorage.setItem('brisic-stack', JSON.stringify(st)); } catch (e) {} })();
+window.brisicPrev = function (fb) { try { var st = JSON.parse(localStorage.getItem('brisic-stack') || '[]'); if (st.length >= 2 && st[st.length - 1] === __c) { var p = st[st.length - 2]; if (p && p !== __c && p !== 'Splash.dc.html') return p; } } catch (e) {} return fb; };
+(function () {
+function fix() { try { var l = document.querySelectorAll('a[aria-label="Back"]'); for (var i = 0; i < l.length; i++) { var a = l[i]; if (!a.getAttribute('data-o')) a.setAttribute('data-o', a.getAttribute('href') || 'Home.dc.html'); var t = window.brisicPrev(a.getAttribute('data-o')); if (a.getAttribute('href') !== t) a.setAttribute('href', t); } } catch (e) {} }
+document.addEventListener('DOMContentLoaded', fix); window.addEventListener('load', fix);
+try { new MutationObserver(function () { fix(); }).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
+document.addEventListener('click', function (e) { try { var a = e.target.closest && e.target.closest('a[href*="Main.dc.html?"]'); if (!a) return; var q = new URLSearchParams((a.getAttribute('href').split('?')[1] || '')); if (q.get('t')) localStorage.setItem('brisic-now', JSON.stringify({ t: q.get('t').slice(0, 80), a: (q.get('a') || 'Unknown Artist').slice(0, 60) })); } catch (x) {} }, true);
+document.addEventListener('click', function (e) { try { if (e.target.closest && e.target.closest('[aria-label="Back"]')) localStorage.setItem('brisic-back', '1'); } catch (x) {} }, true);
+})();
+</script>
+
+<title>Queue</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{text-decoration:none;color:inherit}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #bbf7d0;outline-offset:3px}
+input::placeholder{color:#8fa398;opacity:1}
+</style>
+</helmet>
+<div style="width: 520px; height: 1022px; position: relative; overflow: hidden; background: radial-gradient(90% 60% at 50% 40%, #12201a 0%, #060a08 100%)">
+
+<div style="position: absolute; left: 30px; top: 214px; width: 5px; height: 30px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; left: 30px; top: 280px; width: 5px; height: 56px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; left: 30px; top: 352px; width: 5px; height: 56px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; right: 30px; top: 310px; width: 5px; height: 96px; border-radius: 0 3px 3px 0; background: linear-gradient(270deg, #1b201e, #3a4540)"></div>
+
+<div style="position: absolute; left: 33px; top: 33px; width: 454px; height: 956px; box-sizing: border-box; border-radius: 74px; padding: 12px; background: linear-gradient(145deg, #4b5651 0%, #1a201d 30%, #0b0e0d 60%, #3b4640 100%); box-shadow: 0 0 0 2px #2a322e, 0 30px 70px rgba(0,0,0,0.7), 0 0 60px rgba(74,222,128,0.12)">
+
+<div style="width: 430px; height: 932px; box-sizing: border-box; border-radius: 62px; position: relative; overflow: hidden; background: radial-gradient(100% 50% at 50% 0%, #0f2c18 0%, #050a07 60%, #030504 100%); font-family: 'Outfit', system-ui, sans-serif; color: #e9f2ec; box-shadow: inset 0 0 0 4px #000">
+
+<div style="position: absolute; left: 0; top: 0; width: 430px; height: 54px; z-index: 6">
+<div style="position: absolute; left: 56px; top: 17px; font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif; font-size: 16px; font-weight: 600; color: #fff">10:00 AM</div>
+<div style="position: absolute; right: 38px; top: 19px; display: flex; align-items: center; gap: 6px">
+<svg viewBox="0 0 19 12" width="19" height="12" fill="#fff" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="0.8"/><rect x="5" y="5.5" width="3" height="6.5" rx="0.8"/><rect x="10" y="3" width="3" height="9" rx="0.8"/><rect x="15" y="0" width="3" height="12" rx="0.8"/></svg>
+<svg viewBox="0 0 17 12" width="17" height="12" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M1 4.3a11 11 0 0 1 15 0M3.6 7a7.3 7.3 0 0 1 9.8 0"/><circle cx="8.5" cy="10" r="1.3" fill="#fff" stroke="none"/></svg>
+<svg viewBox="0 0 27 13" width="27" height="13" fill="none" aria-hidden="true"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#fff" stroke-opacity="0.45"/><rect x="2" y="2" width="19" height="9" rx="2.2" fill="#fff"/><path d="M24.5 4.5v4c.9-.3 1.5-1.2 1.5-2s-.6-1.7-1.5-2z" fill="#fff" fill-opacity="0.5"/></svg>
+</div>
+</div>
+<div style="position: absolute; left: 152px; top: 11px; width: 126px; height: 37px; border-radius: 20px; background: #000; z-index: 7">
+<div style="position: absolute; right: 13px; top: 10px; width: 17px; height: 17px; border-radius: 50%; background: radial-gradient(circle at 40% 38%, #243257 0%, #0a0f1d 45%, #020306 100%)"></div>
+</div>
+
+<a href="Library.dc.html" aria-label="Back" style="position: absolute; z-index: 12; left: 22px; top: 74px; width: 40px; height: 40px; box-sizing: border-box; border-radius: 50%; border: 1.5px solid #7ee08a; display: flex; align-items: center; justify-content: center">
+<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#c6f5cc" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+</a>
+<div style="position: absolute; left: 70px; right: 24px; top: 68px; height: 52px; display: flex; flex-direction: column; justify-content: center">
+<div style="font-size: 26px; font-weight: 700; color: #fff; line-height: 1.15">Queue</div>
+<div style="font-size: 14px; color: #9fd8aa; font-weight: 300">What plays next</div>
+</div>
+<div style="position: absolute; left: 0; right: 0; top: 134px; height: 752px; overflow-y: auto; scrollbar-width: none"><div style="padding: 0 18px 60px">
+<div style="font-size: 13px; letter-spacing: 0.08em; color: #7ee08a; margin-bottom: 8px">NOW PLAYING</div>
+<div style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 16px; border: 1.5px solid #4fae63; background: rgba(30,60,40,0.7)"><div style="width: 50px; height: 50px; border-radius: 10px; background: linear-gradient(150deg,#3ae0a0,#0a3a2a); flex-shrink: 0"></div><div style="flex: 1; min-width: 0"><div style="font-size: 16px; font-weight: 600; color: #fff">{{nowT}}</div><div style="font-size: 13px; color: #9fd8aa">{{nowA}}</div></div><a href="{{nowHref}}" style="height: 34px; padding: 0 14px; border-radius: 17px; border: 1.5px solid #7ee08a; display: flex; align-items: center; color: #c6f5cc; font-size: 13.5px; font-weight: 600">Open</a></div>
+<div style="display: flex; align-items: center; justify-content: space-between; margin: 18px 0 8px"><div style="font-size: 13px; letter-spacing: 0.08em; color: #7ee08a">UP NEXT &middot; {{count}}</div><button onClick="{{clear}}" style="border: 0; background: transparent; color: #ff8a8a; font-family: inherit; font-size: 14px; cursor: pointer">Clear queue</button></div>
+<sc-if value="{{empty}}" hint-placeholder-val="false"><div style="padding: 30px 10px; text-align: center; color: #8fb09b; font-size: 15px">Your queue is empty. Add songs from a playlist.</div></sc-if>
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="6">
+<div style="display: flex; align-items: center; gap: 10px; padding: 8px 8px 8px 10px; margin-bottom: 8px; border-radius: 14px; border: 1px solid #233229; background: rgba(18,30,24,0.85)">
+<div style="width: 44px; height: 44px; border-radius: 9px; flex-shrink: 0; background: {{r.bg}}"></div>
+<div style="flex: 1; min-width: 0"><div style="font-size: 15.5px; color: #f1f7f3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.title}}</div><div style="font-size: 12.5px; color: #8fb09b; font-weight: 300">{{r.artist}}</div></div>
+<button onClick="{{r.up}}" aria-label="Move up" style="width: 34px; height: 34px; border: 0; border-radius: 50%; background: transparent; color: #c6f5cc; cursor: pointer"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
+<button onClick="{{r.remove}}" aria-label="Remove" style="width: 34px; height: 34px; border: 0; border-radius: 50%; background: transparent; color: #ff8a8a; cursor: pointer"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+</div>
+</sc-for>
+</div></div>
+<div style="position: absolute; left: 148px; bottom: 9px; width: 134px; height: 5px; border-radius: 3px; background: rgba(240,255,245,0.9); z-index: 6"></div>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":520,"height":1022}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { q: [['Calm Down', 'Tobi Rae', 'linear-gradient(150deg,#2a5ac8,#0c1a5a)'], ['Last Last', 'Kelechi Ade', 'linear-gradient(150deg,#e02a2a,#6a0a0a)'], ['Essence', 'Sade Vox ft. Nuela', 'linear-gradient(150deg,#b8782a,#4a2a10)'], ['Sungba', 'Dayo Mane', 'linear-gradient(150deg,#2f7a34,#10381a)'], ['Joy', 'Unknown Artist', 'linear-gradient(150deg,#7a2a8a,#d63a5a)'], ['Late Nights', 'Ayo Blaze', 'linear-gradient(150deg,#142a5a,#070d24)']] };
+}
+renderVals() {
+const q = this.state.q;
+let nowT = 'Tornado', nowA = 'Zuri Kaya'; try { const n = JSON.parse(localStorage.getItem('brisic-now') || 'null'); if (n && n.t) { nowT = n.t; nowA = n.a || 'Unknown Artist'; } } catch (e) {}
+return {
+nowT: nowT, nowA: nowA, nowHref: 'Main.dc.html?play=1&t=' + encodeURIComponent(nowT) + '&a=' + encodeURIComponent(nowA),
+count: q.length, empty: q.length === 0,
+clear: () => this.setState({ q: [] }),
+rows: q.map((x, i) => ({ title: x[0], artist: x[1], bg: x[2],
+up: () => { if (i === 0) return; const n = this.state.q.slice(); const t = n[i - 1]; n[i - 1] = n[i]; n[i] = t; this.setState({ q: n }); },
+remove: () => { const n = this.state.q.slice(); n.splice(i, 1); this.setState({ q: n }); } }))
+};
+}
+}
+</script>
+</body>
+</html>

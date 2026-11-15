@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+
+
+<script>
+var __c = 'Notifications.dc.html';
+(function () { try { var st = JSON.parse(localStorage.getItem('brisic-stack') || '[]'); var back = localStorage.getItem('brisic-back') === '1'; localStorage.setItem('brisic-back', '0'); if (st[st.length - 1] !== __c) { if (back && st.length >= 2 && st[st.length - 2] === __c) { st.pop(); } else { st.push(__c); } } if (st.length > 40) st = st.slice(-40); localStorage.setItem('brisic-stack', JSON.stringify(st)); } catch (e) {} })();
+window.brisicPrev = function (fb) { try { var st = JSON.parse(localStorage.getItem('brisic-stack') || '[]'); if (st.length >= 2 && st[st.length - 1] === __c) { var p = st[st.length - 2]; if (p && p !== __c && p !== 'Splash.dc.html') return p; } } catch (e) {} return fb; };
+(function () {
+function fix() { try { var l = document.querySelectorAll('a[aria-label="Back"]'); for (var i = 0; i < l.length; i++) { var a = l[i]; if (!a.getAttribute('data-o')) a.setAttribute('data-o', a.getAttribute('href') || 'Home.dc.html'); var t = window.brisicPrev(a.getAttribute('data-o')); if (a.getAttribute('href') !== t) a.setAttribute('href', t); } } catch (e) {} }
+document.addEventListener('DOMContentLoaded', fix); window.addEventListener('load', fix);
+try { new MutationObserver(function () { fix(); }).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
+document.addEventListener('click', function (e) { try { var a = e.target.closest && e.target.closest('a[href*="Main.dc.html?"]'); if (!a) return; var q = new URLSearchParams((a.getAttribute('href').split('?')[1] || '')); if (q.get('t')) localStorage.setItem('brisic-now', JSON.stringify({ t: q.get('t').slice(0, 80), a: (q.get('a') || 'Unknown Artist').slice(0, 60) })); } catch (x) {} }, true);
+document.addEventListener('click', function (e) { try { if (e.target.closest && e.target.closest('[aria-label="Back"]')) localStorage.setItem('brisic-back', '1'); } catch (x) {} }, true);
+})();
+</script>
+
+<title>Notifications</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+@keyframes brisicWave{0%,100%{transform:scaleY(0.2)}50%{transform:scaleY(1)}}
+a{text-decoration:none;color:inherit}
+[data-read="1"] [style*="width: 9px; height: 9px; border-radius: 50%; background: #7ee08a"]{visibility:hidden}
+a:focus-visible,button:focus-visible{outline:2px solid #bbf7d0;outline-offset:3px}
+</style>
+</helmet>
+<div style="width: 520px; height: 1022px; position: relative; overflow: hidden; background: radial-gradient(90% 60% at 50% 40%, #12201a 0%, #060a08 100%)">
+
+<div style="position: absolute; left: 30px; top: 214px; width: 5px; height: 30px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; left: 30px; top: 280px; width: 5px; height: 56px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; left: 30px; top: 352px; width: 5px; height: 56px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; right: 30px; top: 310px; width: 5px; height: 96px; border-radius: 0 3px 3px 0; background: linear-gradient(270deg, #1b201e, #3a4540)"></div>
+
+<div style="position: absolute; left: 33px; top: 33px; width: 454px; height: 956px; box-sizing: border-box; border-radius: 74px; padding: 12px; background: linear-gradient(145deg, #4b5651 0%, #1a201d 30%, #0b0e0d 60%, #3b4640 100%); box-shadow: 0 0 0 2px #2a322e, 0 30px 70px rgba(0,0,0,0.7), 0 0 60px rgba(74,222,128,0.12)">
+
+<div style="width: 430px; height: 932px; box-sizing: border-box; border-radius: 62px; position: relative; overflow: hidden; background: #060807; font-family: 'Outfit', system-ui, sans-serif; color: #e9f2ec; box-shadow: inset 0 0 0 4px #000">
+
+<div style="position: absolute; left: 0; top: 0; width: 430px; height: 54px; z-index: 6">
+<div style="position: absolute; left: 56px; top: 17px; font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif; font-size: 17px; font-weight: 600; color: #fff">9:41</div>
+<div style="position: absolute; right: 38px; top: 19px; display: flex; align-items: center; gap: 6px; font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif; font-size: 14px; font-weight: 600; color: #fff">
+<svg viewBox="0 0 19 12" width="19" height="12" fill="#fff" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="0.8"/><rect x="5" y="5.5" width="3" height="6.5" rx="0.8"/><rect x="10" y="3" width="3" height="9" rx="0.8"/><rect x="15" y="0" width="3" height="12" rx="0.8"/></svg>
+<span>5G</span>
+<svg viewBox="0 0 27 13" width="27" height="13" fill="none" aria-hidden="true"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#fff" stroke-opacity="0.45"/><rect x="2" y="2" width="19" height="9" rx="2.2" fill="#fff"/><path d="M24.5 4.5v4c.9-.3 1.5-1.2 1.5-2s-.6-1.7-1.5-2z" fill="#fff" fill-opacity="0.5"/></svg>
+</div>
+</div>
+<div style="position: absolute; left: 152px; top: 11px; width: 126px; height: 37px; border-radius: 20px; background: #000; z-index: 7">
+<div style="position: absolute; right: 13px; top: 10px; width: 17px; height: 17px; border-radius: 50%; background: radial-gradient(circle at 40% 38%, #243257 0%, #0a0f1d 45%, #020306 100%)"></div>
+</div>
+
+<div style="position: absolute; left: 16px; right: 16px; top: 64px; height: 58px; display: flex; align-items: center">
+<img src="assets/logo-b-glow.png" alt="Brisic logo" style="width: 37px; height: 54px; object-fit: contain">
+<div style="width: 1px; height: 44px; background: #7ee08a; margin: 0 14px 0 16px"></div>
+<div style="flex: 1; font-size: 24px; color: #eef5f0; font-weight: 500">Notifications</div>
+<a href="Notifications.dc.html" aria-label="Notifications" style="position: relative; width: 44px; height: 44px; border: 0; background: transparent; color: #a8eeb3; display: flex; align-items: center; justify-content: center; cursor: pointer">
+<svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 17V11a6 6 0 0 1 12 0v6l1.5 2h-15zM10 21h4"/></svg>
+<div style="position: absolute; right: 8px; top: 7px; width: 9px; height: 9px; border-radius: 50%; background: #7ee08a"></div>
+</a>
+<a href="Profile.dc.html" aria-label="Profile" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center"><div style="width: 40px; height: 40px; box-sizing: border-box; border-radius: 50%; border: 2px solid #7ee08a; padding: 1px; box-shadow: 0 0 8px rgba(126,224,138,0.35)"><div style="width: 34px; height: 34px; border-radius: 50%; overflow: hidden; background: linear-gradient(#c9803a,#5a2f14); display: flex; align-items: flex-end; justify-content: center"><svg viewBox="0 0 60 60" width="34" height="34" aria-hidden="true">
+<path d="M6 60 C6 46 18 42 30 42 C42 42 54 46 54 60 Z" fill="#1b1512"/><rect x="25" y="34" width="10" height="11" rx="4" fill="#7a4a34"/><ellipse cx="30" cy="26" rx="11" ry="13.5" fill="#7a4a34"/>
+<path d="M18 26 C15 8 28 6 30 6 C34 6 46 10 42 26 C39 18 36 15 30 15 C24 15 21 18 18 26 Z" fill="#0d0807"/>
+<path d="M14 28 C12 4 48 4 46 28" fill="none" stroke="#111715" stroke-width="3" stroke-linecap="round"/>
+<rect x="9" y="24" width="7" height="14" rx="3.5" fill="#111715" stroke="#4ade80" stroke-width="0.8"/><rect x="44" y="24" width="7" height="14" rx="3.5" fill="#111715" stroke="#4ade80" stroke-width="0.8"/>
+</svg></div></div></a>
+</div>
+
+<div style="position: absolute; left: 0; right: 0; top: 128px; height: 698px; overflow-y: auto; overflow-x: hidden; scrollbar-width: none">
+<div data-read="{{readFlag}}" style="padding: 4px 16px 24px">
+<div style="display: flex; align-items: center; justify-content: space-between; margin: 0 2px 12px"><div style="font-size: 18px; font-weight: 500">New</div><button onClick="{{markRead}}" style="border: 0; background: transparent; padding: 0; font-family: inherit; cursor: pointer; font-size: 14px; color: #a8e86a">{{readLabel}}</button></div>
+<a href="Party.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 12px; margin-bottom: 10px; box-sizing: border-box; border-radius: 14px; border: 1px solid #2f6b44; background: rgba(24,44,32,0.9); color: #e9f2ec">
+<div style="width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg,#2f8a3a,#0c3a1a); display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.5 2.7-5.5 6-5.5s6 2 6 5.5M16 5.5a3 3 0 0 1 0 5.6M18 14.8c1.8.7 3 2.3 3 5.2"/></svg></div>
+<div style="flex: 1; min-width: 0"><div style="font-size: 15.5px; font-weight: 500">Party starting now</div><div style="font-size: 13px; color: #a9c2b3; font-weight: 300; margin-top: 2px">Friday Night Vibes is live. Join and vote for the next song.</div></div>
+<div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px"><div style="font-size: 12px; color: #7f9d8b">Now</div><div style="width: 9px; height: 9px; border-radius: 50%; background: #7ee08a"></div></div></a>
+<a href="Main.dc.html?play=1&t=Last%20Last&a=Kelechi%20Ade" style="display: flex; align-items: center; gap: 12px; padding: 12px 12px; margin-bottom: 10px; box-sizing: border-box; border-radius: 14px; border: 1px solid #2f6b44; background: rgba(24,44,32,0.9); color: #e9f2ec">
+<div style="width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg,#d6841a,#7a3a0a); display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V6l10-2v12M9 18a3 3 0 1 1-3-3 3 3 0 0 1 3 3zM19 16a3 3 0 1 1-3-3 3 3 0 0 1 3 3z"/></svg></div>
+<div style="flex: 1; min-width: 0"><div style="font-size: 15.5px; font-weight: 500">New song from Kelechi Ade</div><div style="font-size: 13px; color: #a9c2b3; font-weight: 300; margin-top: 2px">"Last Last" just dropped. Listen now.</div></div>
+<div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px"><div style="font-size: 12px; color: #7f9d8b">2m</div><div style="width: 9px; height: 9px; border-radius: 50%; background: #7ee08a; flex-shrink: 0"></div></div></a>
+<a href="Gifts.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 12px; margin-bottom: 10px; box-sizing: border-box; border-radius: 14px; border: 1px solid #2f6b44; background: rgba(24,44,32,0.9); color: #e9f2ec">
+<div style="width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg,#8a2ab8,#3a0f55); display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11h16v9H4zM3 7h18v4H3zM12 7v13M12 7c-2-4-6-3-5 0M12 7c2-4 6-3 5 0"/></svg></div>
+<div style="flex: 1; min-width: 0"><div style="font-size: 15.5px; font-weight: 500">You received a gift</div><div style="font-size: 13px; color: #a9c2b3; font-weight: 300; margin-top: 2px">Someone sent you a Crown (300 B-Coins).</div></div>
+<div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px"><div style="font-size: 12px; color: #7f9d8b">1h</div><div style="width: 9px; height: 9px; border-radius: 50%; background: #7ee08a; flex-shrink: 0"></div></div></a>
+<a href="Artist.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 12px; margin-bottom: 10px; box-sizing: border-box; border-radius: 14px; border: 1px solid #233229; background: rgba(14,22,18,0.85); color: #e9f2ec">
+<div style="width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg,#1c6be0,#0a2a7a); display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg></div>
+<div style="flex: 1; min-width: 0"><div style="font-size: 15.5px; font-weight: 500">Unknown Artist is live</div><div style="font-size: 13px; color: #a9c2b3; font-weight: 300; margin-top: 2px">Tap to support with a gift.</div></div>
+<div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px"><div style="font-size: 12px; color: #7f9d8b">Yesterday</div></div></a>
+<a href="Playlist.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 12px; margin-bottom: 10px; box-sizing: border-box; border-radius: 14px; border: 1px solid #233229; background: rgba(14,22,18,0.85); color: #e9f2ec">
+<div style="width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg,#2a8a8a,#0c2a30); display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V6l10-2v12M9 18a3 3 0 1 1-3-3 3 3 0 0 1 3 3zM19 16a3 3 0 1 1-3-3 3 3 0 0 1 3 3z"/></svg></div>
+<div style="flex: 1; min-width: 0"><div style="font-size: 15.5px; font-weight: 500">Your playlist was updated</div><div style="font-size: 13px; color: #a9c2b3; font-weight: 300; margin-top: 2px">Afrobeats Hits has 4 new songs.</div></div>
+<div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px"><div style="font-size: 12px; color: #7f9d8b">Yesterday</div></div></a>
+<a href="Home.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 12px; margin-bottom: 10px; box-sizing: border-box; border-radius: 14px; border: 1px solid #233229; background: rgba(14,22,18,0.85); color: #e9f2ec">
+<div style="width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg,#c0309a,#4a0f55); display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg></div>
+<div style="flex: 1; min-width: 0"><div style="font-size: 15.5px; font-weight: 500">Weekly picks for you</div><div style="font-size: 13px; color: #a9c2b3; font-weight: 300; margin-top: 2px">Fresh Afro-pop chosen by Brisic AI.</div></div>
+<div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px"><div style="font-size: 12px; color: #7f9d8b">2d</div></div></a>
+
+</div>
+</div>
+
+<div style="position: absolute; left: 0; right: 0; top: 826px; height: 106px; border-top: 1px solid #26332b; background: #060807">
+<div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 20px 0">
+<a href="Home.dc.html" style="width: 62px; display: flex; flex-direction: column; align-items: center; gap: 4px; color: #b9c6bf">
+<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5M5.5 10V20h5v-5.5h3V20h5V10"/></svg>
+<div style="font-size: 13px">Home</div>
+</a>
+<a href="Search.dc.html" style="width: 62px; display: flex; flex-direction: column; align-items: center; gap: 4px; color: #b9c6bf">
+<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+<div style="font-size: 13px">Search</div>
+</a>
+<button onClick="{{openVoice}}" aria-label="Talk to Brisic AI" style="width: 58px; height: 58px; box-sizing: border-box; border-radius: 50%; border: 2px solid #7ee08a; background: transparent; padding: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-top: -4px; box-shadow: 0 0 14px rgba(126,224,138,0.3)">
+<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#a8eeb3" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 11v2M8 7v10M12 3v18M16 8v8M20 10v4"/></svg>
+</button>
+<a href="Library.dc.html" style="width: 62px; display: flex; flex-direction: column; align-items: center; gap: 4px; color: #b9c6bf">
+<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="7" height="16" rx="1.5"/><path d="M14 4h6.5v16H14zM17 8v8"/></svg>
+<div style="font-size: 13px">Library</div>
+</a>
+<a href="Profile.dc.html" style="width: 62px; display: flex; flex-direction: column; align-items: center; gap: 4px; color: #b9c6bf">
+<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.5 3.5-7 8-7s8 2.5 8 7z"/></svg>
+<div style="font-size: 13px">Profile</div>
+</a>
+</div>
+</div>
+<sc-if value="{{vOpen}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; z-index: 30; background: rgba(2,6,3,0.62)">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; height: 530px; box-sizing: border-box; border-radius: 34px 34px 0 0; border-top: 1.5px solid #4fae63; background: linear-gradient(180deg, #0f2c18 0%, #050a07 72%); box-shadow: 0 -10px 40px rgba(110,230,60,0.25); padding: 20px 24px 0; font-family: 'Outfit', system-ui, sans-serif; color: #e9f2ec; display: flex; flex-direction: column">
+<div style="display: flex; align-items: center; justify-content: space-between">
+<div style="display: flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 600">
+<svg viewBox="0 0 24 24" width="20" height="20" fill="#8ee05a" aria-hidden="true"><path d="M10 4l1.8 5.2L17 11l-5.2 1.8L10 18l-1.8-5.2L3 11l5.2-1.8z"/><path d="M18.5 3l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2L15.5 6l2.2-.8z"/></svg>Brisic AI
+</div>
+<button onClick="{{closeVoice}}" aria-label="Close" style="width: 36px; height: 36px; border: 0; border-radius: 50%; background: rgba(255,255,255,0.08); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0">
+<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#e9f2ec" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+</button>
+</div>
+<div style="margin-top: 8px; font-size: 14.5px; color: #9fd8aa; text-align: center">{{vStatus}}</div>
+<sc-if value="{{vListening}}" hint-placeholder-val="{{ false }}">
+<div style="height: 112px; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 4px">
+<sc-for list="{{vBars}}" as="b" hint-placeholder-count="28"><div style="{{b.style}}"></div></sc-for>
+</div>
+</sc-if>
+<sc-if value="{{vThinking}}" hint-placeholder-val="{{ false }}">
+<div style="height: 112px; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 10px">
+<div style="width: 14px; height: 14px; border-radius: 50%; background: #8ee05a; animation: brisicWave 0.9s ease-in-out infinite"></div>
+<div style="width: 14px; height: 14px; border-radius: 50%; background: #8ee05a; animation: brisicWave 0.9s ease-in-out 0.15s infinite"></div>
+<div style="width: 14px; height: 14px; border-radius: 50%; background: #8ee05a; animation: brisicWave 0.9s ease-in-out 0.3s infinite"></div>
+</div>
+</sc-if>
+<div style="margin-top: 8px; min-height: 56px; padding: 0 6px; font-size: 21px; line-height: 1.3; color: #fff; text-align: center">{{vHeard}}</div>
+<sc-if value="{{vResult}}" hint-placeholder-val="{{ false }}">
+<div style="font-size: 14px; color: #cfe0d5; text-align: center; font-weight: 300">{{vReply}}</div>
+<div style="display: flex; flex-direction: column; gap: 8px; margin-top: 14px">
+<sc-for list="{{vResults}}" as="r" hint-placeholder-count="3">
+<div style="display: flex; align-items: center; gap: 12px; height: 56px; box-sizing: border-box; padding: 0 10px 0 6px; border-radius: 14px; border: 1px solid #2d4a37; background: rgba(18,30,24,0.92)">
+<div style="{{r.thumbStyle}}"></div>
+<div style="flex: 1; min-width: 0">
+<div style="font-size: 15px; color: #f4f8f5; white-space: nowrap; line-height: 1.25">{{r.title}}</div>
+<div style="font-size: 12.5px; color: #8fa398; font-weight: 300">{{r.artist}}</div>
+</div>
+<a href="{{r.play}}" aria-label="Play {{r.title}}" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 50%; border: 2px solid #7ee08a; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: inherit; text-decoration: none">
+<svg viewBox="0 0 24 24" width="14" height="14" fill="#e9f2ec" aria-hidden="true" style="margin-left: 2px"><path d="M6 4l14 8-14 8z"/></svg>
+</a>
+</div>
+</sc-for>
+</div>
+<button onClick="{{talkAgain}}" style="margin: 16px auto 0; height: 42px; padding: 0 24px; box-sizing: border-box; border-radius: 21px; border: 1.5px solid #7ee08a; background: transparent; color: #c6f5cc; font-family: inherit; font-size: 15px; cursor: pointer">Ask something else</button>
+</sc-if>
+</div>
+</div>
+</sc-if>
+
+<div style="position: absolute; left: 148px; bottom: 9px; width: 134px; height: 5px; border-radius: 3px; background: rgba(240,255,245,0.9); z-index: 6"></div>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":520,"height":1022}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { allRead: false };
+this.voiceInit();
+}
+voiceInit() {
+this.state = Object.assign({}, this.state, { vOpen: false, vPhase: 'idle', vHeard: '', vReply: '', vResults: [], vRound: 0 });
+this._t = [];
+}
+vClear() { (this._t || []).forEach(clearTimeout); this._t = []; }
+vLater(fn, ms) { this._t = this._t || []; this._t.push(setTimeout(fn, ms)); }
+vStart() {
+this.vClear();
+const rounds = [
+{ say: 'Play some Afrobeats for me', reply: 'Here are some Afrobeats picks', res: [['Last Last', 'Kelechi Ade', 'linear-gradient(150deg,#e08a3a,#5a2a10)'], ['Calm Down', 'Tobi Rae', 'linear-gradient(150deg,#2a8a8a,#0c2a30)'], ['Sungba', 'Dayo Mane', 'linear-gradient(170deg,#f07a2a,#8a2a0a)']] },
+{ say: 'What song is this?', reply: 'Found it! This sounds like Lost in the Noise', res: [['Lost in the Noise', 'Unknown Artist', 'linear-gradient(180deg,#2a4ab8 0%,#c8421a 70%,#3a1a10 100%)'], ['No Name', 'Unknown Artist', 'radial-gradient(circle at 50% 50%, #3f9a2a, #07120a)']] },
+{ say: 'Something chill for tonight', reply: 'Chill vibes coming up', res: [['Essence', 'Nuela', 'linear-gradient(150deg,#9a5ab8,#2a0f45)'], ['Joy', 'Sade Vox', 'linear-gradient(150deg,#2a5ac8,#0c1a5a)'], ['Better Days', 'Unknown Artist', 'linear-gradient(180deg,#5a6a9a 0%,#e08a5a 60%,#3a2a3a 100%)']] }
+];
+const r = rounds[this.state.vRound % rounds.length];
+this.setState({ vOpen: true, vPhase: 'listening', vHeard: '', vReply: '', vResults: [], vRound: this.state.vRound + 1 });
+const words = r.say.split(' ');
+words.forEach((w, i) => this.vLater(() => this.setState({ vHeard: words.slice(0, i + 1).join(' ') }), 900 + i * 450));
+const tEnd = 900 + words.length * 450 + 700;
+this.vLater(() => this.setState({ vPhase: 'thinking' }), tEnd);
+this.vLater(() => this.setState({ vPhase: 'result', vReply: r.reply, vResults: r.res }), tEnd + 1200);
+}
+vClose() { this.vClear(); this.setState({ vOpen: false, vPhase: 'idle', vHeard: '', vReply: '', vResults: [] }); }
+voiceVals() {
+const s = this.state;
+const bars = [];
+for (let i = 0; i < 28; i++) {
+const d = (0.55 + ((i * 37) % 10) / 14).toFixed(2);
+const dl = (((i * 53) % 10) / 12).toFixed(2);
+const h = 30 + ((i * 29) % 7) * 12;
+bars.push({ style: 'width:5px;border-radius:3px;background:#8ee05a;box-shadow:0 0 8px rgba(142,224,90,0.55);height:' + h + 'px;transform-origin:center;animation:brisicWave ' + d + 's ease-in-out ' + dl + 's infinite' });
+}
+const st = { listening: 'Listening…', thinking: 'Thinking…', result: 'Here you go' };
+return {
+vOpen: !!s.vOpen,
+vStatus: st[s.vPhase] || '',
+vListening: s.vPhase === 'listening',
+vThinking: s.vPhase === 'thinking',
+vResult: s.vPhase === 'result',
+vBars: bars,
+vHeard: s.vHeard ? '“' + s.vHeard + '”' : '',
+vReply: s.vReply,
+vResults: (s.vResults || []).map((x) => ({ play: 'Main.dc.html?play=1&t=' + encodeURIComponent(x[0]) + '&a=' + encodeURIComponent(x[1]), title: x[0], artist: x[1], thumbStyle: 'width:48px;height:48px;border-radius:8px;flex-shrink:0;background:' + x[2] })),
+openVoice: () => this.vStart(),
+closeVoice: () => this.vClose(),
+talkAgain: () => this.vStart()
+};
+}
+renderVals() {
+return Object.assign({}, this.voiceVals(), { readFlag: this.state.allRead ? '1' : '0', readLabel: this.state.allRead ? 'All caught up' : 'Mark all as read', markRead: () => this.setState({ allRead: true }) });
+}
+}
+</script>
+</body>
+</html>

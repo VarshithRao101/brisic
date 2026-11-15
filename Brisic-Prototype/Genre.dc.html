@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>
+var __c = 'Genre.dc.html';
+(function () { try { var st = JSON.parse(localStorage.getItem('brisic-stack') || '[]'); var back = localStorage.getItem('brisic-back') === '1'; localStorage.setItem('brisic-back', '0'); if (st[st.length - 1] !== __c) { if (back && st.length >= 2 && st[st.length - 2] === __c) { st.pop(); } else { st.push(__c); } } if (st.length > 40) st = st.slice(-40); localStorage.setItem('brisic-stack', JSON.stringify(st)); } catch (e) {} })();
+window.brisicPrev = function (fb) { try { var st = JSON.parse(localStorage.getItem('brisic-stack') || '[]'); if (st.length >= 2 && st[st.length - 1] === __c) { var p = st[st.length - 2]; if (p && p !== __c && p !== 'Splash.dc.html') return p; } } catch (e) {} return fb; };
+(function () {
+function fix() { try { var l = document.querySelectorAll('a[aria-label="Back"]'); for (var i = 0; i < l.length; i++) { var a = l[i]; if (!a.getAttribute('data-o')) a.setAttribute('data-o', a.getAttribute('href') || 'Home.dc.html'); var t = window.brisicPrev(a.getAttribute('data-o')); if (a.getAttribute('href') !== t) a.setAttribute('href', t); } } catch (e) {} }
+document.addEventListener('DOMContentLoaded', fix); window.addEventListener('load', fix);
+try { new MutationObserver(function () { fix(); }).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
+document.addEventListener('click', function (e) { try { var a = e.target.closest && e.target.closest('a[href*="Main.dc.html?"]'); if (!a) return; var q = new URLSearchParams((a.getAttribute('href').split('?')[1] || '')); if (q.get('t')) localStorage.setItem('brisic-now', JSON.stringify({ t: q.get('t').slice(0, 80), a: (q.get('a') || 'Unknown Artist').slice(0, 60) })); } catch (x) {} }, true);
+document.addEventListener('click', function (e) { try { if (e.target.closest && e.target.closest('[aria-label="Back"]')) localStorage.setItem('brisic-back', '1'); } catch (x) {} }, true);
+})();
+</script>
+
+<title>Genre</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{text-decoration:none;color:inherit}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #bbf7d0;outline-offset:3px}
+input::placeholder{color:#8fa398;opacity:1}
+</style>
+</helmet>
+<div style="width: 520px; height: 1022px; position: relative; overflow: hidden; background: radial-gradient(90% 60% at 50% 40%, #12201a 0%, #060a08 100%)">
+
+<div style="position: absolute; left: 30px; top: 214px; width: 5px; height: 30px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; left: 30px; top: 280px; width: 5px; height: 56px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; left: 30px; top: 352px; width: 5px; height: 56px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; right: 30px; top: 310px; width: 5px; height: 96px; border-radius: 0 3px 3px 0; background: linear-gradient(270deg, #1b201e, #3a4540)"></div>
+
+<div style="position: absolute; left: 33px; top: 33px; width: 454px; height: 956px; box-sizing: border-box; border-radius: 74px; padding: 12px; background: linear-gradient(145deg, #4b5651 0%, #1a201d 30%, #0b0e0d 60%, #3b4640 100%); box-shadow: 0 0 0 2px #2a322e, 0 30px 70px rgba(0,0,0,0.7), 0 0 60px rgba(74,222,128,0.12)">
+
+<div style="width: 430px; height: 932px; box-sizing: border-box; border-radius: 62px; position: relative; overflow: hidden; background: radial-gradient(100% 50% at 50% 0%, #0f2c18 0%, #050a07 60%, #030504 100%); font-family: 'Outfit', system-ui, sans-serif; color: #e9f2ec; box-shadow: inset 0 0 0 4px #000">
+
+<div style="position: absolute; left: 0; top: 0; width: 430px; height: 54px; z-index: 6">
+<div style="position: absolute; left: 56px; top: 17px; font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif; font-size: 16px; font-weight: 600; color: #fff">10:00 AM</div>
+<div style="position: absolute; right: 38px; top: 19px; display: flex; align-items: center; gap: 6px">
+<svg viewBox="0 0 19 12" width="19" height="12" fill="#fff" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="0.8"/><rect x="5" y="5.5" width="3" height="6.5" rx="0.8"/><rect x="10" y="3" width="3" height="9" rx="0.8"/><rect x="15" y="0" width="3" height="12" rx="0.8"/></svg>
+<svg viewBox="0 0 17 12" width="17" height="12" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M1 4.3a11 11 0 0 1 15 0M3.6 7a7.3 7.3 0 0 1 9.8 0"/><circle cx="8.5" cy="10" r="1.3" fill="#fff" stroke="none"/></svg>
+<svg viewBox="0 0 27 13" width="27" height="13" fill="none" aria-hidden="true"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#fff" stroke-opacity="0.45"/><rect x="2" y="2" width="19" height="9" rx="2.2" fill="#fff"/><path d="M24.5 4.5v4c.9-.3 1.5-1.2 1.5-2s-.6-1.7-1.5-2z" fill="#fff" fill-opacity="0.5"/></svg>
+</div>
+</div>
+<div style="position: absolute; left: 152px; top: 11px; width: 126px; height: 37px; border-radius: 20px; background: #000; z-index: 7">
+<div style="position: absolute; right: 13px; top: 10px; width: 17px; height: 17px; border-radius: 50%; background: radial-gradient(circle at 40% 38%, #243257 0%, #0a0f1d 45%, #020306 100%)"></div>
+</div>
+
+<a href="Search.dc.html" aria-label="Back" style="position: absolute; z-index: 12; left: 22px; top: 74px; width: 40px; height: 40px; box-sizing: border-box; border-radius: 50%; border: 1.5px solid #7ee08a; display: flex; align-items: center; justify-content: center">
+<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#c6f5cc" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+</a>
+<div style="position: absolute; left: 70px; right: 24px; top: 70px; height: 48px; display: flex; align-items: center; font-size: 26px; font-weight: 700; color: #fff">{{title}}</div>
+<div style="position: absolute; left: 0; right: 0; top: 126px; height: 46px; display: flex; gap: 8px; padding: 0 16px; overflow-x: auto; scrollbar-width: none">
+<sc-for list="{{chips}}" as="c" hint-placeholder-count="10"><button onClick="{{c.pick}}" style="{{c.style}}">{{c.label}}</button></sc-for>
+</div>
+<div style="position: absolute; left: 0; right: 0; top: 184px; height: 700px; overflow-y: auto; overflow-x: hidden; scrollbar-width: none">
+<sc-if value="{{isAll}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 4px 16px 60px">
+<div style="height: 44px; box-sizing: border-box; border-radius: 22px; border: 1.5px solid #5fc873; background: rgba(20,34,26,0.85); display: flex; align-items: center; gap: 10px; padding: 0 16px">
+<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#a8eeb3" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+<input type="text" value="{{q}}" onInput="{{typeQ}}" placeholder="Search genres, podcasts, moods…" aria-label="Search genres" style="flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: #eef5f0; font-family: inherit; font-size: 15.5px; font-weight: 300">
+</div>
+<sc-for list="{{sections}}" as="sec" hint-placeholder-count="3">
+<div style="margin: 20px 2px 10px; display: flex; align-items: baseline; justify-content: space-between"><div style="font-size: 20px; font-weight: 500">{{sec.title}}</div><div style="font-size: 13px; color: #8fb09b">{{sec.count}}</div></div>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px">
+<sc-for list="{{sec.tiles}}" as="t" hint-placeholder-count="6"><button onClick="{{t.pick}}" style="{{t.style}}"><span style="font-size: 19px; font-weight: 600; color: #fff">{{t.name}}</span><span style="font-size: 12.5px; color: rgba(255,255,255,0.8); font-weight: 300; margin-top: 2px">{{t.sub}}</span></button></sc-for>
+</div>
+</sc-for>
+<sc-if value="{{noMatch}}" hint-placeholder-val="{{ false }}"><div style="margin-top: 50px; text-align: center; color: #8fb09b; font-size: 16px; font-weight: 300">No genres match &ldquo;{{q}}&rdquo;</div></sc-if>
+</div>
+</sc-if>
+<sc-if value="{{isGenre}}" hint-placeholder-val="{{ true }}">
+<div style="padding: 0 0 60px">
+<div style="{{banner}}"><div style="font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.8)">{{kind}}</div><div style="font-size: 32px; font-weight: 700; color: #fff; line-height: 1.1">{{title}}</div><div style="font-size: 14px; color: rgba(255,255,255,0.85); font-weight: 300; margin-top: 4px">{{summary}}</div></div>
+
+<div style="margin: 20px 18px 10px; font-size: 20px; font-weight: 500">{{songsTitle}}</div>
+<div style="padding: 0 16px">
+<sc-for list="{{songs}}" as="s" hint-placeholder-count="5">
+<a href="{{s.href}}" style="display: flex; align-items: center; gap: 12px; height: 62px; box-sizing: border-box; padding: 0 12px 0 8px; margin-bottom: 8px; border-radius: 12px; border: 1px solid #233229; background: rgba(16,26,20,0.85); color: #e9f2ec">
+<div style="width: 24px; text-align: center; font-size: 15px; color: {{s.accent}}; font-weight: 600">{{s.n}}</div>
+<div style="{{s.thumb}}"></div>
+<div style="flex: 1; min-width: 0"><div style="font-size: 15.5px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{s.title}}</div><div style="font-size: 12.5px; color: #8fb09b; font-weight: 300">{{s.artist}} &middot; {{s.streams}} {{s.unit}}</div></div>
+<svg viewBox="0 0 24 24" width="22" height="22" fill="#7ee08a" aria-hidden="true"><path d="M7 4l13 8-13 8z"/></svg>
+</a>
+</sc-for>
+</div>
+
+<sc-if value="{{showArtists}}" hint-placeholder-val="{{ true }}">
+<div style="margin: 18px 18px 10px; font-size: 20px; font-weight: 500">Popular artists</div>
+<div style="display: flex; gap: 14px; overflow-x: auto; padding: 0 16px; scrollbar-width: none">
+<sc-for list="{{artists}}" as="r" hint-placeholder-count="5">
+<a href="Artist.dc.html" style="width: 76px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 6px; color: #e9f2ec">
+<div style="{{r.circle}}"></div>
+<div style="font-size: 13px; text-align: center; line-height: 1.2">{{r.name}}</div>
+</a>
+</sc-for>
+</div>
+</sc-if>
+
+<div style="margin: 22px 18px 10px; font-size: 20px; font-weight: 500">{{plTitle}}</div>
+<div style="display: flex; gap: 12px; overflow-x: auto; padding: 0 16px; scrollbar-width: none">
+<sc-for list="{{playlists}}" as="p" hint-placeholder-count="4">
+<a href="{{p.href}}" style="width: 150px; flex-shrink: 0; color: #e9f2ec">
+<div style="{{p.box}}">{{p.label}}</div>
+<div style="margin-top: 7px; font-size: 14.5px">{{p.title}}</div>
+</a>
+</sc-for>
+</div>
+
+<div style="margin: 22px 18px 10px; font-size: 20px; font-weight: 500">Podcasts</div>
+<div style="padding: 0 16px">
+<sc-for list="{{podcasts}}" as="q" hint-placeholder-count="2">
+<a href="Show.dc.html" style="display: flex; align-items: center; gap: 12px; height: 62px; box-sizing: border-box; padding: 0 12px 0 8px; margin-bottom: 8px; border-radius: 12px; border: 1px solid #233229; background: rgba(16,26,20,0.85); color: #e9f2ec">
+<div style="{{q.thumb}}"></div>
+<div style="flex: 1; min-width: 0"><div style="font-size: 15.5px; font-weight: 500">{{q.title}}</div><div style="font-size: 12.5px; color: #8fb09b; font-weight: 300">{{q.sub}}</div></div>
+<div style="font-size: 11.5px; color: #7ee08a; border: 1px solid #2f6b44; border-radius: 10px; padding: 2px 8px">Podcast</div>
+</a>
+</sc-for>
+</div>
+</div>
+</sc-if>
+</div>
+<div style="position: absolute; left: 148px; bottom: 9px; width: 134px; height: 5px; border-radius: 3px; background: rgba(240,255,245,0.9); z-index: 6"></div>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":520,"height":1022}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+let k = '';
+try { k = new URLSearchParams(location.search).get('g') || ''; } catch (e) {}
+if (!k) { try { k = localStorage.getItem('brisic-genre') || ''; } catch (e) {} }
+this.state = { g: k || 'all', q: '', grp: -1 };
+}
+renderVals() {
+const s = this.state;
+const D = {"hip-hop": {"name": "Hip-Hop", "a": "#2f7f6a", "b": "#0f3a2c", "songs": ["Street Heat|Tyler ICU", "Bars on Bars|Lyrical J", "Lagos Cypher|Rap Naija All-Stars", "808 Dreams|Trap Lagos", "Run It Up|Ayo Blaze"], "artists": ["Tyler ICU", "Ayo Blaze", "Lyrical J", "Trap Lagos", "Blaq Jerzee"], "playlists": ["Street Heat", "Cypher Nights", "Bars & Beats", "Rap Naija"], "podcasts": ["The Cypher Show|Weekly freestyle talk", "Beat Makers|Producers share their craft"]}, "r-b": {"name": "R&B", "a": "#d6841a", "b": "#5a2a08", "songs": ["Essence|Nuela", "Slow Burn|Zuri Kaya", "Soft Life|Fave", "Midnight Call|Ayo Blaze", "Honey|Zuri Kaya"], "artists": ["Nuela", "Zuri Kaya", "Fave", "Ayo Blaze", "Joeboy"], "playlists": ["Slow Jams", "Soft Life", "Late Vibes", "Love Notes"], "podcasts": ["Love & Music|Stories behind R&B", "Slow Talk|Late night chats"]}, "afrobeats": {"name": "Afrobeats", "a": "#c0309a", "b": "#4a0f55", "songs": ["Last Last|Kelechi Ade", "Calm Down|Tobi Rae", "Sungba|Dayo Mane", "Joy|Sade Vox", "Unavailable|Kofi Lane"], "artists": ["Kelechi Ade", "Tobi Rae", "Dayo Mane", "Sade Vox", "Kofi Lane"], "playlists": ["Afrobeats Hits", "Afro Viral", "Naija Top 10", "Weekend Hits"], "podcasts": ["Afro Talks|Music, culture and news", "The Come Up|Emerging artist stories"]}, "pop": {"name": "Pop", "a": "#1c6be0", "b": "#0a2a7a", "songs": ["Pop Rising|New Wave", "Today Hits|Various Artists", "Sing Along|Kemi", "Feel Good|Tolu", "Pop Remix|Various Artists"], "artists": ["Kemi", "Tolu", "New Wave", "Zuri Kaya", "Tobi Rae"], "playlists": ["Pop Rising", "Today Hits", "Sing Along", "Feel Good Pop"], "podcasts": ["Pop Culture Daily|Latest in pop", "Behind the Hit|How songs are made"]}, "rock": {"name": "Rock", "a": "#e29a2a", "b": "#7a3a0a", "songs": ["Loud Roots|The Amps", "Thunder Road|Kings of Lagos", "Wild Nights|The Amps", "Raw Power|Iron Choir", "Breakout|Kings of Lagos"], "artists": ["The Amps", "Kings of Lagos", "Iron Choir", "Rock Naija", "Dust & Strings"], "playlists": ["Rock Classics", "Loud Roots", "Guitar Heroes", "Wild Nights"], "podcasts": ["Riff Radio|Guitar talk", "Stage Stories|Live rock tales"]}, "electronic": {"name": "Electronic", "a": "#1f9a9a", "b": "#0a3a4a", "songs": ["Neon Lagos|DJ Pulse", "Bass Drop|Circuit", "Night Drive|DJ Pulse", "Glow|Echo Lab", "Warehouse|Circuit"], "artists": ["DJ Pulse", "Circuit", "Echo Lab", "Neon Crew", "Synth Sisters"], "playlists": ["Club Night", "Deep House", "Bass Heavy", "Chill Electro"], "podcasts": ["Mix Masters|DJ interviews", "Sound Lab|Electronic production"]}, "reggae": {"name": "Reggae", "a": "#7ab82a", "b": "#2a5a1a", "songs": ["One Love|Island Roots", "Sunny Skank|Island Roots", "Roots & Culture|Zion Kings", "Easy Vibes|Marley Jr.", "Rise Up|Zion Kings"], "artists": ["Island Roots", "Zion Kings", "Marley Jr.", "Reggae Naija", "Irie Band"], "playlists": ["Island Vibes", "Roots & Culture", "One Love", "Ragga Mix"], "podcasts": ["Irie Talk|Reggae culture", "Roots Radio|Old and new reggae"]}, "jazz": {"name": "Jazz", "a": "#e0842a", "b": "#6a2a0a", "songs": ["Blue Hour|Ola Trio", "Late Set|Ola Trio", "Smooth Lagos|Jazz Collective", "Midnight Sax|Femi K.", "Velvet|Jazz Collective"], "artists": ["Ola Trio", "Jazz Collective", "Femi K.", "Blue Note Naija", "Sax Sisters"], "playlists": ["Late Jazz", "Smooth Lagos", "Coffee Jazz", "Blue Hour"], "podcasts": ["Jazz Corner|Weekly jazz talk", "Improv Stories|Musicians on playing live"]}, "country": {"name": "Country", "a": "#e8902a", "b": "#a8501a", "songs": ["Dusty Road|Sam Rivers", "Back Porch|Sam Rivers", "Home Again|Lila May", "Open Fields|Lila May", "Boots|Dan Creek"], "artists": ["Sam Rivers", "Lila May", "Dan Creek", "Hank Stone", "Rosie Lane"], "playlists": ["Road Trip", "Back Porch", "Country Gold", "Sunday Drive"], "podcasts": ["Nashville Nights|Country stories", "Songwriter Hour|How country songs are written"]}};
+const groupOf = {};
+const GR = ['Music genres', 'Podcasts & audio', 'Moods & moments'];
+const hand = Object.keys(D);
+hand.forEach((k) => { groupOf[k] = 0; });
+const pal = [['#2f7a34', '#10381a'], ['#1c6be0', '#0a2a7a'], ['#c0309a', '#4a0f55'], ['#e8562a', '#7d1f0a'], ['#9a5ab8', '#2a0f45'], ['#d6841a', '#5a2a08'], ['#1f9a9a', '#0a3a4a'], ['#d63a5a', '#5a1a3a'], ['#7ab82a', '#2a5a1a'], ['#c9a42a', '#5a4410']];
+const SONG = ['Midnight Run', 'Golden Hour', 'Feel It', 'Run Free', 'All Night', 'Hold On', 'Good Energy', 'Sunrise', 'Higher', 'Take Me Home', 'Wave', 'Lights Out'];
+const ART = ['Kelechi Ade', 'Tobi Rae', 'Nuela', 'Dayo Mane', 'Sade Vox', 'Kofi Lane', 'Zuri Kaya', 'Ayo Blaze', 'Unknown Artist', 'Kemi', 'Tolu', 'Fave'];
+const POD = [['Behind the Music', 'Stories behind the music'], ['The Come Up', 'Stories of people breaking out'], ['Afro Talks', 'Music, culture and news'], ['Faith & Frequency', 'Faith in music'], ['Studio Stories', 'Behind the scenes'], ['Laugh Lounge', 'Comedy and fun']];
+const extra = [
+['Afro-fusion', 0], ['Afro-pop', 0], ['Amapiano', 0], ['Highlife', 0], ['Fuji & Juju', 0], ['Trap', 0], ['Soul', 0], ['Alternative', 0], ['House', 0], ['Dancehall', 0], ['Blues', 0], ['Classical', 0], ['Latin', 0], ['K-Pop', 0], ['Gospel', 0], ['Worship', 0], ['Lo-fi', 0],
+['Podcasts', 1], ['Music Talk', 1], ['Comedy', 1], ['Stories', 1], ['Faith & Life', 1], ['News & Culture', 1], ['Audiobooks', 1], ['Interviews', 1],
+['Workout', 2], ['Focus', 2], ['Chill', 2], ['Party', 2], ['Love', 2], ['Sleep', 2], ['Throwback', 2], ['Road Trip', 2]
+];
+extra.forEach((x, i) => {
+const k = x[0].toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+if (D[k]) return;
+const c = pal[i % pal.length];
+const pod = x[1] === 1;
+D[k] = {
+name: x[0], a: c[0], b: c[1],
+songs: [0, 1, 2, 3, 4].map((j) => (pod ? POD[(i + j) % POD.length][0] + ' Ep. ' + (j + 1) : SONG[(i + j * 3) % SONG.length]) + '|' + (pod ? 'Brisic Originals' : ART[(i + j * 2) % ART.length])),
+artists: [0, 1, 2, 3, 4].map((j) => ART[(i + j) % ART.length]),
+playlists: [x[0] + ' Essentials', x[0] + ' Top 50', 'New in ' + x[0], x[0] + ' Mix'],
+podcasts: [POD[i % POD.length].join('|'), POD[(i + 1) % POD.length].join('|')]
+};
+groupOf[k] = x[1];
+});
+const V = {
+'afrobeats': { pat: 'waves', tag: 'The sound of Lagos, loved around the world' },
+'afro-fusion': { pat: 'waves', tag: 'Afrobeats blended with soul, jazz and the world', songs: ['Two Worlds|Nuela', 'Bloom|Zuri Kaya', 'Golden Thread|Fave', 'Homecoming|Kelechi Ade', 'Sunday Light|Ayo Blaze'], artists: ['Nuela', 'Zuri Kaya', 'Fave', 'Kelechi Ade', 'Ayo Blaze'] },
+'afro-pop': { pat: 'stars', tag: 'Catchy hooks, big choruses, made for the dance floor', songs: ['Hype Me|Tobi Rae', 'Sweet Trouble|Zuri Kaya', 'My Lane|Dayo Mane', 'Show Me|Tolu', 'Glow Up|Kemi'], artists: ['Tobi Rae', 'Zuri Kaya', 'Dayo Mane', 'Tolu', 'Kemi'] },
+'amapiano': { pat: 'bars', tag: 'Log drums, soft keys and slow-building grooves', songs: ['Log Drum Love|Kabza De Small', 'Yeba Yeba|DJ Maphorisa', 'Sunset Piano|Uncle Waffles', 'Dance Floor|Focalistic', 'Soweto Nights|Young Stunna'], artists: ['Kabza De Small', 'DJ Maphorisa', 'Uncle Waffles', 'Focalistic', 'Young Stunna'], pl: ['Piano Sundays', 'Log Drum Heat', 'Amapiano Fresh', 'Late Night Keys'] },
+'highlife': { pat: 'rings', tag: 'Warm guitars and horns from the golden era', songs: ['Palm Wine Evening|Victor Olaiya', 'Joromi Days|Flavour', 'Nkoyo|Phyno', 'Old Town Road|Osita Osadebe', 'Guitar Man|Brymo'], artists: ['Victor Olaiya', 'Flavour', 'Phyno', 'Osita Osadebe', 'Brymo'], pl: ['Highlife Classics', 'Palm Wine Music', 'New Highlife', 'Weekend Guitars'] },
+'fuji-juju': { pat: 'drums', tag: 'Talking drums, praise and street poetry', songs: ['Ade Ori Oko|K1 De Ultimate', 'Talazo Night|Pasuma', 'Ijo Aye|Saheed Osupa', 'Omo Baba|Obesere', 'Gbedu Mi|Wasiu Ayinde'], artists: ['K1 De Ultimate', 'Pasuma', 'Saheed Osupa', 'Obesere', 'Wasiu Ayinde'], pl: ['Fuji Legends', 'Juju Evenings', 'Owambe Party', 'Talking Drum Hits'] },
+'hip-hop': { pat: 'drums', tag: 'Bars, beats and stories from the streets' },
+'trap': { pat: 'drums', tag: 'Heavy 808s, hi-hats and late-night energy', songs: ['808 Fever|Trap Lagos', 'Cold Chain|Blaq Jerzee', 'Night Shift|Tyler ICU', 'Ice Cold|Lyrical J', 'Mood Swing|Ayo Blaze'], artists: ['Trap Lagos', 'Blaq Jerzee', 'Tyler ICU', 'Lyrical J', 'Ayo Blaze'] },
+'r-b': { pat: 'rings', tag: 'Smooth vocals for slow nights and soft moods' },
+'soul': { pat: 'rings', tag: 'Deep voices, real feeling', songs: ['Held Me Right|Nuela', 'Quiet Storm|Simi', 'Warm Light|Brymo', 'Honest Love|Fave', 'Slow Rain|Zuri Kaya'], artists: ['Nuela', 'Simi', 'Brymo', 'Fave', 'Zuri Kaya'] },
+'jazz': { pat: 'rings', tag: 'Late sets, brass and smoke-filled rooms' },
+'rock': { pat: 'bolts', tag: 'Loud guitars, big drums, raw energy' },
+'electronic': { pat: 'bars', tag: 'Synths, bass and club-ready beats' },
+'house': { pat: 'bars', tag: 'Four on the floor, from sunset to sunrise', songs: ['Deep Lagos|DJ Pulse', 'Warehouse|Circuit', 'Afterglow|DJ Neptune', 'Midnight Groove|DJ Tunez', 'Sunrise Set|Kemi'], artists: ['DJ Pulse', 'Circuit', 'DJ Neptune', 'DJ Tunez', 'Kemi'] },
+'dancehall': { pat: 'drums', tag: 'Island riddims and party energy', songs: ['Wine Slow|Patoranking', 'Riddim Dem|Kelechi Ade', 'Hot Night|Skales', 'Gyal Dem|Mr Eazi', 'Bounce|Ayo Blaze'], artists: ['Patoranking', 'Kelechi Ade', 'Skales', 'Mr Eazi', 'Ayo Blaze'] },
+'reggae': { pat: 'waves', tag: 'One love, roots and island sunshine' },
+'gospel': { pat: 'stars', tag: 'Praise, worship and songs of hope', songs: ['Overflow|Sinach', 'Way Maker Live|Nathaniel Bassey', 'Alabukun|Tope Alabi', 'Excess Love|Mercy Chinwo', 'Grateful|Frank Edwards'], artists: ['Sinach', 'Nathaniel Bassey', 'Tope Alabi', 'Mercy Chinwo', 'Frank Edwards'], pl: ['Sunday Praise', 'Worship Nights', 'Morning Prayer', 'Choir Favourites'] },
+'worship': { pat: 'stars', tag: 'Quiet songs for prayer and reflection' },
+'lo-fi': { pat: 'bars', tag: 'Soft beats to study, rest and focus to' },
+'pop': { pat: 'stars', tag: 'Big hooks and the hits everyone knows' },
+'country': { pat: 'bolts', tag: 'Open roads, acoustic guitars and honest stories' }
+};
+const patSvg = (kind, w) => {
+const c = 'rgba(255,255,255,' + (w || 0.22) + ')'; let g = '';
+if (kind === 'waves') { for (let i = 0; i < 5; i++) g += '<path d="M0 ' + (30 + i * 16) + ' C30 ' + (10 + i * 16) + ' 50 ' + (50 + i * 16) + ' 80 ' + (30 + i * 16) + ' S130 ' + (10 + i * 16) + ' 160 ' + (30 + i * 16) + '" fill="none" stroke="' + c + '" stroke-width="3"/>'; }
+else if (kind === 'bars') { for (let i = 0; i < 12; i++) { const h = 20 + ((i * 37) % 70); g += '<rect x="' + (8 + i * 13) + '" y="' + (110 - h) + '" width="8" height="' + h + '" rx="3" fill="' + c + '"/>'; } }
+else if (kind === 'rings') { for (let i = 1; i < 6; i++) g += '<circle cx="120" cy="60" r="' + (i * 12) + '" fill="none" stroke="' + c + '" stroke-width="2.5"/>'; g += '<circle cx="120" cy="60" r="5" fill="' + c + '"/>'; }
+else if (kind === 'bolts') { for (let i = 0; i < 4; i++) g += '<path d="M' + (20 + i * 38) + ' 10 L' + (50 + i * 38) + ' 55 L' + (32 + i * 38) + ' 58 L' + (62 + i * 38) + ' 110" fill="none" stroke="' + c + '" stroke-width="4" stroke-linejoin="round"/>'; }
+else if (kind === 'drums') { for (let r = 0; r < 4; r++) for (let q = 0; q < 6; q++) g += '<circle cx="' + (18 + q * 26 + (r % 2) * 13) + '" cy="' + (16 + r * 28) + '" r="' + (5 + ((q + r) % 3) * 2) + '" fill="' + c + '"/>'; }
+else { for (let i = 0; i < 6; i++) g += '<path d="M' + (20 + i * 26) + ' ' + (20 + (i % 3) * 30) + ' l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4z" fill="' + c + '"/>'; }
+return 'url("data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170 120">' + g + '</svg>') + '") right center / auto 100% no-repeat';
+};
+Object.keys(V).forEach((k) => { if (D[k]) { const v = V[k]; D[k].pat = v.pat; D[k].tag = v.tag; if (v.songs) D[k].songs = v.songs; if (v.artists) D[k].artists = v.artists; if (v.pl) D[k].playlists = v.pl; } });
+const keys = Object.keys(D);
+const grad = (a, b) => 'linear-gradient(150deg,' + a + ',' + b + ')';
+const chip = (on) => 'flex-shrink: 0; height: 36px; padding: 0 16px; border-radius: 18px; font-family: inherit; font-size: 14.5px; cursor: pointer; white-space: nowrap; border: 1.5px solid #4fae63; ' + (on ? 'background: #7ee08a; color: #06200e; font-weight: 600' : 'background: rgba(20,34,26,0.7); color: #d6efdc');
+const pick = (k) => () => this.setState({ g: k, q: '' });
+const isAll = s.g === 'all' || !D[s.g];
+const isPod = !isAll && groupOf[s.g] === 1;
+const d = D[s.g] || D[keys[0]];
+const sameGroup = keys.filter((k) => groupOf[k] === groupOf[s.g]);
+const chips = isAll ? GR.map((n, gi) => ({ label: n, style: chip(s.grp === gi), pick: () => this.setState({ grp: s.grp === gi ? -1 : gi }) })) : [{ label: '\u2190 All genres', style: chip(false), pick: pick('all') }].concat(sameGroup.map((k) => ({ label: D[k].name, style: chip(s.g === k), pick: pick(k) })));
+const q = (s.q || '').trim().toLowerCase();
+const sections = GR.map((title, gi) => {
+const list = keys.filter((k) => groupOf[k] === gi && (s.grp < 0 || s.grp === gi) && (!q || D[k].name.toLowerCase().indexOf(q) >= 0));
+return { title: title, count: list.length + ' genres', tiles: list.map((k) => ({ name: D[k].name, sub: '5 songs \u00b7 5 artists', style: 'display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end; text-align: left; height: 88px; padding: 12px 14px; box-sizing: border-box; border-radius: 14px; border: 1px solid rgba(255,255,255,0.12); font-family: inherit; cursor: pointer; background: ' + grad(D[k].a, D[k].b), pick: pick(k) })) };
+}).filter((x) => x.tiles.length > 0);
+const skins = ['#8a5a3c', '#6a4332', '#9a6446', '#7a5238', '#4d3024'];
+return {
+title: isAll ? 'Genres' : d.name,
+isAll: isAll, isGenre: !isAll, showArtists: !isPod, plTitle: isPod ? 'Podcast collections' : 'Playlists', kind: isPod ? 'Podcasts' : 'Genre', songsTitle: isPod ? 'Top episodes' : 'Top songs',
+chips: chips, sections: sections, noMatch: sections.length === 0, q: s.q || '',
+typeQ: (e) => this.setState({ q: e.target.value }),
+banner: 'margin: 0 16px; padding: 22px 20px; border-radius: 18px; background: ' + (isPod ? '' : patSvg(d.pat, 0.2) + ', ') + grad(d.a, d.b),
+summary: isPod ? '5 top episodes, 4 collections and 2 podcasts' : (d.tag || '5 top songs, 5 artists, 4 playlists and 2 podcasts'),
+songs: d.songs.map((x, i) => { const p = x.split('|'); return { n: i + 1, href: isPod ? 'Show.dc.html' : 'Main.dc.html?play=1&t=' + encodeURIComponent(p[0]) + '&a=' + encodeURIComponent(p[1] || 'Unknown Artist'), unit: isPod ? 'plays' : 'streams', accent: isPod ? '#ffd28a' : '#7ee08a', title: p[0], artist: p[1], streams: ['4.8M', '2.3M', '1.7M', '980K', '640K'][i], thumb: 'width: 46px; height: 46px; border-radius: 9px; flex-shrink: 0; background: ' + grad(d.a, d.b) }; }),
+artists: d.artists.map((n, i) => ({ name: n, circle: 'width: 68px; height: 68px; box-sizing: border-box; border-radius: 50%; border: 2px solid #7ee08a; background: radial-gradient(circle at 50% 35%, ' + skins[i % 5] + ' 0 28%, ' + d.b + ' 30%)' })),
+playlists: (isPod ? ['Top 10 ' + d.name, 'Editor\u2019s picks', 'New shows to try', 'Binge-worthy'] : d.playlists).map((n) => isPod ? ({ title: n, href: 'Show.dc.html', label: n.toUpperCase(), box: "width: 150px; height: 150px; box-sizing: border-box; border-radius: 22px; padding: 12px 13px; display: flex; flex-direction: column; justify-content: flex-end; font-family: 'Outfit',sans-serif; font-size: 19px; font-weight: 700; line-height: 1.1; color: #fff; border: 1.5px solid #ffd28a; box-shadow: 0 0 18px rgba(255,210,138,0.18); background: " + grad('#5a2a8a', '#1a0a2a') }) : ({ title: n, href: 'Playlist.dc.html', label: n.toUpperCase().replace(' ', '\n'), box: "width: 150px; height: 112px; box-sizing: border-box; border-radius: 10px; padding: 10px 11px; font-family: 'Bebas Neue','Outfit',sans-serif; font-size: 26px; line-height: 0.95; white-space: pre-line; color: #fff; background: " + patSvg(d.pat, 0.18).replace('right center / auto 100%', 'right bottom / auto 80%') + ', ' + grad(d.a, d.b) })),
+podcasts: d.podcasts.map((x) => { const p = x.split('|'); return { title: p[0], sub: p[1], thumb: 'width: 46px; height: 46px; border-radius: 9px; flex-shrink: 0; background: ' + grad(d.b, d.a) }; })
+};
+}
+}
+</script>
+</body>
+</html>

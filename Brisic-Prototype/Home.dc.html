@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+
+
+<script>
+var __c = 'Home.dc.html';
+(function () { try { var st = JSON.parse(localStorage.getItem('brisic-stack') || '[]'); var back = localStorage.getItem('brisic-back') === '1'; localStorage.setItem('brisic-back', '0'); if (st[st.length - 1] !== __c) { if (back && st.length >= 2 && st[st.length - 2] === __c) { st.pop(); } else { st.push(__c); } } if (st.length > 40) st = st.slice(-40); localStorage.setItem('brisic-stack', JSON.stringify(st)); } catch (e) {} })();
+window.brisicPrev = function (fb) { try { var st = JSON.parse(localStorage.getItem('brisic-stack') || '[]'); if (st.length >= 2 && st[st.length - 1] === __c) { var p = st[st.length - 2]; if (p && p !== __c && p !== 'Splash.dc.html') return p; } } catch (e) {} return fb; };
+(function () {
+function fix() { try { var l = document.querySelectorAll('a[aria-label="Back"]'); for (var i = 0; i < l.length; i++) { var a = l[i]; if (!a.getAttribute('data-o')) a.setAttribute('data-o', a.getAttribute('href') || 'Home.dc.html'); var t = window.brisicPrev(a.getAttribute('data-o')); if (a.getAttribute('href') !== t) a.setAttribute('href', t); } } catch (e) {} }
+document.addEventListener('DOMContentLoaded', fix); window.addEventListener('load', fix);
+try { new MutationObserver(function () { fix(); }).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
+document.addEventListener('click', function (e) { try { var a = e.target.closest && e.target.closest('a[href*="Main.dc.html?"]'); if (!a) return; var q = new URLSearchParams((a.getAttribute('href').split('?')[1] || '')); if (q.get('t')) localStorage.setItem('brisic-now', JSON.stringify({ t: q.get('t').slice(0, 80), a: (q.get('a') || 'Unknown Artist').slice(0, 60) })); } catch (x) {} }, true);
+document.addEventListener('click', function (e) { try { if (e.target.closest && e.target.closest('[aria-label="Back"]')) localStorage.setItem('brisic-back', '1'); } catch (x) {} }, true);
+})();
+</script>
+
+<title>Listen Now</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+@keyframes brisicWave{0%,100%{transform:scaleY(0.2)}50%{transform:scaleY(1)}}
+a{text-decoration:none;color:inherit}
+.sk>*{transform:skewX(6deg)}
+a:focus-visible{outline:2px solid #bbf7d0;outline-offset:3px}
+</style>
+</helmet>
+<div style="width: 520px; height: 1022px; position: relative; overflow: hidden; background: radial-gradient(90% 60% at 50% 40%, #12201a 0%, #060a08 100%)">
+
+<div style="position: absolute; left: 30px; top: 214px; width: 5px; height: 30px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; left: 30px; top: 280px; width: 5px; height: 56px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; left: 30px; top: 352px; width: 5px; height: 56px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; right: 30px; top: 310px; width: 5px; height: 96px; border-radius: 0 3px 3px 0; background: linear-gradient(270deg, #1b201e, #3a4540)"></div>
+
+<div style="position: absolute; left: 33px; top: 33px; width: 454px; height: 956px; box-sizing: border-box; border-radius: 74px; padding: 12px; background: linear-gradient(145deg, #4b5651 0%, #1a201d 30%, #0b0e0d 60%, #3b4640 100%); box-shadow: 0 0 0 2px #2a322e, 0 30px 70px rgba(0,0,0,0.7), 0 0 60px rgba(74,222,128,0.12)">
+
+<div style="width: 430px; height: 932px; box-sizing: border-box; border-radius: 62px; position: relative; overflow: hidden; background: {{screenBg}}; font-family: 'Outfit', system-ui, sans-serif; color: #e9f2ec; box-shadow: inset 0 0 0 4px #000">
+
+<div style="position: absolute; left: 0; top: 0; width: 430px; height: 54px; z-index: 6">
+<div style="position: absolute; left: 56px; top: 17px; font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif; font-size: 17px; font-weight: 600; color: #fff">9:41</div>
+<div style="position: absolute; right: 38px; top: 19px; display: flex; align-items: center; gap: 6px; font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif; font-size: 14px; font-weight: 600; color: #fff">
+<svg viewBox="0 0 19 12" width="19" height="12" fill="#fff" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="0.8"/><rect x="5" y="5.5" width="3" height="6.5" rx="0.8"/><rect x="10" y="3" width="3" height="9" rx="0.8"/><rect x="15" y="0" width="3" height="12" rx="0.8"/></svg>
+<span>5G</span>
+<svg viewBox="0 0 27 13" width="27" height="13" fill="none" aria-hidden="true"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#fff" stroke-opacity="0.45"/><rect x="2" y="2" width="19" height="9" rx="2.2" fill="#fff"/><path d="M24.5 4.5v4c.9-.3 1.5-1.2 1.5-2s-.6-1.7-1.5-2z" fill="#fff" fill-opacity="0.5"/></svg>
+</div>
+</div>
+<div style="position: absolute; left: 152px; top: 11px; width: 126px; height: 37px; border-radius: 20px; background: #000; z-index: 7">
+<div style="position: absolute; right: 13px; top: 10px; width: 17px; height: 17px; border-radius: 50%; background: radial-gradient(circle at 40% 38%, #243257 0%, #0a0f1d 45%, #020306 100%)"></div>
+</div>
+
+<svg width="0" height="0" style="position: absolute" aria-hidden="true"><defs><clipPath id="bpick" clipPathUnits="objectBoundingBox"><path d="M0.2,0.05 C0.36,0.0 0.64,0.0 0.8,0.05 C0.97,0.1 1.0,0.28 0.94,0.44 C0.85,0.67 0.65,0.9 0.55,0.97 C0.51,1.0 0.49,1.0 0.45,0.97 C0.35,0.9 0.15,0.67 0.06,0.44 C0.0,0.28 0.03,0.1 0.2,0.05 Z"/></clipPath></defs></svg>
+<div style="position: absolute; left: 16px; right: 16px; top: 64px; height: 58px; display: flex; align-items: center">
+<img src="assets/logo-b-glow.png" alt="Brisic logo" style="width: 37px; height: 54px; object-fit: contain">
+<div style="width: 1px; height: 44px; background: #3b4a41; margin: 0 14px 0 16px"></div>
+<div style="flex: 1; font-size: 26px; letter-spacing: 0.14em; color: #fff; font-weight: 600; text-transform: uppercase; white-space: nowrap">LISTEN NOW</div>
+<a href="Notifications.dc.html" aria-label="Notifications" style="position: relative; width: 44px; height: 44px; border: 0; background: transparent; color: #a8eeb3; display: flex; align-items: center; justify-content: center; cursor: pointer">
+<svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 17V11a6 6 0 0 1 12 0v6l1.5 2h-15zM10 21h4"/></svg>
+<div style="position: absolute; right: 8px; top: 7px; width: 9px; height: 9px; border-radius: 50%; background: #7ee08a"></div>
+</a>
+<a href="Profile.dc.html" aria-label="Profile" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center"><div style="width: 40px; height: 40px; box-sizing: border-box; border-radius: 50%; border: 2px solid #7ee08a; padding: 1px; box-shadow: 0 0 8px rgba(126,224,138,0.35)"><div style="{{avS34}}"><sc-if value="{{noAv}}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 60 60" width="34" height="34" aria-hidden="true">
+<path d="M6 60 C6 46 18 42 30 42 C42 42 54 46 54 60 Z" fill="#1b1512"/><rect x="25" y="34" width="10" height="11" rx="4" fill="#7a4a34"/><ellipse cx="30" cy="26" rx="11" ry="13.5" fill="#7a4a34"/>
+<path d="M18 26 C15 8 28 6 30 6 C34 6 46 10 42 26 C39 18 36 15 30 15 C24 15 21 18 18 26 Z" fill="#0d0807"/>
+<path d="M14 28 C12 4 48 4 46 28" fill="none" stroke="#111715" stroke-width="3" stroke-linecap="round"/>
+<rect x="9" y="24" width="7" height="14" rx="3.5" fill="#111715" stroke="#4ade80" stroke-width="0.8"/><rect x="44" y="24" width="7" height="14" rx="3.5" fill="#111715" stroke="#4ade80" stroke-width="0.8"/>
+</svg></sc-if></div></div></a>
+</div>
+
+<div style="position: absolute; left: 0; right: 0; top: 128px; height: 698px; overflow-y: auto; overflow-x: hidden; scrollbar-width: none">
+<a href="Trending.dc.html" style="color: #f1f7f3; position: absolute; left: 16px; top: 10px; display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 400">Trending Artist
+<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#7ee08a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+</a>
+
+<div style="position: absolute; left: 0; right: 0; top: 40px; display: flex; gap: 22px; overflow-x: auto; overflow-y: hidden; padding: 6px 16px 6px; scrollbar-width: none">
+<sc-for list="{{artists}}" as="a" hint-placeholder-count="5">
+<a href="Artist.dc.html" style="{{a.wrap}}">
+<div style="{{a.avOuter}}">
+<div style="{{a.avInner}}">
+<svg viewBox="0 0 60 60" width="60" height="60" aria-hidden="true">
+<path d="M6 60 C6 46 18 42 30 42 C42 42 54 46 54 60 Z" fill="{{a.cloth}}"/>
+<rect x="25" y="34" width="10" height="11" rx="4" fill="{{a.skin}}"/>
+<ellipse cx="30" cy="26" rx="11.5" ry="14" fill="{{a.skin}}"/>
+<path d="M18 24 C17 11 24 8 30 8 C36 8 43 11 42 24 C39 18 36 16 30 16 C24 16 21 18 18 24 Z" fill="{{a.hair}}"/>
+<sc-if value="{{a.shades}}" hint-placeholder-val="{{ true }}">
+<rect x="20" y="23" width="9" height="6" rx="2.5" fill="#050505"/><rect x="31" y="23" width="9" height="6" rx="2.5" fill="#050505"/>
+</sc-if>
+</svg>
+</div>
+</div>
+<div style="font-size: 13px; color: #e3ece6">{{a.name}}</div>
+</a>
+</sc-for>
+</div>
+
+<a href="SeeAll.dc.html?t=recently-played" onClick="{{goRecent}}" style="color: #f1f7f3; position: absolute; left: 16px; top: 192px; display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 400">Recently Played
+<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#7ee08a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+</a>
+<div style="position: absolute; left: 16px; right: 0; top: 226px; display: flex; gap: 12px; overflow-x: auto; padding-right: 16px; scrollbar-width: none">
+<sc-for list="{{recent}}" as="c" hint-placeholder-count="3">
+<div style="width: 176px; flex-shrink: 0">
+<div class="{{c.cls}}" style="{{c.boxStyle}}">
+<a href="{{c.play}}" aria-label="Open {{c.title}} playlist" style="position: absolute; inset: 0; z-index: 1"></a>
+<sc-if value="{{c.heart}}" hint-placeholder-val="{{ false }}">
+<svg viewBox="0 0 125 102" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" aria-hidden="true" style="position: absolute; inset: 0"><path d="M62 62 C40 46 32 36 36 24 C40 14 54 14 62 26 C70 14 84 14 88 24 C92 36 84 46 62 62 Z" fill="#4c9a3e" stroke="#8fd27a" stroke-width="1.5" opacity="0.9"/></svg>
+</sc-if>
+<sc-if value="{{c.person}}" hint-placeholder-val="{{ false }}">
+<svg viewBox="0 0 125 102" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" aria-hidden="true" style="position: absolute; inset: 0"><circle cx="{{c.px}}" cy="48" r="15" fill="{{c.pfill}}"/><path d="M{{c.px2}} 102 C{{c.px2}} 74 {{c.px3}} 66 {{c.px}} 66 C{{c.px4}} 66 {{c.px5}} 74 {{c.px5}} 102 Z" fill="{{c.pfill}}"/></svg>
+</sc-if>
+<div style="{{c.labelStyle}}">{{c.label}}</div>
+<a href="{{c.play}}" aria-label="Open {{c.title}}" style="z-index: 2; position: absolute; right: 8px; bottom: 8px; width: 34px; height: 34px; border-radius: 50%; box-sizing: border-box; border: 2px solid #7ee08a; background: rgba(0,0,0,0.55); display: flex; align-items: center; justify-content: center">
+<svg viewBox="0 0 24 24" width="16" height="16" fill="#e9f2ec" aria-hidden="true" style="margin-left: 2px"><path d="M6 4l14 8-14 8z"/></svg>
+</a>
+</div>
+<div style="margin-top: 9px; font-size: 15px; color: #e9f2ec; line-height: 1.2; white-space: nowrap">{{c.title}}</div>
+<div style="font-size: 13px; color: #8fa398; line-height: 1.3; white-space: nowrap; font-weight: 300">{{c.sub}}</div>
+</div>
+</sc-for>
+</div>
+
+<a href="SeeAll.dc.html?t=afro-pop" onClick="{{goAfro}}" style="color: #f1f7f3; position: absolute; left: 16px; top: 470px; display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 400">Afro-pop
+<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#7ee08a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+</a>
+<div style="position: absolute; left: 16px; right: 0; top: 504px; display: flex; gap: 12px; overflow-x: auto; padding-right: 16px; scrollbar-width: none">
+<sc-for list="{{afro}}" as="c" hint-placeholder-count="3">
+<div class="{{c.cls}}" style="{{c.boxStyle}}">
+<a href="Playlist.dc.html" aria-label="Open {{c.title}} playlist" style="position: absolute; inset: 0; z-index: 1"></a>
+<sc-if value="{{c.person}}" hint-placeholder-val="{{ false }}">
+<svg viewBox="0 0 125 98" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" aria-hidden="true" style="position: absolute; inset: 0"><circle cx="{{c.px}}" cy="40" r="15" fill="{{c.pfill}}"/><path d="M{{c.px2}} 98 C{{c.px2}} 70 {{c.px3}} 58 {{c.px}} 58 C{{c.px4}} 58 {{c.px5}} 70 {{c.px5}} 98 Z" fill="{{c.pfill}}"/></svg>
+</sc-if>
+<sc-if value="{{c.palm}}" hint-placeholder-val="{{ false }}">
+<svg viewBox="0 0 125 98" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" aria-hidden="true" style="position: absolute; inset: 0"><path d="M98 98 Q100 60 104 28" stroke="#0b2b2b" stroke-width="3" fill="none"/><path d="M104 28 Q88 20 78 30 M104 28 Q96 12 82 12 M104 28 Q112 12 124 16 M104 28 Q118 26 124 38" stroke="#0b2b2b" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M0 98 L0 84 Q30 74 60 86 Q90 76 125 88 L125 98 Z" fill="#0c3a46"/></svg>
+</sc-if>
+<div style="{{c.labelStyle}}">{{c.label}}</div>
+</div>
+</sc-for>
+</div>
+
+<a href="SeeAll.dc.html?t=playlist-made-for-you" onClick="{{goMade}}" style="color: #f1f7f3; position: absolute; left: 16px; top: 698px; display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 400">Playlist Made for you
+<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#7ee08a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+</a>
+<div style="position: absolute; left: 16px; right: 0; top: 732px; display: flex; gap: 12px; overflow-x: auto; padding-right: 16px; scrollbar-width: none">
+<sc-for list="{{playlists}}" as="c" hint-placeholder-count="3">
+<div class="{{c.cls}}" style="{{c.boxStyle}}">
+<a href="Playlist.dc.html" aria-label="Open {{c.title}} playlist" style="position: absolute; inset: 0; z-index: 1"></a>
+<svg viewBox="0 0 125 104" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" aria-hidden="true" style="position: absolute; inset: 0"><circle cx="14" cy="12" r="0.9" fill="#cfe0ff"/><circle cx="40" cy="30" r="0.8" fill="#cfe0ff"/><circle cx="78" cy="14" r="1" fill="#cfe0ff"/><circle cx="108" cy="26" r="0.8" fill="#cfe0ff"/><circle cx="96" cy="50" r="0.9" fill="#cfe0ff"/><circle cx="26" cy="58" r="0.8" fill="#cfe0ff"/><circle cx="60" cy="8" r="0.7" fill="#cfe0ff"/>
+<circle cx="{{c.px}}" cy="52" r="16" fill="{{c.pfill}}"/><path d="M{{c.px2}} 104 C{{c.px2}} 78 {{c.px3}} 70 {{c.px}} 70 C{{c.px4}} 70 {{c.px5}} 78 {{c.px5}} 104 Z" fill="{{c.pfill}}"/></svg>
+<div style="{{c.labelStyle}}">{{c.label}}</div>
+<a href="Playlist.dc.html" aria-label="Open {{c.title}}" style="z-index: 2; position: absolute; right: 8px; bottom: 8px; width: 34px; height: 34px; border-radius: 50%; box-sizing: border-box; border: 2px solid #7ee08a; background: rgba(0,0,0,0.55); display: flex; align-items: center; justify-content: center">
+<svg viewBox="0 0 24 24" width="16" height="16" fill="#e9f2ec" aria-hidden="true" style="margin-left: 2px"><path d="M6 4l14 8-14 8z"/></svg>
+</a>
+</div>
+</sc-for>
+</div>
+
+<div style="position: absolute; left: 0; right: 0; top: 1026px; padding-bottom: 34px">
+<sc-for list="{{more}}" as="s" hint-placeholder-count="8">
+<div style="margin-bottom: 26px">
+<a href="{{s.href}}" onClick="{{s.go}}" style="color: #f1f7f3; display: flex; align-items: center; gap: 10px; margin: 0 16px 12px; font-size: 20px; font-weight: 400">{{s.title}}
+<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#7ee08a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+</a>
+<div style="display: flex; gap: 12px; overflow-x: auto; padding: 0 16px; scrollbar-width: none">
+<sc-for list="{{s.cards}}" as="c" hint-placeholder-count="4">
+<div style="width: 176px; flex-shrink: 0">
+<div class="{{c.cls}}" style="{{c.boxStyle}}">
+<a href="{{c.boxHref}}" aria-label="Open {{c.title}}" style="position: absolute; inset: 0; z-index: 1"></a>
+<div style="{{c.labelStyle}}">{{c.label}}</div>
+<a href="{{c.playHref}}" aria-label="Play {{c.title}}" style="z-index: 2; position: absolute; right: 8px; bottom: 8px; width: 34px; height: 34px; border-radius: 50%; box-sizing: border-box; border: 2px solid #7ee08a; background: rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center">
+<svg viewBox="0 0 24 24" width="16" height="16" fill="#e9f2ec" aria-hidden="true" style="margin-left: 2px"><path d="M6 4l14 8-14 8z"/></svg>
+</a>
+</div>
+<div style="margin-top: 9px; font-size: 15px; color: #e9f2ec; line-height: 1.2; white-space: nowrap">{{c.title}}</div>
+<div style="font-size: 13px; color: #8fa398; line-height: 1.3; white-space: nowrap; font-weight: 300">{{c.sub}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-for>
+</div>
+
+</div>
+
+<div style="position: absolute; left: 0; right: 0; top: 826px; height: 106px; border-top: 1px solid #26332b; background: #060807">
+<div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 20px 0">
+<div style="width: 62px; display: flex; flex-direction: column; align-items: center; gap: 4px; color: #7ee08a">
+<svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor" aria-hidden="true"><path d="M12 3 2.5 11.5h2.8V20h5v-5.5h3.4V20h5v-8.5h2.8z"/></svg>
+<div style="font-size: 13px">Home</div>
+</div>
+<a href="Search.dc.html" style="width: 62px; display: flex; flex-direction: column; align-items: center; gap: 4px; color: #b9c6bf">
+<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+<div style="font-size: 13px">Search</div>
+</a>
+<button onClick="{{openVoice}}" aria-label="Talk to Brisic AI" style="width: 58px; height: 58px; box-sizing: border-box; border-radius: 50%; border: 2px solid #7ee08a; background: transparent; padding: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-top: -4px; box-shadow: 0 0 14px rgba(126,224,138,0.3)">
+<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#a8eeb3" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 11v2M8 7v10M12 3v18M16 8v8M20 10v4"/></svg>
+</button>
+<a href="Library.dc.html" style="width: 62px; display: flex; flex-direction: column; align-items: center; gap: 4px; color: #b9c6bf">
+<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="7" height="16" rx="1.5"/><path d="M14 4h6.5v16H14zM17 8v8"/></svg>
+<div style="font-size: 13px">Library</div>
+</a>
+<a href="Profile.dc.html" style="width: 62px; display: flex; flex-direction: column; align-items: center; gap: 4px; color: #b9c6bf">
+<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.5 3.5-7 8-7s8 2.5 8 7z"/></svg>
+<div style="font-size: 13px">Profile</div>
+</a>
+</div>
+</div>
+<sc-if value="{{vOpen}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; z-index: 30; background: rgba(2,6,3,0.62)">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; height: 530px; box-sizing: border-box; border-radius: 34px 34px 0 0; border-top: 1.5px solid #4fae63; background: linear-gradient(180deg, #0f2c18 0%, #050a07 72%); box-shadow: 0 -10px 40px rgba(110,230,60,0.25); padding: 20px 24px 0; font-family: 'Outfit', system-ui, sans-serif; color: #e9f2ec; display: flex; flex-direction: column">
+<div style="display: flex; align-items: center; justify-content: space-between">
+<div style="display: flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 600">
+<svg viewBox="0 0 24 24" width="20" height="20" fill="#8ee05a" aria-hidden="true"><path d="M10 4l1.8 5.2L17 11l-5.2 1.8L10 18l-1.8-5.2L3 11l5.2-1.8z"/><path d="M18.5 3l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2L15.5 6l2.2-.8z"/></svg>Brisic AI
+</div>
+<button onClick="{{closeVoice}}" aria-label="Close" style="width: 36px; height: 36px; border: 0; border-radius: 50%; background: rgba(255,255,255,0.08); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0">
+<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#e9f2ec" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+</button>
+</div>
+<div style="margin-top: 8px; font-size: 14.5px; color: #9fd8aa; text-align: center">{{vStatus}}</div>
+<sc-if value="{{vListening}}" hint-placeholder-val="{{ false }}">
+<div style="height: 112px; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 4px">
+<sc-for list="{{vBars}}" as="b" hint-placeholder-count="28"><div style="{{b.style}}"></div></sc-for>
+</div>
+</sc-if>
+<sc-if value="{{vThinking}}" hint-placeholder-val="{{ false }}">
+<div style="height: 112px; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 10px">
+<div style="width: 14px; height: 14px; border-radius: 50%; background: #8ee05a; animation: brisicWave 0.9s ease-in-out infinite"></div>
+<div style="width: 14px; height: 14px; border-radius: 50%; background: #8ee05a; animation: brisicWave 0.9s ease-in-out 0.15s infinite"></div>
+<div style="width: 14px; height: 14px; border-radius: 50%; background: #8ee05a; animation: brisicWave 0.9s ease-in-out 0.3s infinite"></div>
+</div>
+</sc-if>
+<div style="margin-top: 8px; min-height: 56px; padding: 0 6px; font-size: 21px; line-height: 1.3; color: #fff; text-align: center">{{vHeard}}</div>
+<sc-if value="{{vResult}}" hint-placeholder-val="{{ false }}">
+<div style="font-size: 14px; color: #cfe0d5; text-align: center; font-weight: 300">{{vReply}}</div>
+<div style="display: flex; flex-direction: column; gap: 8px; margin-top: 14px">
+<sc-for list="{{vResults}}" as="r" hint-placeholder-count="3">
+<div style="display: flex; align-items: center; gap: 12px; height: 56px; box-sizing: border-box; padding: 0 10px 0 6px; border-radius: 14px; border: 1px solid #2d4a37; background: rgba(18,30,24,0.92)">
+<div style="{{r.thumbStyle}}"></div>
+<div style="flex: 1; min-width: 0">
+<div style="font-size: 15px; color: #f4f8f5; white-space: nowrap; line-height: 1.25">{{r.title}}</div>
+<div style="font-size: 12.5px; color: #8fa398; font-weight: 300">{{r.artist}}</div>
+</div>
+<a href="{{r.play}}" aria-label="Play {{r.title}}" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 50%; border: 2px solid #7ee08a; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: inherit; text-decoration: none">
+<svg viewBox="0 0 24 24" width="14" height="14" fill="#e9f2ec" aria-hidden="true" style="margin-left: 2px"><path d="M6 4l14 8-14 8z"/></svg>
+</a>
+</div>
+</sc-for>
+</div>
+<button onClick="{{talkAgain}}" style="margin: 16px auto 0; height: 42px; padding: 0 24px; box-sizing: border-box; border-radius: 21px; border: 1.5px solid #7ee08a; background: transparent; color: #c6f5cc; font-family: inherit; font-size: 15px; cursor: pointer">Ask something else</button>
+</sc-if>
+</div>
+</div>
+</sc-if>
+
+<div style="position: absolute; left: 148px; bottom: 9px; width: 134px; height: 5px; border-radius: 3px; background: rgba(240,255,245,0.9); z-index: 6"></div>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":520,"height":1022}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = {};
+this.voiceInit();
+}
+voiceInit() {
+this.state = Object.assign({}, this.state, { vOpen: false, vPhase: 'idle', vHeard: '', vReply: '', vResults: [], vRound: 0 });
+this._t = [];
+}
+vClear() { (this._t || []).forEach(clearTimeout); this._t = []; }
+vLater(fn, ms) { this._t = this._t || []; this._t.push(setTimeout(fn, ms)); }
+vStart() {
+this.vClear();
+const rounds = [
+{ say: 'Play some Afrobeats for me', reply: 'Here are some Afrobeats picks', res: [['Last Last', 'Kelechi Ade', 'linear-gradient(150deg,#e08a3a,#5a2a10)'], ['Calm Down', 'Tobi Rae', 'linear-gradient(150deg,#2a8a8a,#0c2a30)'], ['Sungba', 'Dayo Mane', 'linear-gradient(170deg,#f07a2a,#8a2a0a)']] },
+{ say: 'What song is this?', reply: 'Found it! This sounds like Lost in the Noise', res: [['Lost in the Noise', 'Unknown Artist', 'linear-gradient(180deg,#2a4ab8 0%,#c8421a 70%,#3a1a10 100%)'], ['No Name', 'Unknown Artist', 'radial-gradient(circle at 50% 50%, #3f9a2a, #07120a)']] },
+{ say: 'Something chill for tonight', reply: 'Chill vibes coming up', res: [['Essence', 'Nuela', 'linear-gradient(150deg,#9a5ab8,#2a0f45)'], ['Joy', 'Sade Vox', 'linear-gradient(150deg,#2a5ac8,#0c1a5a)'], ['Better Days', 'Unknown Artist', 'linear-gradient(180deg,#5a6a9a 0%,#e08a5a 60%,#3a2a3a 100%)']] }
+];
+const r = rounds[this.state.vRound % rounds.length];
+this.setState({ vOpen: true, vPhase: 'listening', vHeard: '', vReply: '', vResults: [], vRound: this.state.vRound + 1 });
+const words = r.say.split(' ');
+words.forEach((w, i) => this.vLater(() => this.setState({ vHeard: words.slice(0, i + 1).join(' ') }), 900 + i * 450));
+const tEnd = 900 + words.length * 450 + 700;
+this.vLater(() => this.setState({ vPhase: 'thinking' }), tEnd);
+this.vLater(() => this.setState({ vPhase: 'result', vReply: r.reply, vResults: r.res }), tEnd + 1200);
+}
+vClose() { this.vClear(); this.setState({ vOpen: false, vPhase: 'idle', vHeard: '', vReply: '', vResults: [] }); }
+voiceVals() {
+const s = this.state;
+const bars = [];
+for (let i = 0; i < 28; i++) {
+const d = (0.55 + ((i * 37) % 10) / 14).toFixed(2);
+const dl = (((i * 53) % 10) / 12).toFixed(2);
+const h = 30 + ((i * 29) % 7) * 12;
+bars.push({ style: 'width:5px;border-radius:3px;background:#8ee05a;box-shadow:0 0 8px rgba(142,224,90,0.55);height:' + h + 'px;transform-origin:center;animation:brisicWave ' + d + 's ease-in-out ' + dl + 's infinite' });
+}
+const st = { listening: 'Listening…', thinking: 'Thinking…', result: 'Here you go' };
+return {
+vOpen: !!s.vOpen,
+vStatus: st[s.vPhase] || '',
+vListening: s.vPhase === 'listening',
+vThinking: s.vPhase === 'thinking',
+vResult: s.vPhase === 'result',
+vBars: bars,
+vHeard: s.vHeard ? '“' + s.vHeard + '”' : '',
+vReply: s.vReply,
+vResults: (s.vResults || []).map((x) => ({ play: 'Main.dc.html?play=1&t=' + encodeURIComponent(x[0]) + '&a=' + encodeURIComponent(x[1]), title: x[0], artist: x[1], thumbStyle: 'width:48px;height:48px;border-radius:8px;flex-shrink:0;background:' + x[2] })),
+openVoice: () => this.vStart(),
+closeVoice: () => this.vClose(),
+talkAgain: () => this.vStart()
+};
+}
+avVals() {
+let u = '', n = 'Ima Iwok', h = 'ima.official';
+try { u = localStorage.getItem('brisic-avatar') || ''; n = localStorage.getItem('brisic-pname') || n; h = localStorage.getItem('brisic-puser') || h; } catch (e) {}
+const st = (z, ex) => 'width: ' + z + 'px; height: ' + z + 'px; border-radius: 50%; overflow: hidden; background: ' + (u ? 'url("' + u + '") center/cover no-repeat' : 'linear-gradient(#c9803a,#5a2f14)') + (ex || '');
+return { noAv: !u, pname: n, puser: h, avS34: st(34, '; display: flex; align-items: flex-end; justify-content: center'), avS56: st(56), avS106: st(106) };
+}
+renderVals() {
+let shaped = false; try { shaped = localStorage.getItem('brisic-homestyle') === 'shaped'; } catch (e) {}
+const clsv = shaped ? 'sk' : '';
+const card = (o) => { const c = Object.assign({ cls: clsv, heart: false, person: false, palm: false, px: 80, pfill: '#0b0b0b' }, o); if (!c.play) c.play = (c.sub && !/^(Various Artists|Brisic|Playlist)$|songs$/i.test(c.sub)) ? 'Main.dc.html?play=1&t=' + encodeURIComponent(c.title) + '&a=' + encodeURIComponent(c.sub) : 'Playlist.dc.html'; return c; };
+const pos = (px, o) => Object.assign(o, { px: px, px2: px - 34, px3: px - 20, px4: px + 20, px5: px + 34 });
+const box = (h, bg) => 'width: 176px; height: ' + (h + 30) + 'px; border-radius: 16px; position: relative; overflow: hidden; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.1); background: ' + bg + (shaped ? '; border-radius: 30px; transform: skewX(-6deg); box-shadow: 0 6px 18px rgba(0,0,0,0.35)' : '');
+const boxL = (h, bg) => 'width: 252px; height: ' + (h + 140) + 'px; border-radius: 28px; position: relative; overflow: hidden; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.1); background: ' + bg + (shaped ? '; border-radius: 44px; transform: skewX(-6deg); box-shadow: 0 6px 18px rgba(0,0,0,0.35)' : '');
+const bebas = (size, color, pos2) => "position: absolute; font-family: 'Bebas Neue', 'Outfit', sans-serif; font-size: " + Math.round(size * 1.4) + 'px; line-height: 0.95; letter-spacing: 0.02em; white-space: pre-line; color: ' + color + '; ' + pos2;
+const soft = (size, color, pos2) => 'position: absolute; font-size: ' + Math.round(size * 1.4) + 'px; font-weight: 300; line-height: 1.2; white-space: pre-line; color: ' + color + '; ' + pos2;
+const g2 = (a, b) => 'linear-gradient(150deg,' + a + ',' + b + ')';
+const mk = (title, sub, a, b, label, lc) => ({ cls: clsv, title: title, sub: sub, boxStyle: box(132, g2(a, b)), label: label, labelStyle: bebas(30, lc || '#ffffff', 'left: 11px; top: 11px') });
+const sg = (t, a, c1, c2) => Object.assign(mk(t, a, c1, c2, t.toUpperCase().replace(' ', '\n')), { href: 'Playlist.dc.html' });
+const more = [
+{ title: 'Straight Anthem', href: 'SeeAll.dc.html?t=straight-anthem', cards: [sg('Last Last', 'Kelechi Ade', '#e08a3a', '#5a2a10'),sg('Calm Down', 'Tobi Rae', '#2a8a8a', '#0c2a30'),sg('Sungba', 'Dayo Mane', '#f07a2a', '#8a2a0a'),sg('Essence', 'Nuela', '#9a5ab8', '#2a0f45'),sg('Joy', 'Sade Vox', '#2a5ac8', '#0c1a5a'),sg('Tornado', 'Zuri Kaya', '#3ae0a0', '#0a3a2a')] },
+{ title: 'New Releases', href: 'Playlist.dc.html', cards: [mk('Midnight Prayer', 'Unknown Artist', '#1c6be0', '#0a2a7a', 'NEW\nDROP'), mk('Joy Ride', 'Dayo Mane', '#f07a2a', '#8a2a0a', 'JOY\nRIDE'), mk('Lagos Lights', 'Tobi Rae', '#2a8a8a', '#0c2a30', 'LAGOS\nLIGHTS'), mk('Fresh Start', 'Nuela', '#9a5ab8', '#2a0f45', 'FRESH\nSTART')] },
+{ title: 'Top Charts Nigeria', href: 'Playlist.dc.html', cards: [mk('Top 50 Nigeria', 'Updated daily', '#2f7a34', '#10381a', 'TOP\n50', '#f2c94c'), mk('Naija Top 10', 'This week', '#e8562a', '#7d1f0a', 'NAIJA\nTOP 10', '#f6e0a2'), mk('Afro Viral', 'Trending now', '#c0309a', '#4a0f55', 'AFRO\nVIRAL'), mk('Rising Stars', 'Emerging artists', '#d6841a', '#5a2a08', 'RISING\nSTARS')] },
+{ title: 'Hip-Hop & Rap', href: 'Playlist.dc.html', cards: [mk('Street Heat', 'Hip-hop hits', '#4a4d4b', '#0d0f0e', 'STREET\nHEAT', '#f2c94c'), mk('Cypher Nights', 'Freestyle vibes', '#2f7f6a', '#0f3a2c', 'CYPHER\nNIGHTS'), mk('Bars & Beats', 'Lyrical picks', '#7a2a8a', '#2a0f45', 'BARS &\nBEATS'), mk('Rap Naija', 'Home grown', '#e02a2a', '#6a0a0a', 'RAP\nNAIJA')] },
+{ title: 'Chill & R&B', href: 'Playlist.dc.html', cards: [mk('Slow Jams', 'Smooth R&B', '#9a5ab8', '#2a0f45', 'SLOW\nJAMS'), mk('Soft Life', 'Easy listening', '#d63a5a', '#5a1a3a', 'SOFT\nLIFE'), mk('Sunday Calm', 'Wind down', '#1e6f86', '#0f4a60', 'SUNDAY\nCALM', '#69d8c8'), mk('Late Vibes', 'After dark', '#142a5a', '#070d24', 'LATE\nVIBES')] },
+{ title: 'Gospel & Worship', href: 'Playlist.dc.html', cards: [mk('Morning Worship', 'Start the day', '#f2a62a', '#b36a0a', 'MORNING\nWORSHIP', '#2a1a05'), mk('Grace Notes', 'Gospel favourites', '#6a8ae0', '#1a2a6a', 'GRACE\nNOTES'), mk('Praise Break', 'Upbeat praise', '#e8562a', '#7d1f0a', 'PRAISE\nBREAK'), mk('Peace Within', 'Calm and prayer', '#2f8a3a', '#0c3a1a', 'PEACE\nWITHIN')] },
+{ title: 'Podcasts for You', href: 'Playlist.dc.html', cards: [mk('Behind the Music', 'Unknown Artist', '#7a2a8a', '#2a0f45', 'BEHIND\nTHE MUSIC'), mk('The Come Up', 'Emerging artist stories', '#d6841a', '#5a2a08', 'THE\nCOME UP'), mk('Afro Talks', 'Music and culture', '#1c6be0', '#0a2a7a', 'AFRO\nTALKS'), mk('Faith & Frequency', 'Faith in music', '#2f8a3a', '#0c3a1a', 'FAITH &\nFREQUENCY')] },
+{ title: 'Throwback Classics', href: 'Playlist.dc.html', cards: [mk('2000s Naija', 'Nostalgia hits', '#e08a3a', '#5a2a10', '2000s\nNAIJA'), mk('90s Gold', 'Golden era', '#c9a42a', '#5a4410', '90s\nGOLD', '#1b1204'), mk('Highlife Roots', 'Where it began', '#2f7a34', '#10381a', 'HIGHLIFE\nROOTS'), mk('Old School Jams', 'Classic party', '#c0309a', '#3a0f55', 'OLD\nSCHOOL')] },
+{ title: 'Join a Party', href: 'Party.dc.html', cards: [mk('Friday Night Vibes', 'Live now', '#2f8a3a', '#0c3a1a', 'FRIDAY\nNIGHT', '#f2c94c'), mk('Sunday Chill Room', 'Starts 6:00 PM', '#2a8a8a', '#0c2a30', 'CHILL\nROOM'), mk('Study Beats Room', 'Focus together', '#1c6be0', '#0a2a7a', 'STUDY\nBEATS'), mk('Throwback Party', 'Vote the songs', '#c0309a', '#4a0f55', 'THROW\nBACK')] }
+];
+
+const ex = {
+'New Releases': [mk('Golden Hour', 'Kelechi Ade', '#e08a3a', '#5a2a10', 'GOLDEN\nHOUR'), mk('No Sleep', 'Sade Vox', '#2a5ac8', '#0c1a5a', 'NO\nSLEEP')],
+'Top Charts Nigeria': [mk('Global Afro', 'Worldwide', '#1c6be0', '#0a2a7a', 'GLOBAL\nAFRO'), mk('Weekend Hits', 'Friday to Sunday', '#e8562a', '#7d1f0a', 'WEEKEND\nHITS')],
+'Hip-Hop & Rap': [mk('Trap Lagos', 'Heavy 808s', '#2a2a2a', '#050505', 'TRAP\nLAGOS', '#7ee08a'), mk('Old School Rap', 'Classics', '#c9a42a', '#5a4410', 'OLD\nSCHOOL', '#1b1204')],
+'Chill & R&B': [mk('Rainy Day', 'Cosy tunes', '#1e6f86', '#0a2a3a', 'RAINY\nDAY'), mk('Love Notes', 'Soft and sweet', '#d63a5a', '#5a1a3a', 'LOVE\nNOTES')],
+'Gospel & Worship': [mk('Sunday Service', 'Choir favourites', '#c9a42a', '#5a4410', 'SUNDAY\nSERVICE', '#1b1204'), mk('Night Prayer', 'Quiet worship', '#142a5a', '#070d24', 'NIGHT\nPRAYER')],
+'Podcasts for You': [mk('Studio Stories', 'Behind the scenes', '#2f7a34', '#10381a', 'STUDIO\nSTORIES'), mk('Laugh Lounge', 'Comedy', '#f2a62a', '#b36a0a', 'LAUGH\nLOUNGE', '#2a1a05')],
+'Throwback Classics': [mk('Fuji & Juju', 'Legends', '#7a2a8a', '#2a0f45', 'FUJI &\nJUJU'), mk('Disco Days', 'Retro party', '#d63a5a', '#5a1a3a', 'DISCO\nDAYS')],
+'Join a Party': [mk('Gym Motivation', 'Pump it up', '#e02a2a', '#6a0a0a', 'GYM\nBEATS'), mk('Road Trip Room', 'Sing along', '#d6841a', '#5a2a08', 'ROAD\nTRIP')]
+};
+
+const more2 = [
+{ title: 'Amapiano', href: 'Playlist.dc.html', cards: [mk('Piano People', 'Log drum vibes', '#c0309a', '#4a0f55', 'PIANO\nPEOPLE'), mk('Amapiano Hits', 'Top picks', '#2f7a34', '#10381a', 'AMAPIANO\nHITS'), mk('Private School', 'Smooth piano', '#1c6be0', '#0a2a7a', 'PRIVATE\nSCHOOL'), mk('Sunset Piano', 'Golden hour', '#e08a3a', '#5a2a10', 'SUNSET\nPIANO'), mk('Dance Floor', 'Non-stop', '#d63a5a', '#5a1a3a', 'DANCE\nFLOOR'), mk('Piano Chill', 'Easy flow', '#2a8a8a', '#0c2a30', 'PIANO\nCHILL')] },
+{ title: 'Reggae & Dancehall', href: 'Playlist.dc.html', cards: [mk('Island Vibes', 'Reggae roots', '#7ab82a', '#2a5a1a', 'ISLAND\nVIBES', '#1b1204'), mk('Dancehall Fire', 'Hot picks', '#e02a2a', '#6a0a0a', 'DANCE\nHALL'), mk('Roots & Culture', 'Classic reggae', '#c9a42a', '#5a4410', 'ROOTS &\nCULTURE', '#1b1204'), mk('Ragga Mix', 'High energy', '#2f7a34', '#10381a', 'RAGGA\nMIX'), mk('One Love', 'Feel good', '#e8562a', '#7d1f0a', 'ONE\nLOVE'), mk('Sunny Skank', 'Sunshine', '#f2a62a', '#b36a0a', 'SUNNY\nSKANK', '#2a1a05')] },
+{ title: 'Pop Hits', href: 'Playlist.dc.html', cards: [mk('Pop Rising', 'New pop', '#c0309a', '#4a0f55', 'POP\nRISING'), mk('Today Hits', 'Right now', '#1c6be0', '#0a2a7a', 'TODAY\nHITS'), mk('Pop Princess', 'Big voices', '#d63a5a', '#5a1a3a', 'POP\nPRINCESS'), mk('Sing Along', 'Everyone knows', '#f2a62a', '#b36a0a', 'SING\nALONG', '#2a1a05'), mk('Pop Remix', 'Fresh takes', '#2a8a8a', '#0c2a30', 'POP\nREMIX'), mk('Feel Good Pop', 'Good mood', '#7ab82a', '#2a5a1a', 'FEEL\nGOOD', '#1b1204')] },
+{ title: 'Workout & Energy', href: 'Playlist.dc.html', cards: [mk('Gym Beast', 'Heavy lifts', '#e02a2a', '#6a0a0a', 'GYM\nBEAST'), mk('Run Fast', 'Cardio tempo', '#e8562a', '#7d1f0a', 'RUN\nFAST'), mk('Pump Up', 'Get hyped', '#f2a62a', '#b36a0a', 'PUMP\nUP', '#2a1a05'), mk('Power Hour', 'Push harder', '#2a2a2a', '#050505', 'POWER\nHOUR', '#7ee08a'), mk('Morning Run', 'Fresh start', '#2f7a34', '#10381a', 'MORNING\nRUN'), mk('Cool Down', 'Stretch out', '#1e6f86', '#0a2a3a', 'COOL\nDOWN')] },
+{ title: 'Focus & Study', href: 'Playlist.dc.html', cards: [mk('Deep Focus', 'Stay in the zone', '#142a5a', '#070d24', 'DEEP\nFOCUS'), mk('Study Beats', 'Lo-fi and calm', '#2a8a8a', '#0c2a30', 'STUDY\nBEATS'), mk('Work Flow', 'Get it done', '#2f7a34', '#10381a', 'WORK\nFLOW'), mk('Quiet Mind', 'Soft piano', '#9a5ab8', '#2a0f45', 'QUIET\nMIND'), mk('Library Hum', 'Background sound', '#c9a42a', '#5a4410', 'LIBRARY\nHUM', '#1b1204'), mk('Exam Season', 'Concentrate', '#1c6be0', '#0a2a7a', 'EXAM\nSEASON')] },
+{ title: 'Love Songs', href: 'Playlist.dc.html', cards: [mk('Love Notes', 'Romantic picks', '#d63a5a', '#5a1a3a', 'LOVE\nNOTES'), mk('Date Night', 'Dinner for two', '#7a2a8a', '#2a0f45', 'DATE\nNIGHT'), mk('Wedding Day', 'Celebrate love', '#c9a42a', '#5a4410', 'WEDDING\nDAY', '#1b1204'), mk('Heart Eyes', 'Crush mode', '#e8562a', '#7d1f0a', 'HEART\nEYES'), mk('Slow Dance', 'Hold me close', '#142a5a', '#070d24', 'SLOW\nDANCE'), mk('Forever Yours', 'Always', '#c0309a', '#4a0f55', 'FOREVER\nYOURS')] },
+{ title: 'Artist Spotlight', href: 'Artist.dc.html', cards: [mk('Unknown Artist', 'Featured this week', '#3f9a2a', '#07120a', 'ARTIST\nSPOTLIGHT'), mk('Rising Voice', 'New and next', '#e08a3a', '#5a2a10', 'RISING\nVOICE'), mk('Meet Nuela', 'Artist story', '#9a5ab8', '#2a0f45', 'MEET\nTEMS'), mk('Meet Tobi Rae', 'Artist story', '#2a5ac8', '#0c1a5a', 'MEET\nREMA'), mk('Studio Live', 'Live sessions', '#2f7a34', '#10381a', 'STUDIO\nLIVE'), mk('Fan Picks', 'Chosen by fans', '#d63a5a', '#5a1a3a', 'FAN\nPICKS')] },
+{ title: 'Mood Boosters', href: 'Playlist.dc.html', cards: [mk('Happy Days', 'Smile more', '#f2a62a', '#b36a0a', 'HAPPY\nDAYS', '#2a1a05'), mk('Feel Strong', 'Confidence', '#e02a2a', '#6a0a0a', 'FEEL\nSTRONG'), mk('Good Morning', 'Wake up right', '#e08a3a', '#5a2a10', 'GOOD\nMORNING'), mk('Sunshine', 'Bright and warm', '#c9a42a', '#5a4410', 'SUN\nSHINE', '#1b1204'), mk('Dance Out', 'Move your body', '#c0309a', '#4a0f55', 'DANCE\nOUT'), mk('Chin Up', 'Better days', '#2f7a34', '#10381a', 'CHIN\nUP')] }
+];
+more2.forEach((s) => more.push(s));
+const slug = (x) => x.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const store = (k) => () => { try { localStorage.setItem('brisic-topic', k); } catch (e) {} };
+more.forEach((s) => { (ex[s.title] || []).forEach((c) => s.cards.push(c)); s.href = 'SeeAll.dc.html?t=' + slug(s.title); s.go = store(slug(s.title)); s.playHref = s.title === 'Podcasts for You' ? 'Watch.dc.html' : (s.title === 'Join a Party' ? 'Party.dc.html' : (s.title === 'Artist Spotlight' ? 'Artist.dc.html' : 'Playlist.dc.html')); s.boxHref = s.title === 'Join a Party' ? 'Party.dc.html' : (s.title === 'Artist Spotlight' ? 'Artist.dc.html' : (s.title === 'Podcasts for You' ? 'Show.dc.html' : 'Playlist.dc.html'));  s.cards.forEach((c) => { c.boxHref = c.href || s.boxHref; c.playHref = c.href || s.playHref; });});
+const pal = [['#1c6be0', '#0a2a7a'], ['#e8562a', '#7d1f0a'], ['#2f7a34', '#10381a'], ['#c0309a', '#4a0f55'], ['#f2a62a', '#b36a0a'], ['#2a8a8a', '#0c2a30'], ['#7a2a8a', '#d63a5a'], ['#e02a2a', '#6a0a0a'], ['#142a5a', '#070d24'], ['#8a6a2a', '#2a1a08']];
+more.forEach((s) => { const base = s.title.split(' ')[0]; let n = 1; while (s.cards.length < 12) { const c = pal[(s.cards.length + n) % pal.length]; s.cards.push(mk(base + ' Mix ' + n, 'Updated weekly', c[0], c[1], base.toUpperCase() + '\nMIX ' + n)); n++; } });
+let hist = []; try { hist = JSON.parse(localStorage.getItem('brisic-history') || '[]'); } catch (e) {}
+const histCards = hist.slice(0, 12).map((h, i) => { const c = pal[(h.t.length + i) % pal.length]; return card({ play: 'Main.dc.html?play=1&t=' + encodeURIComponent(h.t) + '&a=' + encodeURIComponent(h.s || 'Unknown Artist'), title: h.t, sub: h.s, boxStyle: box(140, g2(c[0], c[1])), label: h.t.toUpperCase().replace(' ', '\n'), labelStyle: bebas(30, '#ffffff', 'left: 11px; top: 11px') }); });
+const fillCards = (list, h, names) => { let i = 0; while (list.length < 12) { const c = pal[(list.length + 3) % pal.length]; const nm = names[i % names.length] + (i >= names.length ? ' ' + (Math.floor(i / names.length) + 1) : ''); list.push(card({ title: nm, sub: 'Brisic', boxStyle: box(h, g2(c[0], c[1])), label: nm.toUpperCase().replace(' ', '\n'), labelStyle: bebas(30, '#ffffff', 'left: 11px; top: 11px') })); i++; } return list; };
+const moreArtists = [['#c58a5a', '#6b3f27', '#8a5a3c', '#1a1210', '#1b1b1b', true], ['#52444c', '#1f1a20', '#6a4332', '#2a1a14', '#2a2630', false], ['#ddd5cb', '#8a8279', '#4d3024', '#0b0b0b', '#111111', true], ['#3e2c28', '#14100f', '#9a6446', '#0d0807', '#1d1815', false], ['#9a8a76', '#3b342c', '#7a5238', '#ececec', '#2b2620', true]];
+const artistList = [
+{ name: 'Artist A', bg: 'linear-gradient(#c58a5a,#6b3f27)', skin: '#8a5a3c', hair: '#1a1210', cloth: '#1b1b1b', shades: true },
+{ name: 'Artist B', bg: 'linear-gradient(#52444c,#1f1a20)', skin: '#6a4332', hair: '#2a1a14', cloth: '#2a2630', shades: false },
+{ name: 'Artist C', bg: 'linear-gradient(#ddd5cb,#8a8279)', skin: '#4d3024', hair: '#0b0b0b', cloth: '#111111', shades: true },
+{ name: 'Artist D', bg: 'linear-gradient(#3e2c28,#14100f)', skin: '#9a6446', hair: '#0d0807', cloth: '#1d1815', shades: false },
+{ name: 'Artist E', bg: 'linear-gradient(#9a8a76,#3b342c)', skin: '#7a5238', hair: '#ececec', cloth: '#2b2620', shades: true }
+];
+for (let i = 0; artistList.length < 12; i++) { const m = moreArtists[i % moreArtists.length]; artistList.push({ name: 'Artist ' + String.fromCharCode(70 + i), bg: 'linear-gradient(' + m[0] + ',' + m[1] + ')', skin: m[2], hair: m[3], cloth: m[4], shades: m[5] }); }
+artistList.forEach((a) => { a.wrap = 'width: 76px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 6px' + (shaped ? '; filter: drop-shadow(0 0 7px rgba(126,224,138,0.55))' : ''); a.avOuter = shaped ? 'width: 76px; height: 76px; box-sizing: border-box; padding: 3px; clip-path: url(#bpick); background: #9be8a6' : 'width: 70px; height: 70px; box-sizing: border-box; border-radius: 50%; border: 2px solid #7ee08a; padding: 3px; box-shadow: 0 0 10px rgba(126,224,138,0.3)'; a.avInner = shaped ? 'width: 70px; height: 70px; clip-path: url(#bpick); overflow: hidden; display: flex; align-items: flex-end; justify-content: center; background: ' + a.bg : 'width: 60px; height: 60px; border-radius: 50%; overflow: hidden; background: ' + a.bg; });
+const screenBg = shaped ? 'radial-gradient(70% 22% at 25% 52%, rgba(190,80,45,0.34), transparent 70%), radial-gradient(60% 20% at 80% 30%, rgba(170,60,40,0.26), transparent 70%), linear-gradient(180deg, #17332f 0%, #0f2623 55%, #0b1b19 100%)' : '#060807';
+return Object.assign(this.voiceVals(), this.avVals(), {
+screenBg: screenBg,
+more: more,
+goRecent: store('recently-played'),
+goAfro: store('afro-pop'),
+goMade: store('playlist-made-for-you'),
+artists: artistList,
+recent: fillCards(histCards.concat([
+card({ title: 'Love & Hustle', sub: 'Various Artists', heart: true, boxStyle: box(140,'linear-gradient(145deg,#2f7a34,#10381a)'), label: 'LOVE &\nHUSTLE', labelStyle: bebas(17, '#f2c94c', 'left: 9px; bottom: 9px') }),
+card(pos(66, { title: 'Moments', sub: 'Ayo Blaze', person: true, pfill: '#0d0d0d', boxStyle: box(140,'linear-gradient(160deg,#4a4d4b,#1b1d1c)'), label: 'MOMENTS', labelStyle: bebas(26, '#e8e8e8', 'left: 0; right: 0; top: 6px; text-align: center') })),
+card(pos(78, { title: 'Fire', sub: 'Dayo Mane', person: true, pfill: '#2a0c05', boxStyle: box(140,'linear-gradient(160deg,#e8562a,#7d1f0a)'), label: 'FIRE', labelStyle: bebas(30, '#f6a23a', 'left: 14px; bottom: 8px') }))
+]), 140, ['Daily Mix','Throwback','Naija Love','Study Beats','Weekend','Road Trip','Gospel Hour','Soul Night','Top Hits']),
+afro: fillCards([
+card(pos(92, { person: true, pfill: '#0b1c10', boxStyle: box(132,'linear-gradient(150deg,#2c7a3a,#0e3318)'), label: 'AFRO\nHITS', labelStyle: bebas(32, '#eef2dc', 'left: 11px; top: 11px') })),
+card(pos(94, { person: true, pfill: '#1b1204', boxStyle: box(132,'linear-gradient(150deg,#f2a62a,#b36a0a)'), label: 'AFRO\nPOP\n2024', labelStyle: bebas(26, '#1b1204', 'left: 11px; top: 9px') })),
+card({ palm: true, boxStyle: box(132,'linear-gradient(180deg,#1e6f86 0%,#0f4a60 55%,#d9742a 100%)'), label: 'CHILL\nAFRO', labelStyle: bebas(32, '#69d8c8', 'left: 11px; top: 11px') })
+], 132, ['Afro Gold','Lagos Nights','Accra Vibes','Naija Wave','Afro Fusion','Island Beat','Sunset Afro','Street Afro','Afro Love']),
+playlists: [
+pos(92, { title: 'Late Nights', pfill: '#0a1020', boxStyle: boxL(140,'linear-gradient(170deg,#142a5a,#070d24)'), label: 'Late\nNights', labelStyle: soft(20, '#f1f5ff', 'left: 11px; top: 10px') }),
+pos(88, { title: 'Good Vibes', pfill: '#2a0c2a', boxStyle: boxL(140,'linear-gradient(150deg,#7a2a8a,#d63a5a)'), label: 'Good\nVibes', labelStyle: soft(20, '#fff4f4', 'left: 11px; top: 10px') }),
+pos(90, { title: 'Morning Rise', pfill: '#2a1204', boxStyle: boxL(140,'linear-gradient(160deg,#e8a23a,#7d3a0a)'), label: 'Morning\nRise', labelStyle: soft(20, '#fff6e6', 'left: 11px; top: 10px') }),
+pos(86, { title: 'Gym Fire', pfill: '#1a0505', boxStyle: boxL(140,'linear-gradient(150deg,#c0302a,#3a0a0a)'), label: 'Gym\nFire', labelStyle: soft(20, '#fff0ee', 'left: 11px; top: 10px') }),
+pos(92, { title: 'Slow Dance', pfill: '#1f0a22', boxStyle: boxL(140,'linear-gradient(160deg,#c0309a,#3a0f45)'), label: 'Slow\nDance', labelStyle: soft(20, '#fff0fb', 'left: 11px; top: 10px') }),
+pos(88, { title: 'Road Trip', pfill: '#071a22', boxStyle: boxL(140,'linear-gradient(150deg,#1e6f86,#0a2a3a)'), label: 'Road\nTrip', labelStyle: soft(20, '#e8fbff', 'left: 11px; top: 10px') }),
+pos(90, { title: 'Focus Mode', pfill: '#07140a', boxStyle: boxL(140,'linear-gradient(160deg,#2f7a34,#0a2a10)'), label: 'Focus\nMode', labelStyle: soft(20, '#effff0', 'left: 11px; top: 10px') }),
+pos(86, { title: 'Weekend Party', pfill: '#240a1a', boxStyle: boxL(140,'linear-gradient(150deg,#e0782a,#6a1a5a)'), label: 'Weekend\nParty', labelStyle: soft(20, '#fff3ea', 'left: 11px; top: 10px') }),
+pos(92, { title: 'Sunday Soul', pfill: '#1a1204', boxStyle: boxL(140,'linear-gradient(160deg,#8a6a2a,#2a1a08)'), label: 'Sunday\nSoul', labelStyle: soft(20, '#fff8e6', 'left: 11px; top: 10px') }),
+pos(90, { title: 'Rainy Day', pfill: '#0a0f1a', boxStyle: boxL(140,'linear-gradient(170deg,#4a5a7a,#141a2a)'), label: 'Rainy\nDay', labelStyle: soft(20, '#f0f4ff', 'left: 11px; top: 10px') })
+].map((x) => Object.assign({ cls: clsv }, x))
+});
+}
+}
+</script>
+</body>
+</html>

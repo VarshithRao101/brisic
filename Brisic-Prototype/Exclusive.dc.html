@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>
+var __c = 'Exclusive.dc.html';
+(function () { try { var st = JSON.parse(localStorage.getItem('brisic-stack') || '[]'); var back = localStorage.getItem('brisic-back') === '1'; localStorage.setItem('brisic-back', '0'); if (st[st.length - 1] !== __c) { if (back && st.length >= 2 && st[st.length - 2] === __c) { st.pop(); } else { st.push(__c); } } if (st.length > 40) st = st.slice(-40); localStorage.setItem('brisic-stack', JSON.stringify(st)); } catch (e) {} })();
+window.brisicPrev = function (fb) { try { var st = JSON.parse(localStorage.getItem('brisic-stack') || '[]'); if (st.length >= 2 && st[st.length - 1] === __c) { var p = st[st.length - 2]; if (p && p !== __c && p !== 'Splash.dc.html') return p; } } catch (e) {} return fb; };
+(function () {
+function fix() { try { var l = document.querySelectorAll('a[aria-label="Back"]'); for (var i = 0; i < l.length; i++) { var a = l[i]; if (!a.getAttribute('data-o')) a.setAttribute('data-o', a.getAttribute('href') || 'Home.dc.html'); var t = window.brisicPrev(a.getAttribute('data-o')); if (a.getAttribute('href') !== t) a.setAttribute('href', t); } } catch (e) {} }
+document.addEventListener('DOMContentLoaded', fix); window.addEventListener('load', fix);
+try { new MutationObserver(function () { fix(); }).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
+document.addEventListener('click', function (e) { try { var a = e.target.closest && e.target.closest('a[href*="Main.dc.html?"]'); if (!a) return; var q = new URLSearchParams((a.getAttribute('href').split('?')[1] || '')); if (q.get('t')) localStorage.setItem('brisic-now', JSON.stringify({ t: q.get('t').slice(0, 80), a: (q.get('a') || 'Unknown Artist').slice(0, 60) })); } catch (x) {} }, true);
+document.addEventListener('click', function (e) { try { if (e.target.closest && e.target.closest('[aria-label="Back"]')) localStorage.setItem('brisic-back', '1'); } catch (x) {} }, true);
+})();
+</script>
+
+<title>Exclusive Content</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{text-decoration:none;color:inherit}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #bbf7d0;outline-offset:3px}
+input::placeholder{color:#8fa398;opacity:1}
+</style>
+</helmet>
+<div style="width: 520px; height: 1022px; position: relative; overflow: hidden; background: radial-gradient(90% 60% at 50% 40%, #12201a 0%, #060a08 100%)">
+
+<div style="position: absolute; left: 30px; top: 214px; width: 5px; height: 30px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; left: 30px; top: 280px; width: 5px; height: 56px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; left: 30px; top: 352px; width: 5px; height: 56px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; right: 30px; top: 310px; width: 5px; height: 96px; border-radius: 0 3px 3px 0; background: linear-gradient(270deg, #1b201e, #3a4540)"></div>
+
+<div style="position: absolute; left: 33px; top: 33px; width: 454px; height: 956px; box-sizing: border-box; border-radius: 74px; padding: 12px; background: linear-gradient(145deg, #4b5651 0%, #1a201d 30%, #0b0e0d 60%, #3b4640 100%); box-shadow: 0 0 0 2px #2a322e, 0 30px 70px rgba(0,0,0,0.7), 0 0 60px rgba(74,222,128,0.12)">
+
+<div style="width: 430px; height: 932px; box-sizing: border-box; border-radius: 62px; position: relative; overflow: hidden; background: radial-gradient(100% 50% at 50% 0%, #0f2c18 0%, #050a07 60%, #030504 100%); font-family: 'Outfit', system-ui, sans-serif; color: #e9f2ec; box-shadow: inset 0 0 0 4px #000">
+
+<div style="position: absolute; left: 0; top: 0; width: 430px; height: 54px; z-index: 6">
+<div style="position: absolute; left: 56px; top: 17px; font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif; font-size: 16px; font-weight: 600; color: #fff">10:00 AM</div>
+<div style="position: absolute; right: 38px; top: 19px; display: flex; align-items: center; gap: 6px">
+<svg viewBox="0 0 19 12" width="19" height="12" fill="#fff" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="0.8"/><rect x="5" y="5.5" width="3" height="6.5" rx="0.8"/><rect x="10" y="3" width="3" height="9" rx="0.8"/><rect x="15" y="0" width="3" height="12" rx="0.8"/></svg>
+<svg viewBox="0 0 17 12" width="17" height="12" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M1 4.3a11 11 0 0 1 15 0M3.6 7a7.3 7.3 0 0 1 9.8 0"/><circle cx="8.5" cy="10" r="1.3" fill="#fff" stroke="none"/></svg>
+<svg viewBox="0 0 27 13" width="27" height="13" fill="none" aria-hidden="true"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#fff" stroke-opacity="0.45"/><rect x="2" y="2" width="19" height="9" rx="2.2" fill="#fff"/><path d="M24.5 4.5v4c.9-.3 1.5-1.2 1.5-2s-.6-1.7-1.5-2z" fill="#fff" fill-opacity="0.5"/></svg>
+</div>
+</div>
+<div style="position: absolute; left: 152px; top: 11px; width: 126px; height: 37px; border-radius: 20px; background: #000; z-index: 7">
+<div style="position: absolute; right: 13px; top: 10px; width: 17px; height: 17px; border-radius: 50%; background: radial-gradient(circle at 40% 38%, #243257 0%, #0a0f1d 45%, #020306 100%)"></div>
+</div>
+
+<a href="FanSupport.dc.html" aria-label="Back" style="position: absolute; z-index: 12; left: 22px; top: 74px; width: 40px; height: 40px; box-sizing: border-box; border-radius: 50%; border: 1.5px solid #7ee08a; display: flex; align-items: center; justify-content: center">
+<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#c6f5cc" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+</a>
+<div style="position: absolute; left: 0; right: 0; top: 74px; text-align: center">
+<h1 style="margin: 0; font-size: 29px; font-weight: 700; color: #fff; line-height: 1.15">Exclusive Content</h1>
+<div style="margin-top: 8px; font-size: 15px; color: #b6cfc2; font-weight: 300">Unlock what Unknown Artist has locked just for fans</div>
+</div>
+<div style="position: absolute; left: 20px; right: 20px; top: 138px; height: 44px; box-sizing: border-box; border-radius: 22px; border: 1px solid #4fae63; background: linear-gradient(135deg, #12351d, #08150d); display: flex; align-items: center; padding: 0 6px 0 14px; gap: 10px">
+<img src="assets/coin.png" alt="B-Coin" style="width: 30px; height: 30px; object-fit: contain; flex-shrink: 0">
+<div style="flex: 1; font-size: 15px; color: #cfe0d5; font-weight: 300">Your balance <b style="color: #fff; font-weight: 600">{{balance}}</b></div>
+<a href="Gifts.dc.html" style="height: 32px; padding: 0 14px; border-radius: 16px; background: #7ee08a; color: #06200e; display: flex; align-items: center; font-size: 13.5px; font-weight: 600">Get Coins</a>
+</div>
+<div style="position: absolute; left: 0; right: 0; top: 198px; height: 700px; overflow-y: auto; scrollbar-width: none">
+<div style="padding: 0 20px 40px">
+<sc-for list="{{items}}" as="it" hint-placeholder-count="5">
+<div style="{{it.cardStyle}}">
+<div style="height: 108px; position: relative; background: {{it.bg}}; display: flex; align-items: center; justify-content: center">
+<svg viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{it.icon}}"/></svg>
+<div style="position: absolute; left: 12px; top: 12px; height: 24px; padding: 0 10px; border-radius: 12px; background: rgba(0,0,0,0.5); display: flex; align-items: center; font-size: 12px; letter-spacing: 0.06em; color: #e9f2ec">{{it.kind}}</div>
+<sc-if value="{{it.locked}}" hint-placeholder-val="{{ true }}">
+<div style="position: absolute; right: 12px; top: 10px; width: 34px; height: 34px; border-radius: 50%; background: rgba(0,0,0,0.55); display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
+</sc-if>
+</div>
+<div style="padding: 12px 14px 14px">
+<div style="font-size: 18px; font-weight: 600; color: #fff; line-height: 1.25">{{it.title}}</div>
+<div style="margin-top: 4px; font-size: 13.5px; line-height: 1.45; color: #9fbcab; font-weight: 300">{{it.desc}}</div>
+<div style="display: flex; align-items: center; justify-content: space-between; margin-top: 12px">
+<div style="font-size: 13px; color: #8fb09b">{{it.meta}}</div>
+<sc-if value="{{it.locked}}" hint-placeholder-val="{{ true }}"><button onClick="{{it.ask}}" style="height: 38px; padding: 0 18px; border: 0; border-radius: 19px; background: #7ee08a; color: #06200e; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Unlock &middot; {{it.price}} B</button></sc-if>
+<sc-if value="{{it.open}}" hint-placeholder-val="{{ false }}"><a href="{{it.href}}" style="height: 38px; padding: 0 20px; box-sizing: border-box; border-radius: 19px; border: 1.5px solid #7ee08a; display: flex; align-items: center; color: #c6f5cc; font-size: 15px; font-weight: 600">{{it.openLabel}}</a></sc-if>
+</div>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+<sc-if value="{{confirming}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; z-index: 20; background: rgba(2,6,3,0.7); display: flex; align-items: flex-end">
+<div style="width: 100%; box-sizing: border-box; padding: 26px 24px 44px; border-radius: 30px 30px 0 0; border-top: 1.5px solid #4fae63; background: linear-gradient(180deg, #0f2c18, #050a07 80%); text-align: center">
+<div style="width: 56px; height: 56px; margin: 0 auto 12px; border-radius: 50%; background: rgba(126,224,138,0.16); display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#7ee08a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.5-2"/></svg></div>
+<div style="font-size: 20px; font-weight: 600; color: #fff">Unlock &ldquo;{{cTitle}}&rdquo;?</div>
+<div style="margin-top: 8px; font-size: 15px; color: #b6cfc2; font-weight: 300">{{cLine}}</div>
+<sc-if value="{{canAfford}}" hint-placeholder-val="{{ true }}">
+<button onClick="{{confirmUnlock}}" style="margin-top: 20px; width: 100%; height: 50px; border: 0; border-radius: 25px; background: #7ee08a; color: #06200e; font-family: inherit; font-size: 17px; font-weight: 600; cursor: pointer">Pay {{cPrice}} B-Coins</button>
+</sc-if>
+<sc-if value="{{cantAfford}}" hint-placeholder-val="{{ false }}">
+<a href="Gifts.dc.html" style="margin-top: 20px; width: 100%; height: 50px; box-sizing: border-box; border-radius: 25px; background: #7ee08a; color: #06200e; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 600">Not enough B-Coins &middot; Get Coins</a>
+</sc-if>
+<button onClick="{{cancel}}" style="margin-top: 10px; width: 100%; height: 44px; border: 0; background: transparent; color: #9fbcab; font-family: inherit; font-size: 16px; cursor: pointer">Cancel</button>
+</div>
+</div>
+</sc-if>
+
+<div style="position: absolute; left: 148px; bottom: 9px; width: 134px; height: 5px; border-radius: 3px; background: rgba(240,255,245,0.9); z-index: 6"></div>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":520,"height":1022}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+let b0 = 0; try { const c = localStorage.getItem('brisic-coins'); if (c !== null) b0 = Number(c) || 0; } catch (e) {}
+this.state = { balance: b0, unlocked: {}, pending: null };
+}
+renderVals() {
+const s = this.state;
+const all = [
+{ id: 'song', kind: 'UPCOMING SONG', title: 'Midnight Prayer', desc: 'An unreleased track. Hear it two weeks before everyone else.', meta: 'Drops Nov 14', price: 120, bg: 'linear-gradient(135deg,#1c6be0,#0a2a7a)', icon: 'M24 46V16l26-6v30M24 46a7 7 0 1 1-7-7 7 7 0 0 1 7 7zM50 40a7 7 0 1 1-7-7 7 7 0 0 1 7 7z', href: 'Main.dc.html?play=1&t=Midnight%20Prayer&a=Unknown%20Artist', openLabel: 'Play now' },
+{ id: 'ep', kind: 'EXCLUSIVE EPISODE', title: 'Behind the Music, Ep. 4', desc: 'A private conversation about the early days, the studio nights and the people who believed first.', meta: '45 min episode', price: 80, bg: 'linear-gradient(135deg,#7a2a8a,#2a0f45)', icon: 'M32 8a9 9 0 0 0-9 9v13a9 9 0 0 0 18 0V17a9 9 0 0 0-9-9zM14 30a18 18 0 0 0 36 0M32 48v8M24 56h16', href: 'Main.dc.html', openLabel: 'Listen' },
+{ id: 'story', kind: 'THE STORY', title: 'How God Carried Me', desc: 'The artist shares the true story of the hard season where faith was the thread, and how it shaped this music.', meta: 'Audio and written story', price: 60, bg: 'linear-gradient(135deg,#d6841a,#5a2a08)', icon: 'M32 6v14M25 13h14M32 20c-12 4-18 14-18 28h36c0-14-6-24-18-28zM32 34v14', href: 'Main.dc.html', openLabel: 'Read & listen' },
+{ id: 'vault', kind: 'VIDEO VAULT', title: 'Studio Session Vault', desc: 'Raw studio footage, voice notes and unfinished ideas from the making of the album.', meta: '12 videos', price: 200, bg: 'linear-gradient(135deg,#2f7a34,#10381a)', icon: 'M8 16h36v32H8zM44 28l12-8v24l-12-8z', href: 'Main.dc.html', openLabel: 'Watch' },
+{ id: 'album', kind: 'ALBUM PRESALE', title: 'Gratitude (Full Album)', desc: 'Get the whole upcoming album the moment it is ready, with exclusive bonus tracks.', meta: '14 tracks, coming soon', price: 400, bg: 'linear-gradient(135deg,#c0309a,#4a0f55)', icon: 'M32 6a26 26 0 1 0 0 52 26 26 0 0 0 0-52zM32 24a8 8 0 1 0 0 16 8 8 0 0 0 0-16z', href: 'Main.dc.html', openLabel: 'Play now' }
+];
+const p = all.find((x) => x.id === s.pending);
+return {
+balance: s.balance.toLocaleString('en-US'),
+items: all.map((x) => {
+const on = !!s.unlocked[x.id];
+return Object.assign({}, x, {
+price: x.price, locked: !on, open: on,
+cardStyle: 'margin-bottom: 16px; border-radius: 18px; overflow: hidden; border: 1px solid ' + (on ? '#4fae63' : '#2d4a37') + '; background: rgba(14,24,18,0.92)',
+ask: () => this.setState({ pending: x.id })
+});
+}),
+confirming: !!p,
+cTitle: p ? p.title : '',
+cPrice: p ? p.price : 0,
+cLine: p ? (s.balance >= p.price ? 'You will have ' + (s.balance - p.price).toLocaleString('en-US') + ' B-Coins left.' : 'You need ' + (p.price - s.balance) + ' more B-Coins.') : '',
+canAfford: !!p && s.balance >= p.price,
+cantAfford: !!p && s.balance < p.price,
+confirmUnlock: () => { if (p && s.balance >= p.price) { const u = Object.assign({}, s.unlocked); u[p.id] = true; try { localStorage.setItem('brisic-coins', String(s.balance - p.price)); } catch (e) {} this.setState({ unlocked: u, balance: s.balance - p.price, pending: null }); } },
+cancel: () => this.setState({ pending: null })
+};
+}
+}
+</script>
+</body>
+</html>

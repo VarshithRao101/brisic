@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>
+var __c = 'CreateAccount.dc.html';
+(function () { try { var st = JSON.parse(localStorage.getItem('brisic-stack') || '[]'); var back = localStorage.getItem('brisic-back') === '1'; localStorage.setItem('brisic-back', '0'); if (st[st.length - 1] !== __c) { if (back && st.length >= 2 && st[st.length - 2] === __c) { st.pop(); } else { st.push(__c); } } if (st.length > 40) st = st.slice(-40); localStorage.setItem('brisic-stack', JSON.stringify(st)); } catch (e) {} })();
+window.brisicPrev = function (fb) { try { var st = JSON.parse(localStorage.getItem('brisic-stack') || '[]'); if (st.length >= 2 && st[st.length - 1] === __c) { var p = st[st.length - 2]; if (p && p !== __c && p !== 'Splash.dc.html') return p; } } catch (e) {} return fb; };
+(function () {
+function fix() { try { var l = document.querySelectorAll('a[aria-label="Back"]'); for (var i = 0; i < l.length; i++) { var a = l[i]; if (!a.getAttribute('data-o')) a.setAttribute('data-o', a.getAttribute('href') || 'Home.dc.html'); var t = window.brisicPrev(a.getAttribute('data-o')); if (a.getAttribute('href') !== t) a.setAttribute('href', t); } } catch (e) {} }
+document.addEventListener('DOMContentLoaded', fix); window.addEventListener('load', fix);
+try { new MutationObserver(function () { fix(); }).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
+document.addEventListener('click', function (e) { try { var a = e.target.closest && e.target.closest('a[href*="Main.dc.html?"]'); if (!a) return; var q = new URLSearchParams((a.getAttribute('href').split('?')[1] || '')); if (q.get('t')) localStorage.setItem('brisic-now', JSON.stringify({ t: q.get('t').slice(0, 80), a: (q.get('a') || 'Unknown Artist').slice(0, 60) })); } catch (x) {} }, true);
+document.addEventListener('click', function (e) { try { if (e.target.closest && e.target.closest('[aria-label="Back"]')) localStorage.setItem('brisic-back', '1'); } catch (x) {} }, true);
+})();
+</script>
+
+<title>Create Account</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{text-decoration:none;color:inherit}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #bbf7d0;outline-offset:3px}
+input::placeholder{color:#8fa398;opacity:1}
+</style>
+</helmet>
+<div style="width: 520px; height: 1022px; position: relative; overflow: hidden; background: radial-gradient(90% 60% at 50% 40%, #12201a 0%, #060a08 100%)">
+
+<div style="position: absolute; left: 30px; top: 214px; width: 5px; height: 30px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; left: 30px; top: 280px; width: 5px; height: 56px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; left: 30px; top: 352px; width: 5px; height: 56px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; right: 30px; top: 310px; width: 5px; height: 96px; border-radius: 0 3px 3px 0; background: linear-gradient(270deg, #1b201e, #3a4540)"></div>
+
+<div style="position: absolute; left: 33px; top: 33px; width: 454px; height: 956px; box-sizing: border-box; border-radius: 74px; padding: 12px; background: linear-gradient(145deg, #4b5651 0%, #1a201d 30%, #0b0e0d 60%, #3b4640 100%); box-shadow: 0 0 0 2px #2a322e, 0 30px 70px rgba(0,0,0,0.7), 0 0 60px rgba(74,222,128,0.12)">
+
+<div style="width: 430px; height: 932px; box-sizing: border-box; border-radius: 62px; position: relative; overflow: hidden; background: radial-gradient(100% 50% at 50% 0%, #0f2c18 0%, #050a07 60%, #030504 100%); font-family: 'Outfit', system-ui, sans-serif; color: #e9f2ec; box-shadow: inset 0 0 0 4px #000">
+
+<div style="position: absolute; left: 0; top: 0; width: 430px; height: 54px; z-index: 6">
+<div style="position: absolute; left: 56px; top: 17px; font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif; font-size: 16px; font-weight: 600; color: #fff">10:00 AM</div>
+<div style="position: absolute; right: 38px; top: 19px; display: flex; align-items: center; gap: 6px">
+<svg viewBox="0 0 19 12" width="19" height="12" fill="#fff" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="0.8"/><rect x="5" y="5.5" width="3" height="6.5" rx="0.8"/><rect x="10" y="3" width="3" height="9" rx="0.8"/><rect x="15" y="0" width="3" height="12" rx="0.8"/></svg>
+<svg viewBox="0 0 17 12" width="17" height="12" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M1 4.3a11 11 0 0 1 15 0M3.6 7a7.3 7.3 0 0 1 9.8 0"/><circle cx="8.5" cy="10" r="1.3" fill="#fff" stroke="none"/></svg>
+<svg viewBox="0 0 27 13" width="27" height="13" fill="none" aria-hidden="true"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#fff" stroke-opacity="0.45"/><rect x="2" y="2" width="19" height="9" rx="2.2" fill="#fff"/><path d="M24.5 4.5v4c.9-.3 1.5-1.2 1.5-2s-.6-1.7-1.5-2z" fill="#fff" fill-opacity="0.5"/></svg>
+</div>
+</div>
+<div style="position: absolute; left: 152px; top: 11px; width: 126px; height: 37px; border-radius: 20px; background: #000; z-index: 7">
+<div style="position: absolute; right: 13px; top: 10px; width: 17px; height: 17px; border-radius: 50%; background: radial-gradient(circle at 40% 38%, #243257 0%, #0a0f1d 45%, #020306 100%)"></div>
+</div>
+
+<sc-if value="{{step1}}" hint-placeholder-val="{{ true }}"><a href="Login.dc.html" aria-label="Back" style="position: absolute; z-index: 12; left: 22px; top: 74px; width: 40px; height: 40px; box-sizing: border-box; border-radius: 50%; border: 1.5px solid #7ee08a; display: flex; align-items: center; justify-content: center">
+<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#c6f5cc" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+</a></sc-if>
+<sc-if value="{{step2}}" hint-placeholder-val="{{ false }}"><button onClick="{{goBack}}" aria-label="Back" style="padding: 0; background: transparent; cursor: pointer; z-index: 12; position: absolute; z-index: 12; left: 22px; top: 74px; width: 40px; height: 40px; box-sizing: border-box; border-radius: 50%; border: 1.5px solid #7ee08a; display: flex; align-items: center; justify-content: center">
+<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#c6f5cc" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+</button></sc-if>
+<div style="position: absolute; left: 0; right: 0; top: 80px; text-align: center; font-size: 13.5px; letter-spacing: 0.08em; color: #7ee08a">STEP {{stepNo}} OF 2</div>
+<div style="position: absolute; left: 0; right: 0; top: 108px; display: flex; justify-content: center; gap: 8px"><div style="{{dot1}}"></div><div style="{{dot2}}"></div></div>
+
+<sc-if value="{{step1}}" hint-placeholder-val="{{ true }}">
+<div style="position: absolute; left: 26px; right: 26px; top: 160px">
+<h1 style="margin: 0; font-size: 31px; font-weight: 700; color: #fff; line-height: 1.2">What is your email?</h1>
+<div style="margin-top: 10px; font-size: 15.5px; line-height: 1.5; color: #b6cfc2; font-weight: 300">Use your Gmail, Apple (iCloud) or any email you check often. We will send a code to confirm it is you.</div>
+<input type="email" value="{{email}}" onInput="{{typeEmail}}" placeholder="you@gmail.com" aria-label="Email" style="margin-top: 26px; width: 100%; box-sizing: border-box; height: 52px; padding: 0 18px; border-radius: 26px; border: 1.5px solid #2d4a37; background: rgba(14,24,18,0.9); color: #f1f7f3; font-family: inherit; font-size: 16.5px; outline: 0">
+<div style="margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{domains}}" as="d" hint-placeholder-count="3"><button onClick="{{d.pick}}" style="height: 34px; padding: 0 14px; border-radius: 17px; border: 1.5px solid #2d4a37; background: transparent; color: #cfe0d5; font-family: inherit; font-size: 14px; cursor: pointer">{{d.label}}</button></sc-for>
+</div>
+<sc-if value="{{emailBad}}" hint-placeholder-val="{{ false }}"><div style="margin-top: 12px; font-size: 13.5px; color: #ff8a8a">Enter a valid email like name@gmail.com</div></sc-if>
+<button onClick="{{next}}" style="{{nextStyle}}">Continue</button>
+<div style="margin-top: 18px; text-align: center; font-size: 14px; color: #8fb09b; font-weight: 300">Already have an account? <a href="Login.dc.html?m=login" style="color: #7ee08a; font-weight: 600">Log in</a></div>
+</div>
+</sc-if>
+
+<sc-if value="{{step2}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; left: 26px; right: 26px; top: 160px">
+<h1 style="margin: 0; font-size: 31px; font-weight: 700; color: #fff; line-height: 1.2">Create a password</h1>
+<div style="margin-top: 10px; font-size: 15.5px; color: #b6cfc2; font-weight: 300; word-break: break-all">For {{email}}</div>
+<div style="position: relative; margin-top: 22px">
+<input type="{{pwType}}" value="{{pw}}" onInput="{{typePw}}" placeholder="Password" aria-label="Password" style="width: 100%; box-sizing: border-box; height: 52px; padding: 0 18px; border-radius: 26px; border: 1.5px solid #2d4a37; background: rgba(14,24,18,0.9); color: #f1f7f3; font-family: inherit; font-size: 16.5px; outline: 0; padding-right: 64px">
+<button onClick="{{toggleShow}}" style="position: absolute; right: 8px; top: 8px; height: 36px; padding: 0 12px; border: 0; background: transparent; color: #7ee08a; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">{{showLabel}}</button>
+</div>
+<div style="margin-top: 12px; display: flex; gap: 6px"><div style="{{bar1}}"></div><div style="{{bar2}}"></div><div style="{{bar3}}"></div><div style="{{bar4}}"></div></div>
+<div style="margin-top: 8px; font-size: 13.5px; color: #9fd8aa">{{strength}}</div>
+<div style="margin-top: 10px; display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{rules}}" as="r" hint-placeholder-count="4"><div style="{{r.style}}"><span style="width: 18px; display: inline-block">{{r.mark}}</span>{{r.text}}</div></sc-for>
+</div>
+<input type="{{pwType}}" value="{{pw2}}" onInput="{{typePw2}}" placeholder="Confirm password" aria-label="Confirm password" style="margin-top: 16px; width: 100%; box-sizing: border-box; height: 52px; padding: 0 18px; border-radius: 26px; border: 1.5px solid #2d4a37; background: rgba(14,24,18,0.9); color: #f1f7f3; font-family: inherit; font-size: 16.5px; outline: 0">
+<sc-if value="{{mismatch}}" hint-placeholder-val="{{ false }}"><div style="margin-top: 8px; font-size: 13.5px; color: #ff8a8a">Passwords do not match</div></sc-if>
+<sc-if value="{{canCreate}}" hint-placeholder-val="{{ false }}"><a href="Verify.dc.html" style="margin-top: 20px; width: 100%; height: 52px; box-sizing: border-box; border-radius: 26px; background: #7ee08a; color: #06200e; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 600">Create account</a></sc-if>
+<sc-if value="{{cannotCreate}}" hint-placeholder-val="{{ true }}"><div style="margin-top: 20px; width: 100%; height: 52px; box-sizing: border-box; border-radius: 26px; background: rgba(126,224,138,0.18); color: #6f9a7a; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 600">Create account</div></sc-if>
+</div>
+</sc-if>
+
+<div style="position: absolute; left: 148px; bottom: 9px; width: 134px; height: 5px; border-radius: 3px; background: rgba(240,255,245,0.9); z-index: 6"></div>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":520,"height":1022}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { step: 1, email: '', tried: false, pw: '', pw2: '', show: false };
+}
+renderVals() {
+const s = this.state;
+const okEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s.email.trim());
+const checks = [
+['At least 8 characters', s.pw.length >= 8],
+['An uppercase and a lowercase letter', /[a-z]/.test(s.pw) && /[A-Z]/.test(s.pw)],
+['A number', /\d/.test(s.pw)],
+['A symbol, like ! or @', /[^A-Za-z0-9]/.test(s.pw)]
+];
+const score = checks.filter((c) => c[1]).length;
+const names = ['Too short', 'Weak', 'Okay', 'Good', 'Strong'];
+const cols = ['#ff6a6a', '#ff9a3c', '#f2c94c', '#9be05a', '#7ee08a'];
+const bar = (i) => 'flex: 1; height: 5px; border-radius: 3px; background: ' + (i < score ? cols[score] : 'rgba(255,255,255,0.12)');
+const dot = (on) => 'width: ' + (on ? 26 : 8) + 'px; height: 8px; border-radius: 4px; background: ' + (on ? '#7ee08a' : 'rgba(255,255,255,0.2)');
+const match = s.pw2.length > 0 && s.pw === s.pw2;
+const all = score === 4 && match;
+const domains = ['@gmail.com', '@icloud.com', '@yahoo.com', '@outlook.com'].map((d) => ({ label: d, pick: () => this.setState({ email: s.email.split('@')[0] + d }) }));
+return {
+step1: s.step === 1, step2: s.step === 2, stepNo: s.step,
+dot1: dot(s.step === 1), dot2: dot(s.step === 2),
+email: s.email, domains: domains,
+emailBad: s.tried && !okEmail,
+typeEmail: (e) => this.setState({ email: e.target.value, tried: false }),
+nextStyle: 'margin-top: 22px; width: 100%; height: 52px; border: 0; border-radius: 26px; font-family: inherit; font-size: 17px; font-weight: 600; cursor: pointer; ' + (okEmail ? 'background: #7ee08a; color: #06200e' : 'background: rgba(126,224,138,0.18); color: #6f9a7a'),
+next: () => { if (okEmail) this.setState({ step: 2 }); else this.setState({ tried: true }); },
+goBack: () => this.setState({ step: 1 }),
+pw: s.pw, pw2: s.pw2, pwType: s.show ? 'text' : 'password', showLabel: s.show ? 'Hide' : 'Show',
+toggleShow: () => this.setState({ show: !this.state.show }),
+typePw: (e) => this.setState({ pw: e.target.value }), typePw2: (e) => this.setState({ pw2: e.target.value }),
+bar1: bar(0), bar2: bar(1), bar3: bar(2), bar4: bar(3),
+strength: s.pw ? names[score] : 'Choose a strong password',
+rules: checks.map((c) => ({ text: c[0], mark: c[1] ? '\u2713' : '\u2022', style: 'font-size: 14px; font-weight: 300; color: ' + (c[1] ? '#9be05a' : '#8fb09b') })),
+mismatch: s.pw2.length > 0 && !match,
+canCreate: all, cannotCreate: !all
+};
+}
+}
+</script>
+</body>
+</html>

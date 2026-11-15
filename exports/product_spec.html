@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Next-Gen AI Companion - Product Specification</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 14mm 14mm 14mm 14mm;
+      @bottom-right {
+        content: counter(page);
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      color: #0f172a;
+      background: #ffffff;
+      line-height: 1.45;
+      font-size: 11pt;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .page {
+      page-break-after: always;
+      position: relative;
+      min-height: 265mm;
+    }
+
+    .page:last-child {
+      page-break-after: avoid;
+    }
+
+    /* Header styling */
+    .doc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+    }
+
+    .logo-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-orb {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #4f46e5, #06b6d4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 14px;
+      font-family: 'Segoe UI', sans-serif;
+      box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+    }
+
+    .brand-title {
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 16pt;
+      font-weight: 700;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-sub {
+      font-size: 8.5pt;
+      color: #64748b;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .header-tag {
+      font-size: 8.5pt;
+      font-weight: 700;
+      color: #4f46e5;
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Hero / Cover element */
+    .hero-banner {
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 60%, #312e81 100%);
+      color: #ffffff;
+      padding: 24px;
+      border-radius: 14px;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.25);
+    }
+
+    .hero-banner::after {
+      content: '';
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.35) 0%, rgba(99, 102, 241, 0) 70%);
+    }
+
+    .hero-title {
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 22pt;
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 8px;
+      background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      font-size: 10pt;
+      color: #94a3b8;
+      max-width: 90%;
+      line-height: 1.5;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 18px;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 8.5pt;
+      color: #cbd5e1;
+    }
+
+    .hero-meta span strong {
+      color: #38bdf8;
+    }
+
+    /* Section styling */
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13.5pt;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 12px;
+      padding-bottom: 6px;
+      border-bottom: 1.5px solid #e2e8f0;
+    }
+
+    .section-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: #4f46e5;
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+    }
+
+    .india-icon {
+      background: #f97316;
+    }
+
+    /* Cards grid */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .feature-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 12px 14px;
+      position: relative;
+      page-break-inside: avoid;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+
+    .card-highlight {
+      background: #f8fafc;
+      border-left: 4px solid #4f46e5;
+    }
+
+    .card-india {
+      background: #fffbf5;
+      border: 1px solid #fed7aa;
+      border-left: 4px solid #f97316;
+    }
+
+    .card-agent {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-left: 4px solid #16a34a;
+    }
+
+    .card-voice {
+      background: #f5f3ff;
+      border: 1px solid #ddd6fe;
+      border-left: 4px solid #7c3aed;
+    }
+
+    .card-title {
+      font-size: 10pt;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-badge {
+      font-size: 7pt;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-india {
+      background: #ffedd5;
+      color: #c2410c;
+    }
+
+    .badge-core {
+      background: #e0e7ff;
+      color: #3730a3;
+    }
+
+    .badge-agent {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .card-desc {
+      font-size: 8.5pt;
+      color: #475569;
+      line-height: 1.4;
+    }
+
+    .card-usecase {
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px dashed #cbd5e1;
+      font-size: 8pt;
+      color: #64748b;
+      font-style: italic;
+    }
+
+    .card-usecase strong {
+      color: #334155;
+      font-style: normal;
+    }
+
+    /* Comparison Table */
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
+      font-size: 8.5pt;
+      page-break-inside: avoid;
+    }
+
+    .spec-table th {
+      background: #f1f5f9;
+      color: #334155;
+      font-weight: 700;
+      text-align: left;
+      padding: 7px 10px;
+      border: 1px solid #e2e8f0;
+      font-size: 8pt;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .spec-table td {
+      padding: 7px 10px;
+      border: 1px solid #e2e8f0;
+      vertical-align: top;
+      color: #334155;
+    }
+
+    .spec-table tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+
+    .table-tag {
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    /* Pill list */
+    .pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .pill {
+      font-size: 7.5pt;
+      font-weight: 600;
+      padding: 2px 7px;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 9999px;
+      color: #334155;
+    }
+
+    /* Footer */
+    .doc-footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 8px;
+      font-size: 7.5pt;
+      color: #94a3b8;
+    }
+
+    .callout-box {
+      background: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      padding: 10px 14px;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      font-size: 8.5pt;
+      color: #1e3a8a;
+      line-height: 1.45;
+    }
+
+    .callout-box strong {
+      color: #1d4ed8;
+    }
+
+    .stat-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .stat-box {
+      flex: 1;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .stat-val {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14pt;
+      font-weight: 700;
+      color: #4f46e5;
+    }
+
+    .stat-lbl {
+      font-size: 7.5pt;
+      color: #64748b;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= PAGE 1 ================= -->
+  <div class="page">
+    <div class="doc-header">
+      <div class="logo-badge">
+        <div class="logo-orb">B</div>
+        <div>
+          <div class="brand-title">AI Companion & Assistant</div>
+          <div class="brand-sub">Comprehensive Product Specification & Innovation Blueprint</div>
+        </div>
+      </div>
+      <div class="header-tag">Plan 1: Software Companion</div>
+    </div>
+
+    <div class="hero-banner">
+      <div class="hero-title">The Multilingual AI Companion & Tactical Assistant</div>
+      <div class="hero-desc">
+        A revolutionary dual-engine application unifying emotional companionship with real-world productivity workflows. Designed from the ground up as the software brain for the future <strong>Plan 2 Physical Home Robot</strong>.
+      </div>
+      <div class="hero-meta">
+        <span><strong>Architecture:</strong> WebRTC Full-Duplex + MCP + Glassbox Memory</span>
+        <span><strong>Target:</strong> Global & Indian Emerging Markets</span>
+        <span><strong>Target Date:</strong> 2026-2027</span>
+      </div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-box">
+        <div class="stat-val">&lt; 400ms</div>
+        <div class="stat-lbl">Realtime Voice Latency</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val">4 Core Modes</div>
+        <div class="stat-lbl">Companion • Voice • Agent • Learn</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val">100% Glassbox</div>
+        <div class="stat-lbl">Inspectable & Editable Memory</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val">Hardware Ready</div>
+        <div class="stat-lbl">Plan 2 Robot Screen Sync</div>
+      </div>
+    </div>
+
+    <div class="section-title">
+      <div class="section-icon">1</div>
+      Strategic Positioning: "Heart + Hands"
+    </div>
+
+    <table class="spec-table">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Pure Assistants (ChatGPT / Claude)</th>
+          <th>Pure Companions (Character.ai / Replika)</th>
+          <th style="background:#e0e7ff; color:#3730a3;">The AI Companion (Plan 1)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="table-tag">Primary Nature</td>
+          <td>Sterile, transactional question-and-answer tool.</td>
+          <td>Fantasy roleplay, gaming avatars, virtual companions.</td>
+          <td><strong>Relational Confidant + Execution Executive Assistant.</strong></td>
+        </tr>
+        <tr>
+          <td class="table-tag">Memory Depth</td>
+          <td>Fragmented, static summaries; opaque control.</td>
+          <td>Opaque, prone to hallucination; zero daily utility.</td>
+          <td><strong>Glassbox Vault:</strong> View, edit, tag, or delete any memory instantly.</td>
+        </tr>
+        <tr>
+          <td class="table-tag">Speech Pipeline</td>
+          <td>Turn-based, walkie-talkie style with latency lag.</td>
+          <td>Mostly text; synthetic robotic voice models.</td>
+          <td><strong>Full-duplex streaming with natural barge-in & whisper detection.</strong></td>
+        </tr>
+        <tr>
+          <td class="table-tag">Action & Tools</td>
+          <td>Coding/general writing, but detached from daily life.</td>
+          <td>Zero external integrations or task execution.</td>
+          <td><strong>MCP Agent:</strong> Connects to Calendars, WhatsApp, Tasks, and Docs.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="section-title">
+      <div class="section-icon">2</div>
+      The 4 Core Architectural Modes
+    </div>
+
+    <div class="grid-2">
+      <div class="feature-card card-highlight">
+        <div class="card-title">
+          Companion Mode (Relational)
+          <span class="card-badge badge-core">Empathy</span>
+        </div>
+        <div class="card-desc">
+          Adaptive personality sliders (Warmth, Humor, Directness, Depth). Proactive evening debriefs, conversational audio journaling, and contextual follow-ups on ongoing life events.
+        </div>
+        <div class="card-usecase">
+          <strong>Daily Habit:</strong> 9:30 PM voice debrief unpacks mental stress and auto-logs a structured gratitude journal.
+        </div>
+      </div>
+
+      <div class="feature-card card-voice">
+        <div class="card-title">
+          Voice Mode (Audio-First)
+          <span class="card-badge" style="background:#ede9fe; color:#6d28d9;">Hands-Free</span>
+        </div>
+        <div class="card-desc">
+          Ultra-low-latency conversation with barge-in support. Handles pauses, hesitations, and background noise. Includes dedicated Commute and Walking audio interfaces.
+        </div>
+        <div class="card-usecase">
+          <strong>Daily Habit:</strong> Hands-free walking debrief while exercising; reads out priority updates without screen interaction.
+        </div>
+      </div>
+
+      <div class="feature-card card-agent">
+        <div class="card-title">
+          Agent Mode (Workflows)
+          <span class="card-badge badge-agent">Productivity</span>
+        </div>
+        <div class="card-desc">
+          60-second morning launchpad briefs. Voice-to-multi-task parsing (splits one spoken sentence into reminders, calendar invites, and email drafts). Document & PDF analyzer.
+        </div>
+        <div class="card-usecase">
+          <strong>Daily Habit:</strong> "Morning Brief" delivers your calendar context, attendee bios, and top 3 priorities before breakfast.
+        </div>
+      </div>
+
+      <div class="feature-card card-highlight">
+        <div class="card-title">
+          Learn & Daily Life Mode
+          <span class="card-badge badge-core">Growth</span>
+        </div>
+        <div class="card-desc">
+          Socratic roleplay simulator (salary negotiations, tough peer talks, language immersion). ADHD body doubling with gentle timed check-ins and zero-guilt habit tracking.
+        </div>
+        <div class="card-usecase">
+          <strong>Daily Habit:</strong> Safe mock-interview practice for high-stakes presentations and campus placements.
+        </div>
+      </div>
+    </div>
+
+    <div class="doc-footer">
+      <span>AI Companion Product Specification • Confidential</span>
+      <span>Page 1 of 3</span>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 2 ================= -->
+  <div class="page">
+    <div class="doc-header">
+      <div class="logo-badge">
+        <div class="logo-orb" style="background: linear-gradient(135deg, #f97316, #ef4444);">IN</div>
+        <div>
+          <div class="brand-title">Market Breakthroughs: India-First Features</div>
+          <div class="brand-sub">Unaddressed Realities in the Indian Consumer & Work Ecosystem</div>
+        </div>
+      </div>
+      <div class="header-tag" style="color: #c2410c; background: #fff7ed; border-color: #ffedd5;">Unique Market Moat</div>
+    </div>
+
+    <div class="callout-box" style="background: #fff7ed; border-left-color: #ea580c; color: #9a3412;">
+      <strong>Why Existing Global AIs Fail in India:</strong> Western AI assistants expect formal, monologued Queen's English and operate in isolated corporate silos. Indian daily life is polyglot, culturally intertwined, family-centric, and governed by WhatsApp, informal coordination, and high-context interpersonal dynamics. Our Companion bridges this gap with 8 features that have <strong>never existed in the Indian market</strong>.
+    </div>
+
+    <div class="grid-2">
+      <!-- Feature 1 -->
+      <div class="feature-card card-india">
+        <div class="card-title">
+          1. Natural Code-Switching ("Chutney Engine")
+          <span class="card-badge badge-india">Language</span>
+        </div>
+        <div class="card-desc">
+          Fluidly understands and speaks mixed vernaculars: <strong>Hinglish, Tanglish, Kanglish, and Manglish</strong>. Doesn't force rigid bookish translations; speaks in natural colloquial rhythm with idioms and context.
+        </div>
+        <div class="card-usecase">
+          <strong>Example:</strong> <em>"Yaar, please remind me when dad calls, and check if client ne email ka reply bheja kya."</em> Responds in the exact same friendly cadence.
+        </div>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="feature-card card-india">
+        <div class="card-title">
+          2. WhatsApp Native Executive Agent
+          <span class="card-badge badge-india">Workflows</span>
+        </div>
+        <div class="card-desc">
+          Connects directly to WhatsApp. Filters 500+ spam forwards in society, family, and alumni groups; extracts crucial notices (water cuts, electricity bills, school deadlines); drafts polite replies to relatives and clients.
+        </div>
+        <div class="card-usecase">
+          <strong>Example:</strong> Summarizes 120 messages from the Apartment Society group into: <em>"Tower C water maintenance tomorrow 2 PM–5 PM."</em>
+        </div>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="feature-card card-india">
+        <div class="card-title">
+          3. "Jugaad & Negotiation" Sparring Coach
+          <span class="card-badge badge-india">Upskilling</span>
+        </div>
+        <div class="card-desc">
+          Interactive voice roleplay simulating tough Indian negotiations: Tech appraisal low-balling, Bangalore/Mumbai rental deposit disputes, contractor estimates, and vendor pricing.
+        </div>
+        <div class="card-usecase">
+          <strong>Example:</strong> Roleplay sparring against a rigid HR recruiter asking: <em>"Why should we give you a 40% hike when your variable is low?"</em>
+        </div>
+      </div>
+
+      <!-- Feature 4 -->
+      <div class="feature-card card-india">
+        <div class="card-title">
+          4. "Seva Mode" (Tier-2/3 Elder Care & Distance Call)
+          <span class="card-badge badge-india">Family Care</span>
+        </div>
+        <div class="card-desc">
+          Speaks to aging parents in pure native Hindi, Tamil, Telugu, etc. Conducts a daily 5-minute warm check-in (meds, BP, daily pooja, mood) and sends a peace-of-mind summary to the child working in metro/overseas.
+        </div>
+        <div class="card-usecase">
+          <strong>Example:</strong> <em>"Mataji had her medicines on time and sounded happy, but mentioned minor knee pain. Send her a quick voice note today."</em>
+        </div>
+      </div>
+
+      <!-- Feature 5 -->
+      <div class="feature-card card-india">
+        <div class="card-title">
+          5. Dual Persona: "Bhai Mode" vs "Corporate Sahab"
+          <span class="card-badge badge-india">Persona</span>
+        </div>
+        <div class="card-desc">
+          Instant toggle between two distinct cultural personas:
+          <br>• <strong>Corporate Sahab:</strong> Polished, razor-sharp corporate English for writing pitch decks, emails, and PRDs.
+          <br>• <strong>Bhai / Yaar:</strong> Street-smart, empathetic, funny confidant for decompressing.
+        </div>
+        <div class="card-usecase">
+          <strong>Example:</strong> Fixes your slide deck at 6 PM, then cracks jokes and listens to your startup burnout stories at 11 PM.
+        </div>
+      </div>
+
+      <!-- Feature 6 -->
+      <div class="feature-card card-india">
+        <div class="card-title">
+          6. "Desi Family & Matrimony Wingman"
+          <span class="card-badge badge-india">Social Life</span>
+        </div>
+        <div class="card-desc">
+          Guides users through high-pressure Indian family dynamics: Generates diplomatic excuses to decline toxic wedding events; assists in creating balanced arranged marriage bio-data and roleplays awkward first matrimonial calls.
+        </div>
+        <div class="card-usecase">
+          <strong>Example:</strong> Preps you on what to ask prospective partners on Shaadi.com without sounding like an income tax interrogator.
+        </div>
+      </div>
+
+      <!-- Feature 7 -->
+      <div class="feature-card card-india">
+        <div class="card-title">
+          7. Indian Cash-Flow & Splitwise Voice Whisperer
+          <span class="card-badge badge-india">Finance</span>
+        </div>
+        <div class="card-desc">
+          Voice-first tracking of Indian financial habits: Bill splitting (*"Split ₹2,100 dinner except Rohan didn't have sweets"*), informal friend debt logging (*"Rahul owes me ₹3,500 for Goa Airbnb"*), and utility bill auto-reminders.
+        </div>
+        <div class="card-usecase">
+          <strong>Example:</strong> Logs all informal loans and sends polite automated WhatsApp payment nudges without ruining friendships.
+        </div>
+      </div>
+
+      <!-- Feature 8 -->
+      <div class="feature-card card-india">
+        <div class="card-title">
+          8. Tier-2/3 Placement & Fluency Confidence Coach
+          <span class="card-badge badge-india">Education</span>
+        </div>
+        <div class="card-desc">
+          A completely judgment-free, safe voice buddy for college students in non-metro India to practice spoken English, interview articulation, and aptitude explanations before mass recruitment drives (TCS, Infosys, Wipro, CAT).
+        </div>
+        <div class="card-usecase">
+          <strong>Example:</strong> Daily 10-minute conversational drills correcting pronunciation gently without mockery or intimidation.
+        </div>
+      </div>
+    </div>
+
+    <div class="doc-footer">
+      <span>AI Companion Product Specification • Confidential</span>
+      <span>Page 2 of 3</span>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 3 ================= -->
+  <div class="page">
+    <div class="doc-header">
+      <div class="logo-badge">
+        <div class="logo-orb" style="background: linear-gradient(135deg, #10b981, #06b6d4);">TECH</div>
+        <div>
+          <div class="brand-title">Architecture, Memory & Hardware Bridge</div>
+          <div class="brand-sub">From Plan 1 Software to Plan 2 Physical Companion</div>
+        </div>
+      </div>
+      <div class="header-tag" style="color: #047857; background: #ecfdf5; border-color: #a7f3d0;">Technical Roadmap</div>
+    </div>
+
+    <div class="section-title">
+      <div class="section-icon" style="background:#10b981;">1</div>
+      The "Glassbox" Memory Architecture
+    </div>
+
+    <div class="grid-3">
+      <div class="feature-card">
+        <div class="card-title" style="font-size:9pt;">Visual Memory Vault</div>
+        <div class="card-desc">Users see a clean visual card for every fact, preference, and emotional episode the AI knows.</div>
+      </div>
+      <div class="feature-card">
+        <div class="card-title" style="font-size:9pt;">In-Line Memory Editor</div>
+        <div class="card-desc">Tap any memory card to edit, update, or permanently delete. One-tap verbal: <em>"Forget that."</em></div>
+      </div>
+      <div class="feature-card">
+        <div class="card-title" style="font-size:9pt;">Automatic Fact Decay</div>
+        <div class="card-desc">Differentiates permanent facts from transient states (e.g. <em>"feeling sick today"</em> expires in 48h).</div>
+      </div>
+    </div>
+
+    <div class="section-title">
+      <div class="section-icon" style="background:#7c3aed;">2</div>
+      The Hardware Bridge: Plan 1 Software $\rightarrow$ Plan 2 Physical Device
+    </div>
+
+    <div class="callout-box" style="background: #f5f3ff; border-left-color: #7c3aed; color: #4c1d95;">
+      <strong>The Software-First Hardware Strategy:</strong> By validating user habits, voice latency, and emotional attachment in Plan 1, we eliminate the #1 risk of hardware startups: building an expensive device nobody wants to talk to. Plan 1 builds the soul; Plan 2 gives it a physical body.
+    </div>
+
+    <table class="spec-table">
+      <thead>
+        <tr>
+          <th>Plan 1: Software Companion</th>
+          <th>Physical Bridge Capability</th>
+          <th>Plan 2: Physical Device (Robot)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Kinetic Face State Machine:</strong> 7 core SVG/WebRTC animated states (Idle, Listening, Thinking, Speaking, Delighted, Sleep).</td>
+          <td>Identical animation frame rate and resolution specs (320x240 / 480x320).</td>
+          <td><strong>OLED/LCD Robot Screen:</strong> Flashes the exact same expressive face on your desk.</td>
+        </tr>
+        <tr>
+          <td><strong>Software Hands-Free Wake Engine:</strong> "Hey Companion" wake-word detection running in browser/mobile app.</td>
+          <td>Hardware microphone array processing (beamforming & echo cancellation).</td>
+          <td><strong>Far-Field 4-Mic Array:</strong> 360-degree room voice pickup without phone in hand.</td>
+        </tr>
+        <tr>
+          <td><strong>Ambient Desk Standby Mode:</strong> Fullscreen clock and reactive soundwaves when mobile is docked horizontally.</td>
+          <td>Always-on ambient presence with physical motorized nod and head-tilt tracking.</td>
+          <td><strong>Friendly Desktop Robot:</strong> Rotates toward the user's voice when spoken to.</td>
+        </tr>
+        <tr>
+          <td><strong>Unified User Profile & Memory:</strong> Cloud-synced episodic knowledge graph via encrypted vector DB.</td>
+          <td>Instant Bluetooth/Wi-Fi pairing and zero-friction onboarding.</td>
+          <td><strong>Instant Continuity:</strong> Place robot on desk, log in, and it greets you with your shared history.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="section-title">
+      <div class="section-icon" style="background:#0f172a;">3</div>
+      MVP Execution Roadmap & Milestones
+    </div>
+
+    <div class="grid-3">
+      <div class="feature-card" style="border-top: 3px solid #4f46e5;">
+        <div class="card-title">Sprint 1: MVP Core (W1–W4)</div>
+        <div class="card-desc">
+          • Realtime Voice Pipeline (&lt;400ms)<br>
+          • Hinglish/English Code-Switching<br>
+          • Personality Sliders & Archetypes<br>
+          • Visual Memory Vault (Glassbox)<br>
+          • Morning Brief & Evening Debrief
+        </div>
+      </div>
+      <div class="feature-card" style="border-top: 3px solid #f97316;">
+        <div class="card-title">Sprint 2: Indian Workflows (W5–W8)</div>
+        <div class="card-desc">
+          • WhatsApp Web Automation<br>
+          • Voice-to-Multi-Task Parser<br>
+          • Desi Negotiation Sparring Coach<br>
+          • Seva Mode (Parent Voice Check-in)<br>
+          • Calendar & Todoist Integrations
+        </div>
+      </div>
+      <div class="feature-card" style="border-top: 3px solid #10b981;">
+        <div class="card-title">Sprint 3: Plan 2 Prep (W9–W12)</div>
+        <div class="card-desc">
+          • Kinetic Face Animation Sync<br>
+          • Ambient Desktop Standby Mode<br>
+          • Hands-Free Wake-Word Engine<br>
+          • User Retention & Metric Validation<br>
+          • Hardware Prototype Proposal & Seed Pitch
+        </div>
+      </div>
+    </div>
+
+    <div class="doc-footer">
+      <span>AI Companion Product Specification • Confidential</span>
+      <span>Page 3 of 3</span>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,349 @@
+{
+  "v": 3,
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-10-11T00:20:00Z"
+  },
+  "title": "Brisic App Prototype",
+  "launch": {
+    "view": "focused",
+    "file": "Splash.dc.html"
+  },
+  "pages": [],
+  "boards": {
+    "Main.dc.html": {
+      "x": 3200,
+      "y": 0,
+      "w": 520,
+      "h": 1022,
+      "title": "Now Playing",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "Home.dc.html": {
+      "x": 2560,
+      "y": 0,
+      "w": 520,
+      "h": 1022,
+      "title": "Listen Now (Home)",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "Search.dc.html": {
+      "x": 5120,
+      "y": 0,
+      "w": 520,
+      "h": 1022,
+      "title": "Search",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "Playlist.dc.html": {
+      "x": 3840,
+      "y": 0,
+      "w": 520,
+      "h": 1022,
+      "title": "Playlist",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "Library.dc.html": {
+      "x": 4480,
+      "y": 0,
+      "w": 520,
+      "h": 1022,
+      "title": "Library",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "Artist.dc.html": {
+      "x": 7040,
+      "y": 0,
+      "w": 520,
+      "h": 1022,
+      "title": "Artist Profile",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "FanSupport.dc.html": {
+      "x": 7680,
+      "y": 0,
+      "w": 520,
+      "h": 1022,
+      "title": "Fan Support",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "Gifts.dc.html": {
+      "x": 8320,
+      "y": 0,
+      "w": 520,
+      "h": 1022,
+      "title": "Send a Gift (B-Coins)",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "AI.dc.html": {
+      "x": 12160,
+      "y": 0,
+      "w": 520,
+      "h": 1022,
+      "title": "Brisic AI",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "Profile.dc.html": {
+      "x": 10880,
+      "y": 0,
+      "w": 520,
+      "h": 1022,
+      "title": "Profile",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "Notifications.dc.html": {
+      "x": 6400,
+      "y": 0,
+      "w": 520,
+      "h": 1022,
+      "title": "Notifications",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "Merch.dc.html": {
+      "x": 8960,
+      "y": 0,
+      "w": 520,
+      "h": 1022,
+      "title": "Merch",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "Party.dc.html": {
+      "x": 10240,
+      "y": 0,
+      "w": 520,
+      "h": 1022,
+      "title": "Community Party",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "Exclusive.dc.html": {
+      "x": 9600,
+      "y": 0,
+      "w": 520,
+      "h": 1022,
+      "title": "Exclusive Content",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "SearchAll.dc.html": {
+      "x": 5760,
+      "y": 0,
+      "w": 520,
+      "h": 1022,
+      "title": "Search (All)",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "Splash.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 520,
+      "h": 1022,
+      "title": "Launch Screen",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "Settings.dc.html": {
+      "x": 11520,
+      "y": 0,
+      "w": 520,
+      "h": 1022,
+      "title": "Settings (Theme)",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "Login.dc.html": {
+      "x": 640,
+      "y": 0,
+      "w": 520,
+      "h": 1022,
+      "title": "Log in / Sign up",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "Verify.dc.html": {
+      "x": 1920,
+      "y": 0,
+      "w": 520,
+      "h": 1022,
+      "title": "Verify Email (OTP)",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "CreateAccount.dc.html": {
+      "x": 1280,
+      "y": 0,
+      "w": 520,
+      "h": 1022,
+      "title": "Create Account",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "Overview.dc.html": {
+      "x": 0,
+      "y": -1000,
+      "w": 1100,
+      "h": 820,
+      "title": "App Map (all screens)",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "SeeAll.dc.html": {
+      "x": 2560,
+      "y": 1200,
+      "w": 520,
+      "h": 1022,
+      "title": "See All (topic)",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "Trending.dc.html": {
+      "x": 3200,
+      "y": 1200,
+      "w": 520,
+      "h": 1022,
+      "title": "Trending Artists",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "Genre.dc.html": {
+      "x": 5120,
+      "y": 1200,
+      "w": 520,
+      "h": 1022,
+      "title": "Genre (everything)",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "Following.dc.html": {
+      "x": 3900,
+      "y": 1200,
+      "w": 520,
+      "h": 1022,
+      "title": "Artists Followed",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "Premium.dc.html": {
+      "x": 11520,
+      "y": 1200,
+      "w": 520,
+      "h": 1022,
+      "title": "Premium",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "Info.dc.html": {
+      "x": 12160,
+      "y": 1200,
+      "w": 520,
+      "h": 1022,
+      "title": "Info (Help, Privacy, Account)",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "Queue.dc.html": {
+      "x": 12800,
+      "y": 1200,
+      "w": 520,
+      "h": 1022,
+      "title": "Queue (Up next)",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "Stations.dc.html": {
+      "x": 13440,
+      "y": 1200,
+      "w": 520,
+      "h": 1022,
+      "title": "Stations (Radio)",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "Watch.dc.html": {
+      "x": 14080,
+      "y": 1200,
+      "w": 520,
+      "h": 1022,
+      "title": "Watch Podcast (Video)",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "Show.dc.html": {
+      "x": 14720,
+      "y": 1200,
+      "w": 520,
+      "h": 1022,
+      "title": "Podcast Show",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "EditProfile.dc.html": {
+      "x": 15360,
+      "y": 0,
+      "w": 520,
+      "h": 1022,
+      "title": "Edit Profile",
+      "is_interactive": true,
+      "radius": 0
+    },
+    "Success.dc.html": {
+      "x": 16000,
+      "y": 0,
+      "w": 520,
+      "h": 1022,
+      "title": "Payment Success",
+      "is_interactive": true,
+      "radius": 0
+    }
+  },
+  "order": [
+    "Overview.dc.html",
+    "Splash.dc.html",
+    "Login.dc.html",
+    "CreateAccount.dc.html",
+    "Verify.dc.html",
+    "Home.dc.html",
+    "SeeAll.dc.html",
+    "Trending.dc.html",
+    "Main.dc.html",
+    "Playlist.dc.html",
+    "Library.dc.html",
+    "Queue.dc.html",
+    "Stations.dc.html",
+    "Following.dc.html",
+    "Search.dc.html",
+    "Genre.dc.html",
+    "SearchAll.dc.html",
+    "Watch.dc.html",
+    "Show.dc.html",
+    "Notifications.dc.html",
+    "Artist.dc.html",
+    "FanSupport.dc.html",
+    "Gifts.dc.html",
+    "Merch.dc.html",
+    "Exclusive.dc.html",
+    "Party.dc.html",
+    "Profile.dc.html",
+    "Premium.dc.html",
+    "Info.dc.html",
+    "Settings.dc.html",
+    "AI.dc.html",
+    "EditProfile.dc.html",
+    "Success.dc.html"
+  ],
+  "notes": {},
+  "designSystems": []
+}

@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+
+
+<script>
+var __c = 'Playlist.dc.html';
+(function () { try { var st = JSON.parse(localStorage.getItem('brisic-stack') || '[]'); var back = localStorage.getItem('brisic-back') === '1'; localStorage.setItem('brisic-back', '0'); if (st[st.length - 1] !== __c) { if (back && st.length >= 2 && st[st.length - 2] === __c) { st.pop(); } else { st.push(__c); } } if (st.length > 40) st = st.slice(-40); localStorage.setItem('brisic-stack', JSON.stringify(st)); } catch (e) {} })();
+window.brisicPrev = function (fb) { try { var st = JSON.parse(localStorage.getItem('brisic-stack') || '[]'); if (st.length >= 2 && st[st.length - 1] === __c) { var p = st[st.length - 2]; if (p && p !== __c && p !== 'Splash.dc.html') return p; } } catch (e) {} return fb; };
+(function () {
+function fix() { try { var l = document.querySelectorAll('a[aria-label="Back"]'); for (var i = 0; i < l.length; i++) { var a = l[i]; if (!a.getAttribute('data-o')) a.setAttribute('data-o', a.getAttribute('href') || 'Home.dc.html'); var t = window.brisicPrev(a.getAttribute('data-o')); if (a.getAttribute('href') !== t) a.setAttribute('href', t); } } catch (e) {} }
+document.addEventListener('DOMContentLoaded', fix); window.addEventListener('load', fix);
+try { new MutationObserver(function () { fix(); }).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
+document.addEventListener('click', function (e) { try { var a = e.target.closest && e.target.closest('a[href*="Main.dc.html?"]'); if (!a) return; var q = new URLSearchParams((a.getAttribute('href').split('?')[1] || '')); if (q.get('t')) localStorage.setItem('brisic-now', JSON.stringify({ t: q.get('t').slice(0, 80), a: (q.get('a') || 'Unknown Artist').slice(0, 60) })); } catch (x) {} }, true);
+document.addEventListener('click', function (e) { try { if (e.target.closest && e.target.closest('[aria-label="Back"]')) localStorage.setItem('brisic-back', '1'); } catch (x) {} }, true);
+})();
+</script>
+
+<title>Playlist</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+@keyframes brisicWave{0%,100%{transform:scaleY(0.2)}50%{transform:scaleY(1)}}
+a{text-decoration:none;color:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid #bbf7d0;outline-offset:3px}
+</style>
+</helmet>
+<div style="width: 520px; height: 1022px; position: relative; overflow: hidden; background: radial-gradient(90% 60% at 50% 40%, #12201a 0%, #060a08 100%)">
+
+<div style="position: absolute; left: 30px; top: 214px; width: 5px; height: 30px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; left: 30px; top: 280px; width: 5px; height: 56px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; left: 30px; top: 352px; width: 5px; height: 56px; border-radius: 3px 0 0 3px; background: linear-gradient(90deg, #1b201e, #3a4540)"></div>
+<div style="position: absolute; right: 30px; top: 310px; width: 5px; height: 96px; border-radius: 0 3px 3px 0; background: linear-gradient(270deg, #1b201e, #3a4540)"></div>
+
+<div style="position: absolute; left: 33px; top: 33px; width: 454px; height: 956px; box-sizing: border-box; border-radius: 74px; padding: 12px; background: linear-gradient(145deg, #4b5651 0%, #1a201d 30%, #0b0e0d 60%, #3b4640 100%); box-shadow: 0 0 0 2px #2a322e, 0 30px 70px rgba(0,0,0,0.7), 0 0 60px rgba(74,222,128,0.12)">
+
+<div style="width: 430px; height: 932px; box-sizing: border-box; border-radius: 62px; position: relative; overflow: hidden; background: #060807; font-family: 'Outfit', system-ui, sans-serif; color: #e9f2ec; box-shadow: inset 0 0 0 4px #000">
+
+<div style="position: absolute; left: 0; top: 0; width: 430px; height: 54px; z-index: 6">
+<div style="position: absolute; left: 56px; top: 17px; font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif; font-size: 17px; font-weight: 600; color: #fff">9:41</div>
+<div style="position: absolute; right: 38px; top: 19px; display: flex; align-items: center; gap: 6px; font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif; font-size: 14px; font-weight: 600; color: #fff">
+<svg viewBox="0 0 19 12" width="19" height="12" fill="#fff" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="0.8"/><rect x="5" y="5.5" width="3" height="6.5" rx="0.8"/><rect x="10" y="3" width="3" height="9" rx="0.8"/><rect x="15" y="0" width="3" height="12" rx="0.8"/></svg>
+<span>5G</span>
+<svg viewBox="0 0 27 13" width="27" height="13" fill="none" aria-hidden="true"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#fff" stroke-opacity="0.45"/><rect x="2" y="2" width="19" height="9" rx="2.2" fill="#fff"/><path d="M24.5 4.5v4c.9-.3 1.5-1.2 1.5-2s-.6-1.7-1.5-2z" fill="#fff" fill-opacity="0.5"/></svg>
+</div>
+</div>
+<div style="position: absolute; left: 152px; top: 11px; width: 126px; height: 37px; border-radius: 20px; background: #000; z-index: 7">
+<div style="position: absolute; right: 13px; top: 10px; width: 17px; height: 17px; border-radius: 50%; background: radial-gradient(circle at 40% 38%, #243257 0%, #0a0f1d 45%, #020306 100%)"></div>
+</div>
+
+<a href="Home.dc.html" aria-label="Back" style="position: absolute; z-index: 12; left: 22px; top: 70px; width: 38px; height: 38px; box-sizing: border-box; border-radius: 50%; border: 1.5px solid #7ee08a; display: flex; align-items: center; justify-content: center">
+<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#a8eeb3" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+</a>
+<button onClick="{{openOpt}}" aria-label="More options" style="z-index: 12; position: absolute; right: 18px; top: 68px; width: 44px; height: 44px; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<svg viewBox="0 0 24 24" width="22" height="22" fill="#fff" aria-hidden="true"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
+</button>
+
+<div style="position: absolute; left: 0; right: 0; top: 0; height: 826px; overflow-y: auto; overflow-x: hidden; scrollbar-width: none">
+<div style="position: relative; width: 430px; height: 1700px">
+<img src="assets/logo-b-glow.png" alt="Brisic logo" style="position: absolute; left: 175px; top: 102px; width: 80px; height: 100px; object-fit: contain">
+
+<div style="position: absolute; left: 116px; top: 212px; width: 198px; height: 198px; box-sizing: border-box; border-radius: 18px; overflow: hidden; background: linear-gradient(150deg, #10381a, #050a07); display: flex; align-items: flex-end; justify-content: center; gap: 9px; padding-bottom: 54px" role="img" aria-label="Playlist cover">
+<span style="width: 12px; height: 46px; border-radius: 4px; background: #7ee08a"></span><span style="width: 12px; height: 84px; border-radius: 4px; background: #4fae63"></span><span style="width: 12px; height: 62px; border-radius: 4px; background: #7ee08a"></span><span style="width: 12px; height: 100px; border-radius: 4px; background: #4fae63"></span><span style="width: 12px; height: 54px; border-radius: 4px; background: #7ee08a"></span>
+</div>
+
+<div style="position: absolute; left: 0; right: 0; top: 424px; text-align: center; font-size: 17px; font-weight: 500; letter-spacing: 0.45em; padding-left: 0.45em; color: #f1f7f3">PLAYLIST</div>
+
+<div style="position: absolute; left: 0; right: 0; top: 452px; display: flex; align-items: center; justify-content: center; gap: 22px">
+<button onClick="{{playAll}}" aria-label="Play playlist" style="padding: 0; background: transparent; cursor: pointer; width: 48px; height: 48px; box-sizing: border-box; border-radius: 50%; border: 1.5px solid #7ee08a; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 12px rgba(126,224,138,0.25)">
+<sc-if value="{{paused}}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 24 24" width="22" height="22" fill="#a8eeb3" aria-hidden="true" style="margin-left: 3px"><path d="M7 4.5v15L19.5 12z"/></svg></sc-if><sc-if value="{{playing}}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" width="22" height="22" fill="#a8eeb3" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></sc-if>
+</button>
+<button onClick="{{shuffleAll}}" aria-label="Shuffle play" style="padding: 0; background: transparent; cursor: pointer; font-family: inherit; width: 150px; height: 42px; box-sizing: border-box; border-radius: 21px; border: 1.5px solid #7ee08a; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 14px; font-weight: 500; letter-spacing: 0.14em; color: #a8eeb3">SHUFFLE
+<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h3c4 0 5 10 9 10h6M3 17h3c1.6 0 2.7-1.6 3.7-3.4M21 7h-6c-1.3 0-2.3.7-3.1 1.8M18 4l3 3-3 3M18 14l3 3-3 3"/></svg>
+</button>
+</div>
+
+<div style="position: absolute; left: 20px; right: 20px; top: 508px; display: flex; align-items: center; justify-content: space-between">
+<div style="font-size: 13.5px; letter-spacing: 0.08em; color: #e6efe9">LIST OF <span style="color: #7ee08a">SONGS</span></div>
+<div style="display: flex; align-items: center; gap: 14px; font-size: 14px; color: #f1f7f3">
+<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#c9d8cf" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 21 C6 16.5 3 13.2 3 9.5 C3 6.8 5 5 7.4 5 C9.2 5 10.9 6 12 7.7 C13.1 6 14.8 5 16.6 5 C19 5 21 6.8 21 9.5 C21 13.2 18 16.5 12 21 Z"/></svg>
+<span>{{total}}</span>
+</div>
+</div>
+
+<div style="position: absolute; left: 0; right: 0; top: 538px; display: flex; flex-direction: column; gap: 0; background: #000">
+<sc-for list="{{songs}}" as="s" hint-placeholder-count="7">
+<button onClick="{{s.tap}}" style="{{s.rowStyle}}">
+<div style="width: 30px; font-size: 15px; font-weight: 500; color: {{s.numColor}}; text-align: left">{{s.nLabel}}</div>
+<div style="flex: 1; text-align: left; font-size: 15px; font-weight: 400; letter-spacing: 0.07em; color: {{s.titleColor}}">{{s.title}}</div>
+<div style="font-size: 12.5px; color: #8fb09b; font-weight: 300; margin-right: 14px; white-space: nowrap">{{s.streams}}</div>
+<svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true" style="margin-right: 22px"><path d="M12 21 C6 16.5 3 13.2 3 9.5 C3 6.8 5 5 7.4 5 C9.2 5 10.9 6 12 7.7 C13.1 6 14.8 5 16.6 5 C19 5 21 6.8 21 9.5 C21 13.2 18 16.5 12 21 Z" fill="#7ee08a"/></svg>
+<div style="width: 38px; font-size: 14.5px; color: #e6efe9; text-align: right; margin-right: 12px">{{s.time}}</div>
+<span onClick="{{s.more}}" role="button" aria-label="Song options" style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; margin: -8px -8px -8px 0; flex-shrink: 0"><svg viewBox="0 0 24 24" width="20" height="20" fill="#fff" aria-hidden="true"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg></span>
+</button>
+</sc-for>
+</div>
+<div style="position: absolute; left: 0; right: 0; top: 1680px; width: 1px; height: 1px"></div>
+</div>
+</div>
+
+
+<sc-if value="{{hasCur}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; left: 0; right: 0; top: 760px; height: 66px; box-sizing: border-box; border-radius: 0; border: 0; border-top: 1px solid #4fae63; background: #000; box-shadow: 0 -4px 18px rgba(110,230,60,0.28); z-index: 12; overflow: hidden; display: flex; align-items: center; gap: 12px; padding: 0 10px 0 10px">
+<a href="{{curHref}}" aria-label="Open player" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 0"></a><div style="position: absolute; left: 0; top: 0; height: 3px; width: {{prog}}%; background: #7ee08a"></div>
+<div style="width: 44px; height: 44px; border-radius: 9px; flex-shrink: 0; background: linear-gradient(150deg,#2f7a34,#10381a); display: flex; align-items: flex-end; justify-content: center; gap: 3px; padding-bottom: 9px; box-sizing: border-box"><span style="width: 4px; height: 16px; background: #fff; border-radius: 2px; animation: brisicWave 0.7s ease-in-out infinite"></span><span style="width: 4px; height: 24px; background: #fff; border-radius: 2px; animation: brisicWave 0.9s ease-in-out 0.1s infinite"></span><span style="width: 4px; height: 14px; background: #fff; border-radius: 2px; animation: brisicWave 0.6s ease-in-out 0.2s infinite"></span></div>
+<a href="{{curHref}}" aria-label="Open player" style="position: relative; z-index: 1; flex: 1; min-width: 0; text-decoration: none"><div style="font-size: 15.5px; font-weight: 500; color: #fff; letter-spacing: 0.04em">{{curTitle}}</div><div style="font-size: 12.5px; color: #9fd8aa; font-weight: 300">{{curArtist}}</div></a>
+<button onClick="{{prevSong}}"  aria-label="Previous" style="position: relative; z-index: 1; width: 36px; height: 36px; border: 0; background: transparent; color: #fff; cursor: pointer; padding: 0"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+<button onClick="{{toggleNow}}"  aria-label="Play or pause" style="position: relative; z-index: 1; width: 42px; height: 42px; border-radius: 50%; border: 1.5px solid #7ee08a; background: transparent; color: #fff; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center">
+<sc-if value="{{playing}}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></sc-if>
+<sc-if value="{{paused}}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" style="margin-left: 2px"><path d="M7 4.5v15L19.5 12z"/></svg></sc-if>
+</button>
+<button onClick="{{nextSong}}"  aria-label="Next" style="position: relative; z-index: 1; width: 36px; height: 36px; border: 0; background: transparent; color: #fff; cursor: pointer; padding: 0"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M16 5h2v14h-2zM4 5l11 7-11 7z"/></svg></button>
+</div>
+</sc-if>
+
+<div style="position: absolute; left: 0; right: 0; top: 826px; height: 106px; border-top: 1px solid #26332b; background: #060807">
+<div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 20px 0">
+<a href="Home.dc.html" style="width: 62px; display: flex; flex-direction: column; align-items: center; gap: 4px; color: #7ee08a">
+<svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor" aria-hidden="true"><path d="M12 3 2.5 11.5h2.8V20h5v-5.5h3.4V20h5v-8.5h2.8z"/></svg>
+<div style="font-size: 13px">Home</div>
+</a>
+<a href="Search.dc.html" style="width: 62px; display: flex; flex-direction: column; align-items: center; gap: 4px; color: #b9c6bf">
+<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+<div style="font-size: 13px">Search</div>
+</a>
+<button onClick="{{openVoice}}" aria-label="Talk to Brisic AI" style="width: 58px; height: 58px; box-sizing: border-box; border-radius: 50%; border: 2px solid #7ee08a; background: transparent; padding: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-top: -4px; box-shadow: 0 0 14px rgba(126,224,138,0.3)">
+<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#a8eeb3" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 11v2M8 7v10M12 3v18M16 8v8M20 10v4"/></svg>
+</button>
+<a href="Library.dc.html" style="width: 62px; display: flex; flex-direction: column; align-items: center; gap: 4px; color: #b9c6bf">
+<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M11 15.5V9l4-1v5.5M9.2 16.5a1.8 1.8 0 1 0 0-.01zM13.2 14.5a1.8 1.8 0 1 0 0-.01z"/></svg>
+<div style="font-size: 13px">Library</div>
+</a>
+<a href="Profile.dc.html" style="width: 62px; display: flex; flex-direction: column; align-items: center; gap: 4px; color: #b9c6bf">
+<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.5 3.5-7 8-7s8 2.5 8 7z"/></svg>
+<div style="font-size: 13px">Profile</div>
+</a>
+</div>
+</div>
+<sc-if value="{{vOpen}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; z-index: 30; background: rgba(2,6,3,0.62)">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; height: 530px; box-sizing: border-box; border-radius: 34px 34px 0 0; border-top: 1.5px solid #4fae63; background: linear-gradient(180deg, #0f2c18 0%, #050a07 72%); box-shadow: 0 -10px 40px rgba(110,230,60,0.25); padding: 20px 24px 0; font-family: 'Outfit', system-ui, sans-serif; color: #e9f2ec; display: flex; flex-direction: column">
+<div style="display: flex; align-items: center; justify-content: space-between">
+<div style="display: flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 600">
+<svg viewBox="0 0 24 24" width="20" height="20" fill="#8ee05a" aria-hidden="true"><path d="M10 4l1.8 5.2L17 11l-5.2 1.8L10 18l-1.8-5.2L3 11l5.2-1.8z"/><path d="M18.5 3l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2L15.5 6l2.2-.8z"/></svg>Brisic AI
+</div>
+<button onClick="{{closeVoice}}" aria-label="Close" style="width: 36px; height: 36px; border: 0; border-radius: 50%; background: rgba(255,255,255,0.08); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0">
+<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#e9f2ec" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+</button>
+</div>
+<div style="margin-top: 8px; font-size: 14.5px; color: #9fd8aa; text-align: center">{{vStatus}}</div>
+<sc-if value="{{vListening}}" hint-placeholder-val="{{ false }}">
+<div style="height: 112px; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 4px">
+<sc-for list="{{vBars}}" as="b" hint-placeholder-count="28"><div style="{{b.style}}"></div></sc-for>
+</div>
+</sc-if>
+<sc-if value="{{vThinking}}" hint-placeholder-val="{{ false }}">
+<div style="height: 112px; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 10px">
+<div style="width: 14px; height: 14px; border-radius: 50%; background: #8ee05a; animation: brisicWave 0.9s ease-in-out infinite"></div>
+<div style="width: 14px; height: 14px; border-radius: 50%; background: #8ee05a; animation: brisicWave 0.9s ease-in-out 0.15s infinite"></div>
+<div style="width: 14px; height: 14px; border-radius: 50%; background: #8ee05a; animation: brisicWave 0.9s ease-in-out 0.3s infinite"></div>
+</div>
+</sc-if>
+<div style="margin-top: 8px; min-height: 56px; padding: 0 6px; font-size: 21px; line-height: 1.3; color: #fff; text-align: center">{{vHeard}}</div>
+<sc-if value="{{vResult}}" hint-placeholder-val="{{ false }}">
+<div style="font-size: 14px; color: #cfe0d5; text-align: center; font-weight: 300">{{vReply}}</div>
+<div style="display: flex; flex-direction: column; gap: 8px; margin-top: 14px">
+<sc-for list="{{vResults}}" as="r" hint-placeholder-count="3">
+<div style="display: flex; align-items: center; gap: 12px; height: 56px; box-sizing: border-box; padding: 0 10px 0 6px; border-radius: 14px; border: 1px solid #2d4a37; background: rgba(18,30,24,0.92)">
+<div style="{{r.thumbStyle}}"></div>
+<div style="flex: 1; min-width: 0">
+<div style="font-size: 15px; color: #f4f8f5; white-space: nowrap; line-height: 1.25">{{r.title}}</div>
+<div style="font-size: 12.5px; color: #8fa398; font-weight: 300">{{r.artist}}</div>
+</div>
+<a href="{{r.play}}" aria-label="Play {{r.title}}" style="width: 36px; height: 36px; box-sizing: border-box; border-radius: 50%; border: 2px solid #7ee08a; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: inherit; text-decoration: none">
+<svg viewBox="0 0 24 24" width="14" height="14" fill="#e9f2ec" aria-hidden="true" style="margin-left: 2px"><path d="M6 4l14 8-14 8z"/></svg>
+</a>
+</div>
+</sc-for>
+</div>
+<button onClick="{{talkAgain}}" style="margin: 16px auto 0; height: 42px; padding: 0 24px; box-sizing: border-box; border-radius: 21px; border: 1.5px solid #7ee08a; background: transparent; color: #c6f5cc; font-family: inherit; font-size: 15px; cursor: pointer">Ask something else</button>
+</sc-if>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{optOpen}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; z-index: 25; background: rgba(2,6,3,0.62)">
+<button onClick="{{closeOpt}}" aria-label="Close" style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: transparent; cursor: default"></button>
+<div style="position: absolute; left: 0; right: 0; bottom: 0; box-sizing: border-box; border-radius: 30px 30px 0 0; border-top: 1.5px solid #4fae63; background: linear-gradient(180deg, #0f2c18, #050a07 80%); padding: 20px 20px 34px; font-family: 'Outfit', system-ui, sans-serif; color: #e9f2ec">
+<div style="font-size: 18px; font-weight: 600; margin-bottom: 8px">Playlist options</div>
+<button onClick="{{doShare}}" style="display: flex; align-items: center; width: 100%; box-sizing: border-box; height: 56px; padding: 0 6px; border: 0; border-bottom: 1px solid rgba(255,255,255,0.08); background: transparent; color: #f1f7f3; font-family: inherit; font-size: 16.5px; text-align: left; cursor: pointer">Share playlist</button>
+<button onClick="{{doSave}}" style="display: flex; align-items: center; width: 100%; box-sizing: border-box; height: 56px; padding: 0 6px; border: 0; border-bottom: 1px solid rgba(255,255,255,0.08); background: transparent; color: #f1f7f3; font-family: inherit; font-size: 16.5px; text-align: left; cursor: pointer">Download</button>
+<button onClick="{{doAdd}}" style="display: flex; align-items: center; width: 100%; box-sizing: border-box; height: 56px; padding: 0 6px; border: 0; border-bottom: 1px solid rgba(255,255,255,0.08); background: transparent; color: #f1f7f3; font-family: inherit; font-size: 16.5px; text-align: left; cursor: pointer">Add to library</button>
+<a href="Queue.dc.html" style="display: flex; align-items: center; width: 100%; box-sizing: border-box; height: 56px; padding: 0 6px; border: 0; border-bottom: 1px solid rgba(255,255,255,0.08); background: transparent; color: #f1f7f3; font-family: inherit; font-size: 16.5px; text-align: left; cursor: pointer">Add to queue</a>
+<a href="Party.dc.html" style="display: flex; align-items: center; width: 100%; box-sizing: border-box; height: 56px; padding: 0 6px; border: 0; border-bottom: 1px solid rgba(255,255,255,0.08); background: transparent; color: #f1f7f3; font-family: inherit; font-size: 16.5px; text-align: left; cursor: pointer">Start a party with this</a>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{hasToast}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; left: 50%; transform: translateX(-50%); bottom: 110px; z-index: 40; max-width: 340px; padding: 12px 20px; border-radius: 22px; background: #7ee08a; color: #06200e; font-size: 15px; font-weight: 600; text-align: center">{{toast}}</div>
+</sc-if>
+<div style="position: absolute; left: 148px; bottom: 9px; width: 134px; height: 5px; border-radius: 3px; background: rgba(240,255,245,0.9); z-index: 6"></div>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":520,"height":1022}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { cur: -1, playing: false, prog: 0, optOpen: false, toast: '' };
+this.voiceInit();
+this.durs = [204, 178, 242, 197, 227, 155, 241];
+this._pv = setInterval(() => this.pTick(), 1000);
+}
+pTick() {
+const s = this.state;
+if (!s.playing || s.cur < 0) return;
+const d = this.durs[s.cur];
+const np = s.prog + 100 / d * 4;
+if (np >= 100) this.setState({ cur: (s.cur + 1) % this.durs.length, prog: 0 });
+else this.setState({ prog: np });
+}
+flash(m) { this.setState({ toast: m }); clearTimeout(this._tt); this._tt = setTimeout(() => this.setState({ toast: '' }), 2200); }
+voiceInit() {
+this.state = Object.assign({}, this.state, { vOpen: false, vPhase: 'idle', vHeard: '', vReply: '', vResults: [], vRound: 0 });
+this._t = [];
+}
+vClear() { (this._t || []).forEach(clearTimeout); this._t = []; }
+vLater(fn, ms) { this._t = this._t || []; this._t.push(setTimeout(fn, ms)); }
+vStart() {
+this.vClear();
+const rounds = [
+{ say: 'Play some Afrobeats for me', reply: 'Here are some Afrobeats picks', res: [['Last Last', 'Kelechi Ade', 'linear-gradient(150deg,#e08a3a,#5a2a10)'], ['Calm Down', 'Tobi Rae', 'linear-gradient(150deg,#2a8a8a,#0c2a30)'], ['Sungba', 'Dayo Mane', 'linear-gradient(170deg,#f07a2a,#8a2a0a)']] },
+{ say: 'What song is this?', reply: 'Found it! This sounds like Lost in the Noise', res: [['Lost in the Noise', 'Unknown Artist', 'linear-gradient(180deg,#2a4ab8 0%,#c8421a 70%,#3a1a10 100%)'], ['No Name', 'Unknown Artist', 'radial-gradient(circle at 50% 50%, #3f9a2a, #07120a)']] },
+{ say: 'Something chill for tonight', reply: 'Chill vibes coming up', res: [['Essence', 'Nuela', 'linear-gradient(150deg,#9a5ab8,#2a0f45)'], ['Joy', 'Sade Vox', 'linear-gradient(150deg,#2a5ac8,#0c1a5a)'], ['Better Days', 'Unknown Artist', 'linear-gradient(180deg,#5a6a9a 0%,#e08a5a 60%,#3a2a3a 100%)']] }
+];
+const r = rounds[this.state.vRound % rounds.length];
+this.setState({ vOpen: true, vPhase: 'listening', vHeard: '', vReply: '', vResults: [], vRound: this.state.vRound + 1 });
+const words = r.say.split(' ');
+words.forEach((w, i) => this.vLater(() => this.setState({ vHeard: words.slice(0, i + 1).join(' ') }), 900 + i * 450));
+const tEnd = 900 + words.length * 450 + 700;
+this.vLater(() => this.setState({ vPhase: 'thinking' }), tEnd);
+this.vLater(() => this.setState({ vPhase: 'result', vReply: r.reply, vResults: r.res }), tEnd + 1200);
+}
+vClose() { this.vClear(); this.setState({ vOpen: false, vPhase: 'idle', vHeard: '', vReply: '', vResults: [] }); }
+voiceVals() {
+const s = this.state;
+const bars = [];
+for (let i = 0; i < 28; i++) {
+const d = (0.55 + ((i * 37) % 10) / 14).toFixed(2);
+const dl = (((i * 53) % 10) / 12).toFixed(2);
+const h = 30 + ((i * 29) % 7) * 12;
+bars.push({ style: 'width:5px;border-radius:3px;background:#8ee05a;box-shadow:0 0 8px rgba(142,224,90,0.55);height:' + h + 'px;transform-origin:center;animation:brisicWave ' + d + 's ease-in-out ' + dl + 's infinite' });
+}
+const st = { listening: 'Listening…', thinking: 'Thinking…', result: 'Here you go' };
+return {
+vOpen: !!s.vOpen,
+vStatus: st[s.vPhase] || '',
+vListening: s.vPhase === 'listening',
+vThinking: s.vPhase === 'thinking',
+vResult: s.vPhase === 'result',
+vBars: bars,
+vHeard: s.vHeard ? '“' + s.vHeard + '”' : '',
+vReply: s.vReply,
+vResults: (s.vResults || []).map((x) => ({ play: 'Main.dc.html?play=1&t=' + encodeURIComponent(x[0]) + '&a=' + encodeURIComponent(x[1]), title: x[0], artist: x[1], thumbStyle: 'width:48px;height:48px;border-radius:8px;flex-shrink:0;background:' + x[2] })),
+openVoice: () => this.vStart(),
+closeVoice: () => this.vClose(),
+talkAgain: () => this.vStart()
+};
+}
+renderVals() {
+const list = [
+['VIBE HIGH', 204], ['NO LIMIT', 178], ['ALL NIGHT', 242], ['MY WAY', 197], ['FOREVER', 227], ['NEVER STOP', 155], ['ONE LIFE', 241], ['GOLDEN HOUR', 189], ['LAGOS LIGHTS', 212], ['RUN IT UP', 168], ['SLOW DOWN', 236], ['HIGHER', 201], ['GOOD ENERGY', 193], ['TAKE ME HOME', 223], ['SUNRISE', 175], ['FEEL IT', 208], ['WAVE', 184], ['LAST DANCE', 249]
+];
+const fmt = (t) => Math.floor(t / 60) + ':' + String(t % 60).padStart(2, '0');
+const colors = list.map((x, i) => ['#8ee05a', '#7edc62', '#86e070', '#8ee05a', '#8ae05e', '#80dc68'][i % 6]);
+const S = this.state;
+const titles = list.map((x) => x[0]);
+const ARTISTS = ['Kelechi Ade', 'Tobi Rae', 'Nuela', 'Dayo Mane', 'Sade Vox', 'Kofi Lane', 'Zuri Kaya', 'Ayo Blaze', 'Fireboy DML', 'Omah Lay', 'Ruger', 'CKay', 'Joeboy', 'Adekunle Gold', 'Kizz Daniel', 'Olamide', 'Black Sherif', 'Libianca'];
+const artistOf = (i) => ARTISTS[i % ARTISTS.length];
+const recHist = (t, sub) => { try { let h = JSON.parse(localStorage.getItem('brisic-history') || '[]'); h = h.filter((x) => x.t !== t); h.unshift({ t: t, s: sub }); localStorage.setItem('brisic-history', JSON.stringify(h.slice(0, 30))); } catch (e) {} };
+if (S.cur >= 0 && S.playing && this._rec !== S.cur) { this._rec = S.cur; recHist(titles[S.cur], artistOf(S.cur)); }
+return Object.assign(this.voiceVals(), {
+optOpen: !!S.optOpen, hasToast: !!S.toast, toast: S.toast || "",
+openOpt: () => this.setState({ optOpen: true }), closeOpt: () => this.setState({ optOpen: false }),
+doShare: () => { this.setState({ optOpen: false }); this.flash('Link copied. Share it with friends.'); },
+doAdd: () => { this.setState({ optOpen: false }); this.flash('Added to your library.'); },
+doSave: () => { this.setState({ optOpen: false }); this.flash('Downloading. Available offline in Library.'); },
+
+hasCur: S.cur >= 0, playing: S.playing, paused: !S.playing, prog: Math.round(S.prog), curTitle: S.cur >= 0 ? titles[S.cur] : '', curArtist: S.cur >= 0 ? artistOf(S.cur) : '', curHref: S.cur >= 0 ? 'Main.dc.html?play=1&t=' + encodeURIComponent(titles[S.cur]) + '&a=' + encodeURIComponent(artistOf(S.cur)) : 'Main.dc.html?play=1',
+playAll: () => { const t = this.state; if (t.cur < 0) this.setState({ cur: 0, playing: true, prog: 0 }); else this.setState({ playing: !t.playing }); },
+shuffleAll: () => this.setState({ cur: Math.floor(Math.random() * titles.length), playing: true, prog: 0 }),
+toggleNow: () => this.setState({ playing: !this.state.playing }),
+prevSong: () => this.setState({ cur: (this.state.cur + titles.length - 1) % titles.length, prog: 0 }),
+nextSong: () => this.setState({ cur: (this.state.cur + 1) % titles.length, prog: 0 }),
+songs: list.map((x, i) => ({ more: (e) => { try { e.stopPropagation(); } catch (x2) {} this.setState({ optOpen: true }); }, n: i + 1, title: x[0], time: fmt(x[1]), numColor: this.state.cur === i ? '#ffffff' : colors[i], nLabel: this.state.cur === i ? (this.state.playing ? '\u266B' : '\u275A\u275A') : (i + 1) + '.', titleColor: this.state.cur === i ? '#7ee08a' : '#f1f7f3', rowStyle: 'display: flex; align-items: center; height: 62px; width: 100%; box-sizing: border-box; padding: 0 20px 0 20px; border-radius: 0; font-family: inherit; cursor: pointer; text-align: left; border: 0; background: ' + (this.state.cur === i ? 'rgba(30,70,40,0.9)' : '#000'), tap: () => this.setState({ cur: i, playing: true, prog: 0 }), streams: ['2.1M', '1.6M', '3.4M', '987K', '1.2M', '640K', '2.8M', '1.9M', '2.4M', '870K', '1.1M', '3.1M', '760K', '1.4M', '920K', '2.2M', '580K', '1.7M'][i] + ' streams' })),
+total: fmt(list.reduce((s, x) => s + x[1], 0))
+});
+}
+}
+</script>
+</body>
+</html>
