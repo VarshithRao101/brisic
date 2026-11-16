@@ -11,46 +11,134 @@
   --text: #e9f2ec;
   --muted: #8fb09b;
   --accent: #9fd8aa;
+  /* Player accent; overridden per user from Settings. */
+  --player: #7ee08a;
 }
 
 @theme inline {
   --color-bg: var(--bg);
   --color-card: var(--card);
-  --color-border: var(--border);
+  --color-line: var(--border);
   --color-primary: var(--primary);
-  --color-text: var(--text);
+  --color-primary-ink: var(--primary-ink);
+  --color-ink: var(--text);
   --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-player: var(--player);
   --font-sans: var(--font-outfit), system-ui, sans-serif;
 }
 
-* {
-  box-sizing: border-box;
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: #050a07;
+    background-image: radial-gradient(90% 60% at 50% 0%, #0f2c18 0%, #060a08 55%, #030504 100%);
+    background-attachment: fixed;
+    color: var(--text);
+    font-family: var(--font-outfit), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button {
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 2px solid #bbf7d0;
+    outline-offset: 2px;
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1b2b22;
+    border-radius: 8px;
+  }
 }
 
-html,
-body {
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  background:
-    radial-gradient(90% 60% at 50% 0%, #0f2c18 0%, #060a08 55%, #030504 100%);
-  color: var(--text);
-  font-family: var(--font-outfit), system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-::-webkit-scrollbar-thumb {
-  background: #1b2b22;
-  border-radius: 8px;
+@layer components {
+  /* Shared control styles */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 44px;
+    padding: 0 20px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 15px;
+    border: 1.5px solid var(--border);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text);
+    transition: background 0.15s, opacity 0.15s;
+  }
+  .btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .btn-primary {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--primary-ink);
+  }
+  .btn-primary:hover {
+    background: #93eb9e;
+  }
+  .btn-sm {
+    height: 34px;
+    padding: 0 14px;
+    font-size: 13.5px;
+  }
+  .field {
+    width: 100%;
+    height: 48px;
+    padding: 0 18px;
+    border-radius: 999px;
+    border: 1.5px solid var(--border);
+    background: var(--card-2);
+    color: #f1f7f3;
+    font-size: 16px;
+    font-family: inherit;
+    outline: none;
+  }
+  .field::placeholder {
+    color: #8fa398;
+  }
+  .field:focus {
+    border-color: var(--primary);
+  }
+  .panel {
+    border: 1px solid var(--border);
+    background: rgba(11, 26, 17, 0.7);
+    border-radius: 20px;
+  }
 }

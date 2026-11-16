@@ -1,53 +1,53 @@
-# Brisic — production app setup
+# Brisic — production app
 
-Next.js 16 (App Router, TypeScript, Tailwind v4) + Auth.js (NextAuth v5) Google OAuth + Prisma 6 + Postgres (Neon).
+Next.js 16 (App Router, TypeScript, Tailwind v4) · Auth.js v5 (Google + email/password) · Prisma 6 · Neon Postgres.
 
-## What works right now
-- Responsive **Login** screen (`/login`) with working **Continue with Google**.
-- Auth-gated **Home** (`/`) — redirects to `/login` when signed out; greets the user, shows catalog rows (placeholder) and a bottom nav when signed in.
-- NextAuth endpoints live at `/api/auth/*`.
-- Prisma schema for users + OAuth accounts/sessions (with `coins`, `isPremium`).
-- `npm run build` passes clean.
-
-## To make it fully live — 3 credentials needed
-
-### 1. Google OAuth
-Google Cloud Console → APIs & Services → Credentials → **Create OAuth client ID** → Web application.
-- Authorized JavaScript origin: `http://localhost:3000` (and later your Vercel URL)
-- Authorized redirect URI: `http://localhost:3000/api/auth/callback/google`
-  (and later `https://YOUR-VERCEL-DOMAIN/api/auth/callback/google`)
-
-Put the values in `.env.local`:
+## Run it
 ```
-AUTH_GOOGLE_ID="...apps.googleusercontent.com"
-AUTH_GOOGLE_SECRET="..."
+npm install
+npm run dev        # http://localhost:3000
+npm run build      # production build
+npx eslint src     # lint
 ```
+Env files: `.env` holds `DATABASE_URL` + `DIRECT_URL`; `.env.local` holds the auth keys. Both are gitignored. See `.env.example` for every variable.
 
-### 2. Database (Neon Postgres)
-Create a free project at neon.tech, copy the connection string into `.env.local`:
-```
-DATABASE_URL="postgresql://...neon.tech/neondb?sslmode=require"
-```
-Then create the tables:
-```
-npx prisma migrate dev --name init
-```
+## What is built
+Every prototype screen is now a real, responsive page (phone → tablet → desktop sidebar layout):
 
-### 3. Deploy (Vercel)
-- Import the repo in Vercel, set **Root Directory** to `brisic-app`.
-- Add env vars in Vercel: `AUTH_SECRET`, `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`, `DATABASE_URL`.
-- Add the Vercel domain to Google's authorized origins/redirects (step 1).
+| Area | Routes |
+|---|---|
+| Sign in | `/login`, `/signup` (Google, or email + password with strength rules) |
+| Listen | `/` Home, `/search`, `/genres`, `/genre/[id]`, `/trending`, `/stations`, `/see-all/[id]` |
+| Music | `/artist/[id]`, `/album/[id]`, `/playlist/[id]`, `/player` (full player + lyrics), `/queue` |
+| Library | `/library`, `/library/liked`, `/library/history`, `/library/playlists/[id]`, `/following` |
+| Fans | `/artist/[id]/support`, `/gifts`, `/exclusive`, `/merch`, `/coins` |
+| Podcasts | `/shows`, `/shows/[id]`, `/watch/[id]` |
+| You | `/profile`, `/profile/edit`, `/settings`, `/notifications`, `/premium`, `/info/[topic]` |
+| Other | `/ai` Brisic AI, `/party`, `/download` (get-the-app page) |
 
-## Dev
-```
-npm run dev      # http://localhost:3000
-npm run build    # production build
-```
+**Saved to the database per user:** liked songs, playlists (create, rename, delete, add/remove songs), followed artists, listening history (respects Private session), settings (player color applies live), B-Coin balance with a full ledger, gifts sent, exclusive unlocks, notifications. New accounts get 500 welcome B-Coins.
 
-`AUTH_SECRET` is already generated in `.env.local`.
+**Player:** persistent bar on every page, queue, shuffle, seek, next/prev, lock-screen metadata, queue restored after reload.
 
-## Next build steps (daily dev)
-- Music catalog + search + playback (pick API: Spotify / Deezer / Audius).
-- Rebuild remaining screens (Library, Search, Artist, Playlist, Profile, etc.).
-- Payments (Paystack/Stripe) on the Premium page.
-- Package as APK (Capacitor / TWA) at the end.
+**Get-the-app:** a Spotify-style "Get app" banner on mobile web (dismissible, hidden inside the installed app), an "Install app" link on desktop, and `/download`. The site is installable today (web app manifest + icons). Set `NEXT_PUBLIC_APK_URL` to switch on the Android download button once the APK exists.
+
+## Connecting the Global Tune API (one file)
+All screens read music through one interface, `src/lib/catalog/types.ts`. Right now they use sample data (`mock.ts`).
+1. Fill in `src/lib/catalog/globaltune.ts` — map the API's responses to `Track`, `Artist`, `Album`, ... Each method you leave out keeps using sample data, so you can connect it one call at a time. `Track.streamUrl` is what makes songs actually play.
+2. Set `GLOBAL_TUNE_API_URL`, `GLOBAL_TUNE_API_KEY` and `CATALOG_PROVIDER="globaltune"`.
+3. Set `isSample: false` in `globaltune.ts` to remove the "sample catalog" note.
+
+## Not live yet (shown honestly in the UI)
+- **Audio:** sample songs have no sound; the player simulates progress until the API provides stream URLs.
+- **Payments:** Premium, coin packs and merch checkout are disabled ("opens when payments go live"). No card fields exist.
+- **Community Party:** "coming soon" page — needs real-time sync.
+- **Profile photo upload, email verification, password reset:** not built yet.
+
+## Deploy (Vercel)
+1. Import the repo, set **Root Directory** to `brisic-app`.
+2. Env vars: `AUTH_SECRET`, `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`, `DATABASE_URL` (the **pooled** URL), `DIRECT_URL`, plus the catalog vars.
+3. Add the Vercel domain to the Google client (origin + `/api/auth/callback/google`).
+4. **Google login is in Testing mode:** only listed test users can sign in. Add your partner's Gmail under Google Auth Platform → Audience → Test users, or publish the app.
+
+## Database
+Neon project `shy-resonance-92964381` (AWS US East, N. Virginia). Migrations live in `prisma/migrations`; apply with `npx prisma migrate deploy`. Create new ones with `npx prisma migrate dev --name <change>` in an interactive terminal. Never point a shadow database at this database: it gets wiped.

@@ -1,13 +1,16 @@
 // Brisic — production schema
-// Auth.js (NextAuth) models + Brisic user fields.
+// Auth.js (NextAuth) models + Brisic user data.
+// Track/artist rows store a small snapshot (title, artist) of catalog items,
+// so the library renders without calling the music API.
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -18,11 +21,23 @@ model User {
   image         String?
 
   // Brisic-specific
+  username      String?   @unique
+  passwordHash  String?
+  bio           String?
   coins         Int       @default(0)
   isPremium     Boolean   @default(false)
+  settings      Json?
 
   accounts      Account[]
   sessions      Session[]
+  likes         LikedTrack[]
+  playlists     UserPlaylist[]
+  follows       Follow[]
+  history       PlayHistory[]
+  coinLedger    CoinTransaction[]
+  gifts         Gift[]
+  unlocks       Unlock[]
+  notifications Notification[]
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -61,4 +76,121 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model LikedTrack {
+  id          String   @id @default(cuid())
+  userId      String
+  trackId     String
+  title       String
+  artistId    String
+  artistName  String
+  durationSec Int
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, trackId])
+  @@index([userId, createdAt])
+}
+
+model UserPlaylist {
+  id        String          @id @default(cuid())
+  userId    String
+  name      String
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tracks    PlaylistTrack[]
+
+  @@index([userId, updatedAt])
+}
+
+model PlaylistTrack {
+  id          String       @id @default(cuid())
+  playlistId  String
+  trackId     String
+  title       String
+  artistId    String
+  artistName  String
+  durationSec Int
+  addedAt     DateTime     @default(now())
+  playlist    UserPlaylist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+
+  @@unique([playlistId, trackId])
+}
+
+model Follow {
+  id         String   @id @default(cuid())
+  userId     String
+  artistId   String
+  artistName String
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, artistId])
+}
+
+model PlayHistory {
+  id          String   @id @default(cuid())
+  userId      String
+  trackId     String
+  title       String
+  artistId    String
+  artistName  String
+  durationSec Int
+  playedAt    DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, playedAt])
+}
+
+model CoinTransaction {
+  id        String   @id @default(cuid())
+  userId    String
+  amount    Int // positive = added, negative = spent
+  kind      String // BONUS | GIFT | UNLOCK | PURCHASE
+  note      String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+model Gift {
+  id         String   @id @default(cuid())
+  userId     String
+  artistId   String
+  artistName String
+  giftId     String
+  giftName   String
+  quantity   Int
+  coins      Int
+  message    String?
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([artistId, createdAt])
+}
+
+model Unlock {
+  id        String   @id @default(cuid())
+  userId    String
+  itemId    String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, itemId])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  body      String
+  href      String?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
 }

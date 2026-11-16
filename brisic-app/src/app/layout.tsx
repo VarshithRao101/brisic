@@ -11,16 +11,20 @@ const outfit = Outfit({
 
 export const metadata: Metadata = {
   title: "Brisic — Music that understands you",
-  description: "Brisic music streaming.",
+  description: "Brisic is a music home for artists, fans and podcasters. Listen, follow, gift and join parties.",
+  applicationName: "Brisic",
+  appleWebApp: { capable: true, title: "Brisic", statusBarStyle: "black-translucent" },
+  icons: { icon: "/icons/icon-192.png", apple: "/icons/icon-192.png" },
 };
 
 export const viewport: Viewport = {
   themeColor: "#050a07",
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${outfit.variable} h-full`}>
       <body className="min-h-full">
