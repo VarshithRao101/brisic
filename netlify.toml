@@ -7,3 +7,8 @@
 
 [build.environment]
   NODE_VERSION = "22"
+
+# The Next.js runtime turns the build into server functions. Without it Netlify
+# uploads .next as static files and every page returns 404.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
