@@ -7,10 +7,10 @@
 
 [build.environment]
   NODE_VERSION = "22"
-  # These env values are plain settings, not secrets ("mock", "true"). Netlify's
+  # These env values are plain settings, not secrets ("mock", "true", the public site URL). Netlify's
   # secret scanner treats every env value as secret and fails the build because
   # words like "mock" appear in library code. Real secrets are still scanned.
-  SECRETS_SCAN_OMIT_KEYS = "CATALOG_PROVIDER,AUTH_TRUST_HOST"
+  SECRETS_SCAN_OMIT_KEYS = "CATALOG_PROVIDER,AUTH_TRUST_HOST,AUTH_URL"
 
 # The Next.js runtime turns the build into server functions. Without it Netlify
 # uploads .next as static files and every page returns 404.
