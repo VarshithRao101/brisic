@@ -1,0 +1,9 @@
+# One Netlify site serves the whole Brisic app: pages and backend
+# (server actions, /api/auth) are deployed together by Netlify's Next.js runtime.
+[build]
+  base = "brisic-app"
+  command = "npm run build:deploy"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"

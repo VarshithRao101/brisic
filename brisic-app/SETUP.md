@@ -43,11 +43,14 @@ All screens read music through one interface, `src/lib/catalog/types.ts`. Right 
 - **Community Party:** "coming soon" page — needs real-time sync.
 - **Profile photo upload, email verification, password reset:** not built yet.
 
-## Deploy (Vercel)
-1. Import the repo, set **Root Directory** to `brisic-app`.
-2. Env vars: `AUTH_SECRET`, `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`, `DATABASE_URL` (the **pooled** URL), `DIRECT_URL`, plus the catalog vars.
-3. Add the Vercel domain to the Google client (origin + `/api/auth/callback/google`).
-4. **Google login is in Testing mode:** only listed test users can sign in. Add your partner's Gmail under Google Auth Platform → Audience → Test users, or publish the app.
+## Deploy (Netlify — one site for pages + backend)
+`netlify.toml` at the repo root already sets the base directory (`brisic-app`), the build command (`npm run build:deploy`, which also applies database migrations) and Node 22.
+1. Netlify → **Add new site → Import an existing project** → GitHub → `VarshithRao101/brisic`. Leave the build settings as Netlify reads them from `netlify.toml`.
+2. **Environment variables → Import from a .env file**: paste `brisic-app/.env.netlify` (gitignored, kept on your laptop). It includes `AUTH_TRUST_HOST=true`, which Netlify needs for sign-in.
+3. Deploy, then add the site address to the Google client (origin + `/api/auth/callback/google`).
+4. **Google login is in Testing mode:** add testers under Google Auth Platform → Audience → Test users, or publish the app.
+
+Vercel also works (`vercel.json` + `vercel-build` script): set Root Directory to `brisic-app` and import the same env file.
 
 ## Database
 Neon project `shy-resonance-92964381` (AWS US East, N. Virginia). Migrations live in `prisma/migrations`; apply with `npx prisma migrate deploy`. Create new ones with `npx prisma migrate dev --name <change>` in an interactive terminal. Never point a shadow database at this database: it gets wiped.
