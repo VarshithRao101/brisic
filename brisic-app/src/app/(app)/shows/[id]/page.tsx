@@ -18,7 +18,7 @@ export default async function ShowPage({ params }: { params: Promise<{ id: strin
   return (
     <>
       <BackButton />
-      <Hero cover={<Cover seed={show.id} label={show.title} textSize="text-2xl" />} kind="Podcast" title={show.title} meta={`Hosted by ${show.host} · ${show.episodeCount} episodes`}>
+      <Hero cover={<Cover seed={show.id} label={show.title} />} kind="Podcast" title={show.title} meta={`Hosted by ${show.host} · ${show.episodeCount} episodes`}>
         {latest && <Link href={`/watch/${latest.id}`} className="btn btn-primary"><Icon name="play" size={18} /> Latest episode</Link>}
         <ShareButton title={show.title} />
       </Hero>

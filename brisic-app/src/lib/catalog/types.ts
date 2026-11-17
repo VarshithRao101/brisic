@@ -72,6 +72,22 @@ export type Episode = {
   mediaUrl?: string | null;
 };
 
+/** Artist Spotlight: interviews, documentaries, performances and lives. */
+export type SpotlightItem = {
+  id: string;
+  artistId: string;
+  artistName: string;
+  title: string;
+  kind: "Video" | "Audio" | "Live" | "Interview";
+  /** Seconds; 0 for a live stream. */
+  durationSec: number;
+  views: number;
+  blurb: string;
+  /** Video/audio URL. null until the media API is connected. */
+  mediaUrl?: string | null;
+  poster?: string | null;
+};
+
 export type HomeSection = { id: string; title: string; playlists: Playlist[] };
 
 export type SearchResults = {
@@ -109,6 +125,8 @@ export interface CatalogProvider {
   getShows(): Promise<Show[]>;
   getShow(id: string): Promise<{ show: Show; episodes: Episode[] } | null>;
   getEpisode(id: string): Promise<{ episode: Episode; show: Show; more: Episode[] } | null>;
+  getSpotlight(): Promise<SpotlightItem[]>;
+  getSpotlightItem(id: string): Promise<{ item: SpotlightItem; more: SpotlightItem[] } | null>;
   /** Picks for the Brisic AI screen from a free-text request. */
   suggest(prompt: string): Promise<{ reply: string; tracks: Track[] }>;
 }

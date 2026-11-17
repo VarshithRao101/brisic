@@ -42,6 +42,8 @@ model User {
   notifications Notification[]
   resetTokens   PasswordResetToken[]
   avatar        Avatar?
+  partyRooms    PartyRoom[]
+  partyMembers  PartyMember[]
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -229,4 +231,78 @@ model Avatar {
   data      Bytes
   updatedAt DateTime @updatedAt
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ---------- Community Party (listening rooms) ----------
+
+model PartyRoom {
+  id          String    @id @default(cuid())
+  code        String    @unique
+  name        String
+  hostId      String
+  isPublic    Boolean   @default(true)
+  chatOpen    Boolean   @default(true)
+  nowItemId   String?
+  nowStarted  DateTime?
+  endedAt     DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  host        User      @relation(fields: [hostId], references: [id], onDelete: Cascade)
+  members     PartyMember[]
+  queue       PartyQueueItem[]
+  messages    PartyMessage[]
+
+  @@index([isPublic, endedAt, updatedAt])
+  @@index([hostId])
+}
+
+model PartyMember {
+  id       String    @id @default(cuid())
+  roomId   String
+  userId   String
+  joinedAt DateTime  @default(now())
+  lastSeen DateTime  @default(now())
+  room     PartyRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([roomId, userId])
+  @@index([userId])
+}
+
+model PartyQueueItem {
+  id          String    @id @default(cuid())
+  roomId      String
+  trackId     String
+  title       String
+  artistName  String
+  durationSec Int
+  addedById   String
+  addedByName String
+  votes       Int       @default(0)
+  playedAt    DateTime?
+  createdAt   DateTime  @default(now())
+  room        PartyRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  voters      PartyVote[]
+
+  @@index([roomId, playedAt])
+}
+
+model PartyVote {
+  itemId String
+  userId String
+  item   PartyQueueItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@id([itemId, userId])
+}
+
+model PartyMessage {
+  id        String    @id @default(cuid())
+  roomId    String
+  userId    String
+  userName  String
+  text      String
+  createdAt DateTime  @default(now())
+  room      PartyRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@index([roomId, createdAt])
 }

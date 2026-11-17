@@ -10,8 +10,8 @@ import { fetchStationTracks } from "@/app/actions";
 export function BackButton({ label = "Back" }: { label?: string }) {
   const router = useRouter();
   return (
-    <button type="button" onClick={() => router.back()} className="mb-3 inline-flex items-center gap-1 border-0 bg-transparent p-0 text-[14px] text-muted hover:text-ink">
-      <Icon name="back" size={18} /> {label}
+    <button type="button" onClick={() => router.back()} aria-label={label} title={label} className="mb-3 flex h-9 w-9 items-center justify-center rounded-full border-[1.5px] border-primary/70 bg-black/30 p-0 text-ink hover:bg-white/10">
+      <Icon name="back" size={18} />
     </button>
   );
 }

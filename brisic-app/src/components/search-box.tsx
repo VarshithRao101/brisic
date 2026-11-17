@@ -31,7 +31,7 @@ export function SearchBox({ initial }: { initial: string }) {
       <form role="search" onSubmit={(e) => { e.preventDefault(); go(q); }} className="relative">
         <label className="sr-only" htmlFor="search-input">Search songs, artists and podcasts</label>
         <Icon name="search" size={20} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-muted" />
-        <input id="search-input" className="field !pl-12 !pr-12" placeholder="What do you want to hear?" value={q} onChange={(e) => setQ(e.target.value)} autoComplete="off" />
+        <input id="search-input" className="field !border-primary/70 !pl-12 !pr-12 shadow-[0_0_12px_rgba(var(--primary-rgb),0.15)]" placeholder="Search artists, songs, albums…" value={q} onChange={(e) => setQ(e.target.value)} autoComplete="off" />
         {q && (
           <button type="button" aria-label="Clear search" onClick={() => { setQ(""); router.push("/search"); }} className="absolute right-3 top-1/2 -translate-y-1/2 border-0 bg-transparent p-1.5 text-muted">
             <Icon name="x" size={18} />

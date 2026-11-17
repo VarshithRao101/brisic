@@ -16,6 +16,14 @@ export const GIFTS = [
   { id: "watch", name: "Diamond Watch", tag: "A timeless flex for a legend", price: 2_500_000, emoji: "⌚" },
 ] as const;
 
+/** Gift tiers shown on the Send a Gift screen, cheapest first. */
+export const GIFT_TIERS = [
+  { id: "fan", name: "Fan", blurb: "Small love, big meaning", gifts: ["mic", "speaker", "studiomic", "amp"] },
+  { id: "star", name: "Star", blurb: "Make them feel like royalty", gifts: ["crown", "drums", "car"] },
+  { id: "legend", name: "Legend", blurb: "Life-changing support", gifts: ["studio", "universe"] },
+  { id: "icon", name: "Icon", blurb: "The rarest gifts on Brisic", gifts: ["jet", "watch"] },
+] as const;
+
 export const COIN_PACKS = [100, 500, 1_000, 5_000, 10_000, 25_000, 100_000, 250_000].map((coins) => ({
   coins,
   metal: coins >= 1000 ? "Gold" : "Silver",

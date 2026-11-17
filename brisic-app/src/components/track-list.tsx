@@ -8,13 +8,39 @@ import { Icon } from "@/components/icons";
 import { useLibrary, usePlayer } from "@/components/app-state";
 import { fmtCount, fmtTime } from "@/lib/format";
 
+/** Poster card that plays a song (used for "Recently Played"). */
+export function TrackCard({ tracks, index }: { tracks: Track[]; index: number }) {
+  const p = usePlayer();
+  const t = tracks[index];
+  const isCurrent = p.current?.id === t.id;
+  return (
+    <div className="w-[156px] shrink-0 sm:w-[176px] lg:w-auto">
+      <button
+        type="button"
+        aria-label={`Play ${t.title} by ${t.artistName}`}
+        onClick={() => (isCurrent ? p.toggle() : p.playQueue(tracks, index))}
+        className="relative block w-full border-0 bg-transparent p-0 transition hover:-translate-y-0.5"
+      >
+        <Cover seed={t.albumId ?? t.id} label={t.title} src={t.artwork} />
+        <span aria-hidden="true" className="absolute bottom-2 right-2 flex h-[34px] w-[34px] items-center justify-center rounded-full border-2 border-primary bg-black/55 text-[#e9f2ec]">
+          <Icon name={isCurrent && p.playing ? "pause" : "play"} size={15} className={isCurrent && p.playing ? "" : "ml-0.5"} />
+        </span>
+      </button>
+      <Link href={`/artist/${t.artistId}`} className="block">
+        <p className={`m-0 mt-2.5 truncate text-[15px] leading-tight ${isCurrent ? "text-player" : "text-ink"}`}>{t.title}</p>
+        <p className="m-0 mt-0.5 truncate text-[13px] font-light text-muted">{t.artistName}</p>
+      </Link>
+    </div>
+  );
+}
+
 /** Play and Shuffle buttons for a list of tracks. */
 export function PlayButtons({ tracks, label = "Play" }: { tracks: Track[]; label?: string }) {
   const p = usePlayer();
   if (!tracks.length) return null;
   return (
     <div className="flex items-center gap-2.5">
-      <button type="button" className="btn btn-primary" onClick={() => p.playQueue(tracks, 0)}>
+      <button type="button" className="btn btn-primary !px-7" onClick={() => p.playQueue(tracks, 0)}>
         <Icon name="play" size={18} /> {label}
       </button>
       <button
@@ -121,7 +147,7 @@ export function TrackList({
               {menu === t.id && (
                 <>
                   <button type="button" aria-label="Close menu" className="fixed inset-0 z-40 cursor-default border-0 bg-transparent" onClick={() => setMenu(null)} />
-                  <div role="menu" className="absolute right-2 top-12 z-50 w-52 overflow-hidden rounded-xl border border-line bg-[#0f2318] py-1 shadow-xl">
+                  <div role="menu" className="absolute right-2 top-12 z-50 w-52 overflow-hidden rounded-xl border border-line bg-card py-1 shadow-xl">
                     <button role="menuitem" type="button" className="block w-full border-0 bg-transparent px-4 py-2.5 text-left text-[14.5px] text-ink hover:bg-white/5" onClick={() => { p.enqueue(t); setMenu(null); }}>Add to queue</button>
                     <button role="menuitem" type="button" className="block w-full border-0 bg-transparent px-4 py-2.5 text-left text-[14.5px] text-ink hover:bg-white/5" onClick={() => { setPicking(t); setMenu(null); }}>Add to playlist</button>
                     <Link role="menuitem" href={`/artist/${t.artistId}`} className="block px-4 py-2.5 text-[14.5px] text-ink hover:bg-white/5">Go to artist</Link>

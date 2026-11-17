@@ -37,12 +37,18 @@ const PATHS = {
   history: "M4 12a8 8 0 1 0 2.500-5.800M4 5v4h4M12 8v4.500l3 1.500",
   trash: "M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13",
   pencil: "M4 20l1-4L16 5l3 3L8 19zM14 7l3 3",
+  wave: "M4 11v2M8 7v10M12 3v18M16 8v8M20 10v4",
+  books: "M3 4h7v16H3zM14 4h6.500v16H14zM17 8v8",
+  homeFill: "M12 3 2.500 11.500h2.800V20h5v-5.500h3.400V20h5v-8.500h2.800z",
+  link: "M10 14a4 4 0 0 0 5.700 0l3-3a4 4 0 0 0-5.700-5.700l-1 1M14 10a4 4 0 0 0-5.700 0l-3 3a4 4 0 0 0 5.700 5.700l1-1",
+  send: "M4 12l16-8-6 16-2.500-6.500z",
+  eye: "M2 12s3.500-7 10-7 10 7 10 7-3.500 7-10 7S2 12 2 12zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z",
 } as const;
 
 export type IconName = keyof typeof PATHS;
 
 export function Icon({ name, size = 22, className, fill }: { name: IconName; size?: number; className?: string; fill?: boolean }) {
-  const solid = fill ?? ["play", "pause", "next", "prev"].includes(name);
+  const solid = fill ?? ["play", "pause", "next", "prev", "homeFill"].includes(name);
   return (
     <svg
       viewBox="0 0 24 24"

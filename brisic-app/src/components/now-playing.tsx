@@ -42,7 +42,7 @@ export function NowPlaying() {
     <div className="grid gap-8 lg:grid-cols-[minmax(0,420px)_1fr] lg:gap-12">
       <div className="mx-auto w-full max-w-[420px]">
         <div className="rounded-[28px] p-1" style={{ boxShadow: "0 0 80px -20px var(--player)" }}>
-          <Cover seed={t.albumId ?? t.id} label={t.title} src={t.artwork} textSize="text-4xl" />
+          <Cover seed={t.albumId ?? t.id} label={t.title} src={t.artwork} />
         </div>
 
         <div className="mt-5 flex items-start justify-between gap-3">
@@ -117,7 +117,7 @@ export function NowPlaying() {
         </section>
 
         <section className="panel flex flex-wrap items-center gap-4 p-5">
-          <span className="w-16 shrink-0"><Cover seed={t.artistId} label={t.artistName} round textSize="text-lg" /></span>
+          <span className="w-16 shrink-0"><Cover seed={t.artistId} label={t.artistName} round /></span>
           <div className="min-w-0 flex-1">
             <p className="m-0 text-[12px] font-semibold uppercase tracking-[0.14em] text-accent">About the artist</p>
             <p className="m-0 truncate text-[18px] font-semibold text-white">{t.artistName}</p>

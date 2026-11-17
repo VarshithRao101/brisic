@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Outfit } from "next/font/google";
+import { Bebas_Neue, Outfit } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 
@@ -8,6 +8,8 @@ const outfit = Outfit({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
 });
+
+const bebas = Bebas_Neue({ variable: "--font-bebas", subsets: ["latin"], weight: "400" });
 
 export const metadata: Metadata = {
   title: "Brisic — Music that understands you",
@@ -26,7 +28,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${outfit.variable} h-full`}>
+    <html lang="en" className={`${outfit.variable} ${bebas.variable} h-full`}>
       <body className="min-h-full">
         <Providers>{children}</Providers>
       </body>

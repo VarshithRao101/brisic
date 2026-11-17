@@ -18,7 +18,7 @@ export default async function PlaylistPage({ params }: { params: Promise<{ id: s
     <>
       <BackButton />
       <Hero
-        cover={<Cover seed={playlist.id} label={playlist.title} src={playlist.artwork} textSize="text-2xl" />}
+        cover={<Cover seed={playlist.id} label={playlist.title} src={playlist.artwork} />}
         kind="Playlist"
         title={playlist.title}
         meta={`${playlist.subtitle} · ${tracks.length} songs · ${minutes} min`}

@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { prisma } from "@/lib/prisma";
 import { getUserId, requireUser } from "@/lib/session";
 import { catalog } from "@/lib/catalog";
-import { playerHex, readSettings } from "@/lib/settings";
+import { readSettings } from "@/lib/settings";
 import { AppState } from "@/components/app-state";
 import { AppShell } from "@/components/app-shell";
 
@@ -29,7 +29,7 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
       <AppShell
         user={{ displayName: user.displayName, handle: user.handle, image: user.image, isPremium: user.isPremium }}
         unread={unread}
-        playerColor={playerHex(readSettings(user.settings).playerColor)}
+        theme={readSettings(user.settings).theme}
         sample={catalog.isSample}
       >
         {children}

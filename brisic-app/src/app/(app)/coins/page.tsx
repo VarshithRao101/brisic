@@ -4,6 +4,8 @@ import { getUserId, requireUser } from "@/lib/session";
 import { COIN_PACKS } from "@/lib/fan";
 import { fmtCoins, timeAgo } from "@/lib/format";
 import { BackButton } from "@/components/controls";
+import { CoinShop } from "@/components/fan-clients";
+import { GiftIcon } from "@/components/gift-icons";
 import { PageTitle, Section } from "@/components/ui";
 
 export default async function CoinsPage() {
@@ -18,27 +20,20 @@ export default async function CoinsPage() {
       <BackButton />
       <PageTitle title="B-Coins" subtitle="Send gifts to artists and unlock exclusive content" />
 
-      <div className="panel flex items-center gap-4 p-5">
-        <Image src="/assets/coin.png" alt="" width={64} height={64} className="h-16 w-16 object-contain" />
-        <div>
-          <p className="m-0 text-[13.5px] font-light text-muted">Your balance</p>
-          <p className="m-0 text-[34px] font-semibold leading-tight text-[#f2c94c]">{fmtCoins(user.coins)}</p>
+      <div className="panel-glow flex items-center gap-4 p-5">
+        <Image src="/assets/coin.png" alt="" width={64} height={64} className="h-16 w-16 object-contain drop-shadow-[0_0_14px_rgba(242,201,76,0.5)]" />
+        <div className="min-w-0 flex-1">
+          <p className="m-0 text-[13.5px] font-light text-ink/80">Your balance</p>
+          <p className="m-0 text-[34px] font-bold leading-tight text-white">{fmtCoins(user.coins)}</p>
+        </div>
+        <div className="hidden gap-1.5 text-primary sm:flex" aria-hidden="true">
+          {["mic", "crown", "car", "studio", "universe"].map((g) => <GiftIcon key={g} id={g} size={26} />)}
         </div>
       </div>
 
-      <Section title="Buy B-Coins">
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {COIN_PACKS.map((p) => (
-            <div key={p.coins} className="panel flex flex-col items-center gap-1 p-4 text-center opacity-70">
-              <Image src="/assets/coin.png" alt="" width={40} height={40} className="h-10 w-10 object-contain" />
-              <p className="m-0 text-[17px] font-semibold text-white">{fmtCoins(p.coins)}</p>
-              <p className="m-0 text-[12.5px] font-light text-muted">{p.metal} · ₦{fmtCoins(p.priceNaira)}</p>
-            </div>
-          ))}
-        </div>
-        <p className="mt-3 text-[13px] font-light text-muted">
-          Coin purchases open when payments go live. Until then, every new account starts with a welcome bonus.
-        </p>
+      <Section title="Top up B-Coins">
+        <p className="m-0 -mt-1 mb-3 text-[13.5px] font-light text-muted">1 B-Coin = ₦1. Bundles from ₦100 to ₦250,000, paid in Naira with Paystack.</p>
+        <CoinShop packs={COIN_PACKS} />
       </Section>
 
       <Section title="Coin history">

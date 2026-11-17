@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { updateProfile, updateSettings, type ProfileState } from "@/app/actions";
 import { changePassword, deleteAccount, removeAvatar, uploadAvatar } from "@/app/account-actions";
-import { LANGUAGES, PLAYER_COLORS, QUALITIES, type Settings } from "@/lib/settings";
+import { LANGUAGES, QUALITIES, THEMES, type Settings } from "@/lib/settings";
 import { PREMIUM_PERKS, PREMIUM_PLANS, PREMIUM_REGIONS } from "@/lib/fan";
 import { Icon } from "@/components/icons";
 import { useToast } from "@/components/app-state";
@@ -235,8 +235,10 @@ export function SettingsForm({ initial }: { initial: Settings }) {
   const save = (patch: Partial<Settings>) => {
     const before = s;
     setS({ ...s, ...patch });
+    // Show a new theme straight away; the server copy catches up on refresh.
+    if (patch.theme) document.querySelector<HTMLElement>("[data-theme]")?.setAttribute("data-theme", patch.theme);
     updateSettings(patch)
-      .then(() => { if ("playerColor" in patch) router.refresh(); })
+      .then(() => { if ("theme" in patch) router.refresh(); })
       .catch(() => { setS(before); toast("Could not save. Check your connection."); });
   };
   const group = "panel divide-y divide-white/5 p-1";
@@ -244,20 +246,28 @@ export function SettingsForm({ initial }: { initial: Settings }) {
 
   return (
     <div className="mx-auto max-w-3xl">
-      <h2 className={heading}>Music player color</h2>
-      <div className="panel p-4">
-        <p className="m-0 text-[13.5px] font-light text-muted">Pick the color of the player. The rest of the app stays green.</p>
-        <div className="mt-3 flex flex-wrap gap-3">
-          {PLAYER_COLORS.map((c) => (
-            <button
-              key={c.id} type="button" aria-label={c.name} aria-pressed={s.playerColor === c.id} title={c.name}
-              onClick={() => save({ playerColor: c.id })}
-              className={`flex h-11 w-11 items-center justify-center rounded-full border-2 text-black ${s.playerColor === c.id ? "border-white" : "border-transparent"}`}
-              style={{ background: c.hex }}
-            >
-              {s.playerColor === c.id && <Icon name="check" size={20} />}
-            </button>
-          ))}
+      <h2 className={heading}>Theme</h2>
+      <div className="panel-glow p-4">
+        <p className="m-0 text-[13.5px] font-light text-ink/80">Pick the look of Brisic. It changes the colors across the whole app, including the player.</p>
+        <div className="mt-4 grid grid-cols-5 gap-2 sm:gap-4">
+          {THEMES.map((t) => {
+            const on = s.theme === t.id;
+            return (
+              <button
+                key={t.id} type="button" aria-pressed={on}
+                onClick={() => save({ theme: t.id })}
+                className="flex flex-col items-center gap-2 border-0 bg-transparent p-0 text-[13px] text-ink"
+              >
+                <span
+                  className={`flex h-14 w-14 items-center justify-center rounded-full text-black sm:h-16 sm:w-16 ${on ? "outline outline-[3px] outline-offset-2 outline-white" : ""}`}
+                  style={{ background: t.swatch, boxShadow: on ? "0 0 18px rgba(255,255,255,0.35)" : "0 0 6px rgba(0,0,0,0.6)" }}
+                >
+                  {on && <Icon name="check" size={22} />}
+                </span>
+                <span className={on ? "font-semibold text-white" : "text-muted"}>{t.name}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
 

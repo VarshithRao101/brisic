@@ -1,24 +1,112 @@
 @import "tailwindcss";
 
-:root {
+/* ---------- Themes ----------
+   Green is the default. The app shell sets data-theme from the user's Settings,
+   and every color below flows from these variables. */
+:root,
+[data-theme="green"] {
   --bg: #050a07;
-  --bg-2: #030504;
+  --surface: #060807;
   --card: #0b1a11;
   --card-2: rgba(14, 24, 18, 0.9);
   --border: #2d4a37;
+  --line-soft: #26332b;
   --primary: #7ee08a;
+  --primary-hover: #93eb9e;
+  --primary-rgb: 126, 224, 138;
   --primary-ink: #06200e;
   --text: #e9f2ec;
-  --muted: #8fb09b;
-  --accent: #9fd8aa;
-  /* Player accent; overridden per user from Settings. */
-  --player: #7ee08a;
+  --muted: #8fa398;
+  --accent: #a8eeb3;
+  --glow: #12201a;
+  --glow-top: #0f2c18;
+  --deep: #060a08;
+  --sheen: linear-gradient(135deg, #12351d, #08150d);
+  --player: var(--primary);
+}
+[data-theme="red"] {
+  --bg: #0a0505;
+  --surface: #0a0606;
+  --card: #1c0c0c;
+  --card-2: rgba(30, 14, 14, 0.9);
+  --border: #4d2b2b;
+  --line-soft: #3a2626;
+  --primary: #ff5f5f;
+  --primary-hover: #ff7d7d;
+  --primary-rgb: 255, 95, 95;
+  --primary-ink: #2a0606;
+  --text: #f4ecec;
+  --muted: #b89c99;
+  --accent: #ffb3ad;
+  --glow: #241010;
+  --glow-top: #3a1010;
+  --deep: #0a0606;
+  --sheen: linear-gradient(135deg, #3d1313, #150808);
+}
+[data-theme="purple"] {
+  --bg: #07050b;
+  --surface: #08060c;
+  --card: #150c22;
+  --card-2: rgba(22, 14, 34, 0.9);
+  --border: #3f2d58;
+  --line-soft: #2f2640;
+  --primary: #b98cff;
+  --primary-hover: #caa8ff;
+  --primary-rgb: 185, 140, 255;
+  --primary-ink: #1a0833;
+  --text: #efeaf6;
+  --muted: #a79cbd;
+  --accent: #dcc6ff;
+  --glow: #1b1228;
+  --glow-top: #2a1245;
+  --deep: #08060c;
+  --sheen: linear-gradient(135deg, #2c1650, #0e0818);
+}
+[data-theme="gold"] {
+  --bg: #0a0805;
+  --surface: #0a0905;
+  --card: #1a1508;
+  --card-2: rgba(28, 22, 10, 0.9);
+  --border: #4d4224;
+  --line-soft: #3a3322;
+  --primary: #f2c94c;
+  --primary-hover: #f6d873;
+  --primary-rgb: 242, 201, 76;
+  --primary-ink: #2a1f04;
+  --text: #f4f0e6;
+  --muted: #bcae8b;
+  --accent: #f7e2a3;
+  --glow: #221c0c;
+  --glow-top: #33280c;
+  --deep: #0a0905;
+  --sheen: linear-gradient(135deg, #3d300c, #141006);
+}
+[data-theme="chrome"] {
+  --bg: #08090a;
+  --surface: #08090a;
+  --card: #151918;
+  --card-2: rgba(24, 28, 27, 0.9);
+  --border: #4a524f;
+  --line-soft: #333a37;
+  --primary: #dfe5e2;
+  --primary-hover: #ffffff;
+  --primary-rgb: 223, 229, 226;
+  --primary-ink: #101312;
+  --text: #eef1f0;
+  --muted: #a3aca8;
+  --accent: #f4f7f6;
+  --glow: #1d2120;
+  --glow-top: #2e3432;
+  --deep: #090a0a;
+  --sheen: linear-gradient(135deg, #4b5651 0%, #1a201d 40%, #0b0e0d 70%, #3b4640 100%);
 }
 
 @theme inline {
   --color-bg: var(--bg);
+  --color-surface: var(--surface);
   --color-card: var(--card);
   --color-line: var(--border);
+  --color-line-soft: var(--line-soft);
   --color-primary: var(--primary);
   --color-primary-ink: var(--primary-ink);
   --color-ink: var(--text);
@@ -26,6 +114,16 @@
   --color-accent: var(--accent);
   --color-player: var(--player);
   --font-sans: var(--font-outfit), system-ui, sans-serif;
+  --font-display: var(--font-bebas), var(--font-outfit), sans-serif;
+}
+
+@keyframes brisicWave {
+  0%, 100% { transform: scaleY(0.2); }
+  50% { transform: scaleY(1); }
+}
+@keyframes brisicPulse {
+  0%, 100% { box-shadow: 0 0 14px rgba(var(--primary-rgb), 0.3); }
+  50% { box-shadow: 0 0 24px rgba(var(--primary-rgb), 0.6); }
 }
 
 @layer base {
@@ -60,7 +158,7 @@
   }
 
   :focus-visible {
-    outline: 2px solid #bbf7d0;
+    outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
 
@@ -76,12 +174,22 @@
     height: 10px;
   }
   ::-webkit-scrollbar-thumb {
-    background: #1b2b22;
+    background: var(--line-soft);
     border-radius: 8px;
   }
 }
 
 @layer components {
+  /* Full-page backdrop behind the signed-in app; follows the theme. */
+  .app-bg {
+    background: radial-gradient(90% 60% at 50% 0%, var(--glow-top) 0%, var(--deep) 55%, #020303 100%);
+  }
+  [data-theme="chrome"] .app-bg {
+    background:
+      radial-gradient(80% 50% at 50% 0%, rgba(220, 228, 224, 0.16) 0%, transparent 60%),
+      linear-gradient(160deg, #1d2221 0%, #0b0d0d 45%, #050606 100%);
+  }
+
   /* Shared control styles */
   .btn {
     display: inline-flex;
@@ -96,7 +204,7 @@
     border: 1.5px solid var(--border);
     background: rgba(255, 255, 255, 0.05);
     color: var(--text);
-    transition: background 0.15s, opacity 0.15s;
+    transition: background 0.15s, opacity 0.15s, box-shadow 0.15s;
   }
   .btn:hover {
     background: rgba(255, 255, 255, 0.1);
@@ -109,9 +217,15 @@
     background: var(--primary);
     border-color: var(--primary);
     color: var(--primary-ink);
+    box-shadow: 0 0 16px rgba(var(--primary-rgb), 0.25);
   }
   .btn-primary:hover {
-    background: #93eb9e;
+    background: var(--primary-hover);
+  }
+  .btn-outline {
+    border-color: var(--primary);
+    background: transparent;
+    color: var(--accent);
   }
   .btn-sm {
     height: 34px;
@@ -125,20 +239,66 @@
     border-radius: 999px;
     border: 1.5px solid var(--border);
     background: var(--card-2);
-    color: #f1f7f3;
+    color: var(--text);
     font-size: 16px;
     font-family: inherit;
     outline: none;
   }
   .field::placeholder {
-    color: #8fa398;
+    color: var(--muted);
   }
   .field:focus {
     border-color: var(--primary);
   }
   .panel {
     border: 1px solid var(--border);
-    background: rgba(11, 26, 17, 0.7);
+    background: color-mix(in srgb, var(--card) 72%, transparent);
     border-radius: 20px;
   }
+  /* Highlighted card with the theme's glow, like the prototype's feature boxes. */
+  .panel-glow {
+    border: 1px solid rgba(var(--primary-rgb), 0.55);
+    background: var(--sheen);
+    border-radius: 20px;
+    box-shadow: 0 0 18px rgba(var(--primary-rgb), 0.16);
+  }
+  /* Bold poster type used on covers and banners. */
+  .display {
+    font-family: var(--font-bebas), var(--font-outfit), sans-serif;
+    letter-spacing: 0.02em;
+    line-height: 0.95;
+  }
+  .ring-glow {
+    border: 2px solid var(--primary);
+    box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.35);
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 32px;
+    padding: 0 14px;
+    border-radius: 999px;
+    border: 1.5px solid var(--border);
+    font-size: 13.5px;
+    color: var(--text);
+    background: transparent;
+    white-space: nowrap;
+  }
+  .chip[aria-pressed="true"],
+  .chip[aria-current="page"],
+  .chip-on {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--primary-ink);
+    font-weight: 600;
+  }
+}
+
+/* The B logo artwork is green; tint it to match the theme, as the prototype does. */
+@layer components {
+  [data-theme="red"] .logo-b { filter: hue-rotate(229deg) saturate(1.2); }
+  [data-theme="purple"] .logo-b { filter: hue-rotate(149deg); }
+  [data-theme="gold"] .logo-b { filter: hue-rotate(282deg) saturate(1.4) brightness(1.1); }
+  [data-theme="chrome"] .logo-b { filter: grayscale(1) brightness(1.2); }
 }

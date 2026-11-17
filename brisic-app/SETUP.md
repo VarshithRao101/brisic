@@ -22,10 +22,18 @@ Every prototype screen is a real, responsive page (phone → tablet → desktop 
 | Listen | `/` Home, `/search`, `/genres`, `/genre/[id]`, `/trending`, `/stations`, `/see-all/[id]` |
 | Music | `/artist/[id]`, `/album/[id]`, `/playlist/[id]`, `/player` (full player + lyrics), `/queue` |
 | Library | `/library`, `/library/liked`, `/library/history`, `/library/playlists/[id]`, `/following` |
-| Fans | `/artist/[id]/support`, `/gifts`, `/exclusive`, `/merch`, `/coins` |
+| Fans | `/artist/[id]/support`, `/gifts` (tiered gifts), `/exclusive`, `/merch`, `/coins` (Naira bundles) |
+| Spotlight | `/spotlight` (artist video hub: interviews, documentaries, performances, lives), `/spotlight/[id]` |
+| Party | `/party` (create or join by code), `/party/[code]` (live room: queue, votes, chat) |
 | Podcasts | `/shows`, `/shows/[id]`, `/watch/[id]` |
 | You | `/profile`, `/profile/edit` (photo upload), `/settings` (password, delete account), `/notifications`, `/premium`, `/info/[topic]` |
-| Other | `/ai` Brisic AI, `/party`, `/download` (get-the-app page), `/api/health` |
+| Other | `/ai` Brisic AI, `/download` (get-the-app page), `/api/health`, `/api/party/[code]` |
+
+**Design:** matches the prototype in `Brisic-Prototype/`: B logo header, a 4-tab bottom bar (Home, Search, Library, Profile) around a centre Brisic AI waveform button, poster covers in Bebas Neue, illustrated artist portraits. **Themes:** Green, Red, Chrome, Purple and Gold (Settings) recolour the whole app and are saved per account.
+
+**Brisic AI button:** voice commands use the browser's speech recognition (Chrome, Edge, Safari, Android), with typing as a fallback, and return playable picks. "Identify a song" needs an audio-recognition service and says so until one is connected.
+
+**Community Party:** real rooms stored in the database. The host creates a room and shares the code (BRS-XXXXX) or link; listeners join, add songs, vote (the top-voted song plays next), chat and see who is in the room. Phones poll `/api/party/[code]` every 3.5 s, paused while the tab is hidden. The host can skip, close the chat or end the party. Rooms end after 6 idle hours.
 
 **Saved per user:** liked songs, playlists, followed artists, listening history (kept to the newest 500, respects Private session), settings, profile photo, B-Coin balance with a full ledger, gifts, exclusive unlocks, notifications. New accounts get 500 welcome B-Coins.
 
@@ -44,7 +52,7 @@ Every prototype screen is a real, responsive page (phone → tablet → desktop 
 - **Keep-awake:** `netlify/functions/keep-warm.mjs` pings `/api/health` every 4 minutes during peak hours (08:00–17:59 UTC) so Neon does not fall asleep. Neon's free plan has a monthly compute allowance; staying awake 24/7 would use it up in about two weeks, so widen the hours only on a paid plan.
 
 ## Connecting the Global Tune API (one file)
-All screens read music through `src/lib/catalog/types.ts`. Right now they use sample data (`mock.ts`).
+All screens read music, and Spotlight videos (`getSpotlight`, `getSpotlightItem`), through `src/lib/catalog/types.ts`. Right now they use sample data (`mock.ts`).
 1. Fill in `src/lib/catalog/globaltune.ts` — map the API's responses to `Track`, `Artist`, `Album`, ... Each method you leave out keeps using sample data. `Track.streamUrl` is what makes songs play.
 2. Set `GLOBAL_TUNE_API_URL`, `GLOBAL_TUNE_API_KEY` and `CATALOG_PROVIDER="globaltune"`.
 3. Set `isSample: false` in `globaltune.ts` to remove the "sample catalog" note.
@@ -54,8 +62,9 @@ Create a free account at resend.com, verify a domain, then add `RESEND_API_KEY` 
 
 ## Not live yet
 - **Audio / music catalog:** waits for the Global Tune API.
-- **Payments:** Premium, coin packs and merch checkout are disabled.
-- **Community Party live rooms, artist accounts and payouts, real AI recommendations, offline downloads:** depend on the music catalog, payments or the APK.
+- **Payments:** Premium, the Paystack Naira coin bundles (₦100 to ₦250,000) and merch checkout are shown but disabled.
+- **Spotlight video and party audio:** Spotlight shows posters with a preview timeline until videos come from the API; in a party, "Listen along" starts the current song at the room's position once audio exists.
+- **Artist accounts and payouts, real AI recommendations, song recognition, offline downloads:** depend on the music catalog, payments, a recognition service or the APK.
 - **Email verification at sign-up:** not built (needs the email service above).
 
 ## Deploy (Netlify)

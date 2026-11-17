@@ -10,6 +10,7 @@ import type {
   HomeSection,
   Playlist,
   Show,
+  SpotlightItem,
   Station,
   Track,
 } from "./types";
@@ -186,6 +187,29 @@ const byGenre = (name: string) => {
   return tracks.filter((t) => ids.includes(t.artistId));
 };
 
+
+// Artist Spotlight sample videos (no media until the API is connected).
+const SPOT: [string, string, SpotlightItem["kind"], number, number, string][] = [
+  ["kelechi-ade", "Exclusive Performance", "Video", 332, 246_000, "An exclusive stage performance, filmed for Brisic fans. Watch it, share it, and show Kelechi some love."],
+  ["tobi-rae", "Live Session", "Live", 0, 18_000, "Soulful live singer. Raw one-take sessions with a full band, streaming now."],
+  ["nuela", "Meet Nuela", "Interview", 860, 52_000, "Nuela talks love songs, Lagos nights and the record that changed her life."],
+  ["dayo-mane", "Behind the Scenes", "Video", 728, 39_000, "A day in the studio with Dayo Mane: drums first, bars second, coffee always."],
+  ["sade-vox", "Studio Walkthrough", "Video", 610, 98_000, "Sade Vox opens the doors to the room where every late-night record is made."],
+  ["kofi-lane", "Spotlight of the Week", "Interview", 1010, 5_000, "Highlife guitar for a new generation. Kofi Lane on keeping the old sound alive."],
+  ["zuri-kaya", "Meet Zuri Kaya", "Interview", 980, 29_000, "Growing up, big dreams and street poetry. The story behind Tornado."],
+  ["unknown-artist", "Midnight Sessions", "Audio", 1540, 38_000, "Voice notes and unfinished ideas from a small room with a borrowed microphone."],
+  ["ayo-blaze", "Worship Night Live", "Live", 0, 7_400, "Upbeat praise and quiet worship, live from the choir loft."],
+  ["kemi", "Amapiano Masterclass", "Video", 1320, 21_000, "Log drums, soft keys and slow-building grooves, explained step by step."],
+  ["tolu", "Documentary: Day One", "Video", 1860, 64_000, "From church choir to festival stages. A short film about Tolu."],
+  ["kelechi-ade", "Meet Kelechi Ade", "Interview", 905, 120_000, "Afrobeats storyteller. Warm vocals, songs about love and city hustle."],
+];
+const spotlight: SpotlightItem[] = SPOT.map(([artistId, title, kind, durationSec, views, blurb]) => ({
+  id: "sp-" + artistId + "-" + slug(title),
+  artistId,
+  artistName: artists.find((a) => a.id === artistId)?.name ?? "Unknown Artist",
+  title, kind, durationSec, views, blurb, mediaUrl: null, poster: null,
+}));
+
 export const mockCatalog: CatalogProvider = {
   isSample: true,
 
@@ -280,6 +304,14 @@ export const mockCatalog: CatalogProvider = {
       show: shows.find((s) => s.id === episode.showId)!,
       more: episodes.filter((e) => e.showId === episode.showId && e.id !== id),
     };
+  },
+
+  async getSpotlight() { return spotlight; },
+  async getSpotlightItem(id) {
+    const item = spotlight.find((s) => s.id === id);
+    if (!item) return null;
+    const same = spotlight.filter((s) => s.id !== id && s.artistId === item.artistId);
+    return { item, more: [...same, ...spotlight.filter((s) => s.id !== id && s.artistId !== item.artistId)].slice(0, 6) };
   },
 
   async suggest(prompt) {

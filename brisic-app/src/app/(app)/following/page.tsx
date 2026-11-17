@@ -19,7 +19,7 @@ export default async function FollowingPage() {
           {follows.map((f) => (
             <li key={f.id} className="flex items-center gap-3.5 rounded-2xl px-2 py-2.5 hover:bg-white/5">
               <Link href={`/artist/${f.artistId}`} className="flex min-w-0 flex-1 items-center gap-3.5">
-                <span className="w-14 shrink-0"><Cover seed={f.artistId} label={f.artistName} round textSize="text-base" /></span>
+                <span className="w-14 shrink-0"><Cover seed={f.artistId} label={f.artistName} round /></span>
                 <span className="truncate text-[16px] font-medium text-white">{f.artistName}</span>
               </Link>
               <FollowButton artistId={f.artistId} artistName={f.artistName} small />

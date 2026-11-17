@@ -11,10 +11,10 @@ export default async function GiftsPage({ params }: { params: Promise<{ id: stri
   const data = await catalog.getArtist(id);
   if (!data) notFound();
   return (
-    <>
+    <div className="mx-auto max-w-2xl">
       <BackButton />
       <PageTitle title="Send a Gift" />
       <GiftSender artistId={data.artist.id} artistName={data.artist.name} />
-    </>
+    </div>
   );
 }

@@ -19,7 +19,7 @@ export default async function AlbumPage({ params }: { params: Promise<{ id: stri
     <>
       <BackButton />
       <Hero
-        cover={<Cover seed={album.id} label={album.title} src={album.artwork} textSize="text-2xl" />}
+        cover={<Cover seed={album.id} label={album.title} src={album.artwork} />}
         kind="Album"
         title={album.title}
         meta={`${album.year} · ${tracks.length} songs · ${minutes} min`}

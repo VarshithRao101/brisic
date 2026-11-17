@@ -1,51 +1,57 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Icon, type IconName } from "@/components/icons";
 import { Cover } from "@/components/cover";
+import { VoiceSheet } from "@/components/voice-sheet";
 import { useLibrary, usePlayer } from "@/components/app-state";
 import { useIsInstalledApp } from "@/lib/install";
 import { fmtCoins, fmtTime } from "@/lib/format";
 
 type ShellUser = { displayName: string; handle: string; image: string | null; isPremium: boolean };
+type NavItem = { href: string; label: string; icon: IconName };
 
-const MAIN: { href: string; label: string; icon: IconName }[] = [
+const MAIN: NavItem[] = [
   { href: "/", label: "Home", icon: "home" },
   { href: "/search", label: "Search", icon: "search" },
-  { href: "/library", label: "Library", icon: "library" },
+  { href: "/library", label: "Library", icon: "books" },
   { href: "/ai", label: "Brisic AI", icon: "sparkle" },
 ];
-const DISCOVER: { href: string; label: string; icon: IconName }[] = [
+const DISCOVER: NavItem[] = [
+  { href: "/spotlight", label: "Artist Spotlight", icon: "video" },
+  { href: "/party", label: "Community Party", icon: "users" },
   { href: "/trending", label: "Trending", icon: "trending" },
   { href: "/genres", label: "Genres", icon: "radio" },
   { href: "/stations", label: "Stations", icon: "radio" },
   { href: "/shows", label: "Podcasts", icon: "mic" },
-  { href: "/party", label: "Community Party", icon: "users" },
 ];
-const YOU: { href: string; label: string; icon: IconName }[] = [
+const YOU: NavItem[] = [
   { href: "/library/liked", label: "Liked Songs", icon: "heart" },
+  { href: "/coins", label: "B-Coins", icon: "coin" },
   { href: "/premium", label: "Premium", icon: "crown" },
-  { href: "/settings", label: "Settings", icon: "settings" },
+  { href: "/settings", label: "Settings & Theme", icon: "settings" },
 ];
-const MOBILE: { href: string; label: string; icon: IconName }[] = [
-  { href: "/", label: "Home", icon: "home" },
-  { href: "/search", label: "Search", icon: "search" },
-  { href: "/ai", label: "AI", icon: "sparkle" },
-  { href: "/library", label: "Library", icon: "library" },
-  { href: "/profile", label: "Profile", icon: "user" },
-];
+
+// Title shown next to the logo on the main tabs, like the prototype's "LISTEN NOW" / "Library".
+// Other pages carry their own heading, so the header shows the BRISIC wordmark instead.
+const TITLES: Record<string, string> = { "/search": "Search", "/library": "Library", "/profile": "Profile" };
+const titleFor = (path: string) => (path === "/" ? null : TITLES[path] ?? "");
 
 const isActive = (path: string, href: string) => (href === "/" ? path === "/" : path === href || path.startsWith(href + "/"));
 
-function Avatar({ user, size = 36 }: { user: ShellUser; size?: number }) {
-  return user.image ? (
-    <Image src={user.image} alt="" width={size} height={size} unoptimized={user.image.startsWith("/api/")} className="rounded-full border border-line object-cover" style={{ width: size, height: size }} />
-  ) : (
-    <span className="flex items-center justify-center rounded-full bg-primary font-semibold text-primary-ink" style={{ width: size, height: size, fontSize: size * 0.42 }}>
-      {user.displayName[0]?.toUpperCase()}
+function Avatar({ user, size = 40 }: { user: ShellUser; size?: number }) {
+  return (
+    <span className="ring-glow flex items-center justify-center rounded-full p-[1px]" style={{ width: size, height: size }}>
+      {user.image ? (
+        <Image src={user.image} alt="" width={size} height={size} unoptimized={user.image.startsWith("/api/")} className="h-full w-full rounded-full object-cover" />
+      ) : (
+        <span className="flex h-full w-full items-center justify-center rounded-full font-semibold text-white" style={{ fontSize: size * 0.4, background: "linear-gradient(#c9803a,#5a2f14)" }}>
+          {user.displayName[0]?.toUpperCase()}
+        </span>
+      )}
     </span>
   );
 }
@@ -66,7 +72,7 @@ function AppBanner() {
   }, []);
   if (installed || !show) return null;
   return (
-    <div className="flex items-center gap-3 border-b border-line bg-[#0b1a11] px-3 py-2.5 lg:hidden">
+    <div className="flex items-center gap-3 border-b border-line-soft bg-surface px-3 py-2.5 lg:hidden">
       <button
         type="button"
         aria-label="Dismiss"
@@ -78,17 +84,19 @@ function AppBanner() {
       >
         <Icon name="x" size={18} />
       </button>
-      <Image src="/assets/logo-b-plain.png" alt="" width={333} height={640} className="h-9 w-auto" />
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-line bg-black">
+        <Image src="/assets/logo-b-glow.png" alt="" width={333} height={640} className="logo-b h-8 w-auto" />
+      </span>
       <div className="min-w-0 flex-1 leading-tight">
-        <p className="truncate text-[14px] font-semibold text-white">Brisic is better in the app</p>
-        <p className="truncate text-[12px] font-light text-muted">Offline downloads and background play</p>
+        <p className="m-0 truncate text-[14px] font-semibold text-white">Brisic is better in the app</p>
+        <p className="m-0 truncate text-[12px] font-light text-muted">Offline downloads and background play</p>
       </div>
       <Link href="/download" className="btn btn-primary btn-sm shrink-0">Get app</Link>
     </div>
   );
 }
 
-function NavList({ items, active }: { items: typeof MAIN; active: string }) {
+function NavList({ items, active }: { items: NavItem[]; active: string }) {
   return (
     <ul className="m-0 flex list-none flex-col gap-0.5 p-0">
       {items.map((it) => {
@@ -97,7 +105,8 @@ function NavList({ items, active }: { items: typeof MAIN; active: string }) {
           <li key={it.href}>
             <Link
               href={it.href}
-              className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-[15px] transition ${on ? "bg-white/10 font-semibold text-white" : "text-muted hover:bg-white/5 hover:text-ink"}`}
+              aria-current={on ? "page" : undefined}
+              className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-[15px] transition ${on ? "bg-primary/10 font-semibold text-white shadow-[inset_3px_0_0_var(--primary)]" : "text-muted hover:bg-white/5 hover:text-ink"}`}
             >
               <Icon name={it.icon} size={20} className={on ? "text-primary" : ""} />
               {it.label}
@@ -117,31 +126,37 @@ function PlayerBar() {
   const pct = Math.min(100, (p.position / Math.max(1, t.durationSec)) * 100);
   const likedNow = lib.liked.has(t.id);
   return (
-    <div className="fixed inset-x-0 bottom-16 z-30 px-2 lg:bottom-0 lg:px-0">
-      <div className="relative overflow-hidden rounded-2xl border border-line bg-[#0d1f15]/95 backdrop-blur lg:rounded-none lg:border-x-0 lg:border-b-0">
-        <div className="absolute inset-x-0 top-0 h-[3px] bg-white/10 lg:hidden">
-          <div className="h-full bg-player" style={{ width: pct + "%" }} />
+    <div className="fixed inset-x-0 bottom-[calc(76px+env(safe-area-inset-bottom))] z-30 lg:bottom-0">
+      <div className="relative border-t border-line-soft bg-surface/95 backdrop-blur">
+        <div className="absolute inset-x-0 top-0 h-[2px] bg-white/10 lg:hidden">
+          <div className="h-full bg-player shadow-[0_0_8px_var(--player)]" style={{ width: pct + "%" }} />
         </div>
-        <div className="flex items-center gap-3 px-3 py-2 lg:grid lg:h-20 lg:grid-cols-[1fr_minmax(0,560px)_1fr] lg:px-5">
+        <div className="flex items-center gap-3 px-4 py-2 lg:grid lg:h-20 lg:grid-cols-[1fr_minmax(0,560px)_1fr] lg:px-5">
           <Link href="/player" className="flex min-w-0 flex-1 items-center gap-3">
-            <div className="w-11 shrink-0 lg:w-14"><Cover seed={t.albumId ?? t.id} src={t.artwork} className="!rounded-lg" /></div>
-            <div className="min-w-0">
-              <p className="truncate text-[14.5px] font-semibold text-white">{t.title}</p>
-              <p className="truncate text-[12.5px] font-light text-muted">{t.artistName}</p>
-            </div>
+            <span className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-lg lg:h-14 lg:w-14">
+              <Cover seed={t.albumId ?? t.id} src={t.artwork} className="!rounded-lg" />
+              {p.playing && (
+                <span aria-hidden="true" className="absolute inset-0 flex items-end justify-center gap-[3px] bg-black/45 pb-2.5">
+                  {[0, 0.2, 0.1].map((d) => (
+                    <span key={d} className="h-4 w-[3px] origin-bottom rounded-sm bg-player" style={{ animation: `brisicWave 0.8s ease-in-out ${d}s infinite` }} />
+                  ))}
+                </span>
+              )}
+            </span>
+            <span className="min-w-0">
+              <span className="block truncate text-[14.5px] font-semibold text-white">{t.title}</span>
+              <span className="block truncate text-[12.5px] font-light text-muted">{t.artistName}</span>
+            </span>
           </Link>
 
           <div className="flex shrink-0 flex-col items-center gap-1">
             <div className="flex items-center gap-1 lg:gap-3">
-              <button type="button" aria-label={likedNow ? "Remove from Liked Songs" : "Add to Liked Songs"} onClick={() => lib.toggleLike(t)} className={`border-0 bg-transparent p-2 lg:hidden ${likedNow ? "text-primary" : "text-muted"}`}>
-                <Icon name="heart" size={20} fill={likedNow} />
-              </button>
               <button type="button" aria-label="Shuffle" aria-pressed={p.shuffle} onClick={p.toggleShuffle} className={`hidden border-0 bg-transparent p-2 lg:block ${p.shuffle ? "text-player" : "text-muted"}`}>
                 <Icon name="shuffle" size={18} />
               </button>
-              <button type="button" aria-label="Previous" onClick={p.prev} className="hidden border-0 bg-transparent p-2 text-ink lg:block"><Icon name="prev" size={20} /></button>
-              <button type="button" aria-label={p.playing ? "Pause" : "Play"} onClick={p.toggle} className="flex h-10 w-10 items-center justify-center rounded-full border-0 bg-player text-black">
-                <Icon name={p.playing ? "pause" : "play"} size={20} />
+              <button type="button" aria-label="Previous" onClick={p.prev} className="border-0 bg-transparent p-2 text-ink"><Icon name="prev" size={20} /></button>
+              <button type="button" aria-label={p.playing ? "Pause" : "Play"} onClick={p.toggle} className="flex h-10 w-10 items-center justify-center rounded-full border-0 bg-transparent text-white lg:bg-player lg:text-black">
+                <Icon name={p.playing ? "pause" : "play"} size={22} />
               </button>
               <button type="button" aria-label="Next" onClick={p.next} className="border-0 bg-transparent p-2 text-ink"><Icon name="next" size={20} /></button>
               <Link href="/queue" aria-label="Queue" className="hidden p-2 text-muted hover:text-ink lg:block"><Icon name="queue" size={18} /></Link>
@@ -169,29 +184,45 @@ function PlayerBar() {
   );
 }
 
+function TabLink({ href, label, icon, on }: { href: string; label: string; icon: IconName; on: boolean }) {
+  return (
+    <Link href={href} aria-current={on ? "page" : undefined} className={`flex w-16 flex-col items-center gap-1 text-[12px] ${on ? "text-primary" : "text-[#b9c6bf]"}`}>
+      <Icon name={on && icon === "home" ? "homeFill" : icon} size={27} />
+      {label}
+    </Link>
+  );
+}
+
 export function AppShell({
-  user, unread, playerColor, sample, children,
+  user, unread, theme, sample, children,
 }: {
-  user: ShellUser; unread: number; playerColor: string; sample: boolean; children: ReactNode;
+  user: ShellUser; unread: number; theme: string; sample: boolean; children: ReactNode;
 }) {
   const path = usePathname();
   const router = useRouter();
   const lib = useLibrary();
   const installed = useIsInstalledApp();
   const [q, setQ] = useState("");
+  const [voice, setVoice] = useState(false);
   // The most specific matching link wins, so /library/liked lights up Liked Songs, not Library too.
-  const pickActive = (items: typeof MAIN) => items.filter((i) => isActive(path, i.href)).sort((a, b) => b.href.length - a.href.length)[0]?.href ?? "";
+  const pickActive = (items: NavItem[]) => items.filter((i) => isActive(path, i.href)).sort((a, b) => b.href.length - a.href.length)[0]?.href ?? "";
   const active = pickActive([...MAIN, ...DISCOVER, ...YOU]);
-  const mobileActive = pickActive(MOBILE);
+  const title = titleFor(path);
 
   return (
-    <div style={{ "--player": playerColor } as CSSProperties} className="min-h-dvh">
+    <div data-theme={theme} className="min-h-dvh text-ink">
+      <div aria-hidden="true" className="app-bg fixed inset-0 -z-10" />
+
       {/* Desktop sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-20 hidden w-64 flex-col gap-5 overflow-y-auto border-r border-line bg-[#040806]/80 px-3 pb-24 pt-5 backdrop-blur lg:flex">
-        <Link href="/" className="flex items-center gap-2.5 px-3">
-          <Image src="/assets/logo-b-plain.png" alt="" width={333} height={640} className="h-9 w-auto" />
-          <span className="text-[22px] font-semibold tracking-tight text-white">Brisic</span>
+      <aside className="fixed inset-y-0 left-0 z-20 hidden w-64 flex-col gap-5 overflow-y-auto border-r border-line-soft bg-surface/80 px-3 pb-24 pt-5 backdrop-blur lg:flex">
+        <Link href="/" className="flex items-center gap-3 px-3">
+          <Image src="/assets/logo-b-glow.png" alt="" width={333} height={640} className="logo-b h-12 w-auto" />
+          <span className="h-9 w-px bg-line" aria-hidden="true" />
+          <span className="text-[20px] font-semibold uppercase tracking-[0.14em] text-white">Brisic</span>
         </Link>
+        <button type="button" onClick={() => setVoice(true)} className="mx-3 flex items-center gap-3 rounded-full border-2 border-primary bg-transparent px-4 py-2.5 text-[14.5px] font-semibold text-accent" style={{ animation: "brisicPulse 3s ease-in-out infinite" }}>
+          <Icon name="wave" size={20} /> Talk to Brisic AI
+        </button>
         <nav aria-label="Main" className="flex flex-col gap-5">
           <NavList items={MAIN} active={active} />
           <div>
@@ -214,11 +245,14 @@ export function AppShell({
       <div className="lg:pl-64">
         <AppBanner />
 
-        <header className="sticky top-0 z-10 flex items-center gap-3 border-b border-white/5 bg-[#050a07]/85 px-4 py-2.5 backdrop-blur sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-2 lg:hidden">
-            <Image src="/assets/logo-b-plain.png" alt="" width={333} height={640} className="h-8 w-auto" />
-            <span className="text-[19px] font-semibold text-white">Brisic</span>
+        <header className="sticky top-0 z-10 flex h-[68px] items-center gap-3 bg-[color-mix(in_srgb,var(--bg)_86%,transparent)] px-4 backdrop-blur sm:px-6 lg:h-16 lg:border-b lg:border-line-soft lg:px-8">
+          <Link href="/" aria-label="Brisic home" className="flex shrink-0 items-center lg:hidden">
+            <Image src="/assets/logo-b-glow.png" alt="" width={333} height={640} priority className="logo-b h-[50px] w-auto" />
           </Link>
+          <span aria-hidden="true" className="h-10 w-px shrink-0 bg-line lg:hidden" />
+          <p className={`m-0 min-w-0 flex-1 truncate text-white lg:hidden ${title ? "text-[24px] font-normal" : "text-[23px] font-semibold uppercase tracking-[0.14em]"}`}>
+            {title === null ? "Listen Now" : title || "Brisic"}
+          </p>
           <form
             role="search"
             className="hidden max-w-md flex-1 lg:block"
@@ -230,24 +264,24 @@ export function AppShell({
             <label className="relative block">
               <span className="sr-only">Search</span>
               <Icon name="search" size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-muted" />
-              <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Songs, artists, podcasts" className="field !h-10 !pl-11 !text-[14.5px]" />
+              <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search artists, songs, albums…" className="field !h-10 !pl-11 !text-[14.5px]" />
             </label>
           </form>
-          <div className="ml-auto flex items-center gap-1.5 sm:gap-2.5">
-            {!user.isPremium && <Link href="/premium" className="btn btn-sm hidden sm:inline-flex">Go Premium</Link>}
-            <Link href="/coins" className="flex h-9 items-center gap-1.5 rounded-full border border-line bg-white/5 px-3 text-[13.5px] font-semibold text-[#f2c94c]" aria-label={`${lib.coins} B-Coins`}>
-              <Icon name="coin" size={16} />
+          <div className="ml-auto flex shrink-0 items-center gap-1 sm:gap-2.5">
+            {!user.isPremium && <Link href="/premium" className="btn btn-outline btn-sm hidden lg:inline-flex">Go Premium</Link>}
+            <Link href="/coins" className="hidden h-9 items-center gap-1.5 rounded-full border border-line bg-white/5 px-3 text-[13.5px] font-semibold text-[#f2c94c] sm:flex" aria-label={`${lib.coins} B-Coins`}>
+              <Image src="/assets/coin.png" alt="" width={18} height={18} className="h-[18px] w-[18px]" />
               {fmtCoins(lib.coins)}
             </Link>
-            <Link href="/notifications" aria-label={unread ? `Notifications, ${unread} new` : "Notifications"} className="relative flex h-9 w-9 items-center justify-center rounded-full text-ink hover:bg-white/5">
-              <Icon name="bell" size={20} />
-              {unread > 0 && <span className="absolute right-1.5 top-1.5 h-2.5 w-2.5 rounded-full border-2 border-[#050a07] bg-primary" />}
+            <Link href="/notifications" aria-label={unread ? `Notifications, ${unread} new` : "Notifications"} className="relative flex h-11 w-11 items-center justify-center rounded-full text-accent hover:bg-white/5">
+              <Icon name="bell" size={26} />
+              {unread > 0 && <span className="absolute right-2 top-2 h-[9px] w-[9px] rounded-full bg-primary shadow-[0_0_6px_var(--primary)]" />}
             </Link>
-            <Link href="/profile" aria-label="Profile"><Avatar user={user} /></Link>
+            <Link href="/profile" aria-label="Profile" className="flex h-11 w-11 items-center justify-center"><Avatar user={user} /></Link>
           </div>
         </header>
 
-        <main className="mx-auto w-full max-w-6xl px-4 pb-44 pt-5 sm:px-6 lg:px-8 lg:pb-32">
+        <main className="mx-auto w-full max-w-6xl px-4 pb-48 pt-3 sm:px-6 lg:px-8 lg:pb-32 lg:pt-6">
           {children}
           {sample && (
             <p className="mt-10 text-center text-[12px] font-light text-muted/70">
@@ -259,20 +293,26 @@ export function AppShell({
 
       <PlayerBar />
 
-      {/* Mobile bottom navigation */}
-      <nav aria-label="Main" className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-[#050a07]/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden">
-        <div className="mx-auto flex h-16 max-w-xl items-center justify-around px-1">
-          {MOBILE.map((it) => {
-            const on = it.href === mobileActive;
-            return (
-              <Link key={it.href} href={it.href} aria-current={on ? "page" : undefined} className={`flex w-16 flex-col items-center gap-1 py-1 text-[11px] ${on ? "text-primary" : "text-muted"}`}>
-                <Icon name={it.icon} size={22} />
-                {it.label}
-              </Link>
-            );
-          })}
+      {/* Mobile bottom navigation: four tabs around the Brisic AI button */}
+      <nav aria-label="Main" className="fixed inset-x-0 bottom-0 z-30 border-t border-line-soft bg-surface pb-[env(safe-area-inset-bottom)] lg:hidden">
+        <div className="mx-auto flex h-[76px] max-w-xl items-center justify-between px-4 sm:px-8">
+          <TabLink href="/" label="Home" icon="home" on={isActive(path, "/")} />
+          <TabLink href="/search" label="Search" icon="search" on={isActive(path, "/search") || isActive(path, "/genres")} />
+          <button
+            type="button"
+            onClick={() => setVoice(true)}
+            aria-label="Talk to Brisic AI"
+            className="-mt-1 flex h-[58px] w-[58px] items-center justify-center rounded-full border-2 border-primary bg-transparent text-accent"
+            style={{ animation: "brisicPulse 3s ease-in-out infinite" }}
+          >
+            <Icon name="wave" size={30} />
+          </button>
+          <TabLink href="/library" label="Library" icon="books" on={isActive(path, "/library") || isActive(path, "/following")} />
+          <TabLink href="/profile" label="Profile" icon="user" on={isActive(path, "/profile") || isActive(path, "/settings")} />
         </div>
       </nav>
+
+      <VoiceSheet open={voice} onClose={() => setVoice(false)} />
     </div>
   );
 }
