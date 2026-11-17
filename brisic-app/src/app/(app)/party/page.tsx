@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { requireUser } from "@/lib/session";
+import { getUserId } from "@/lib/session";
 import { BackButton } from "@/components/controls";
 import { Icon } from "@/components/icons";
 
@@ -10,7 +10,7 @@ const STEPS = [
 ] as const;
 
 export default async function PartyPage() {
-  await requireUser();
+  await getUserId();
   return (
     <div className="mx-auto max-w-3xl">
       <BackButton />

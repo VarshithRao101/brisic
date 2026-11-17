@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { requireUser } from "@/lib/session";
+import { getUserId } from "@/lib/session";
 import { catalog } from "@/lib/catalog";
 import { fmtCount } from "@/lib/format";
 import { BackButton, FollowButton } from "@/components/controls";
@@ -7,7 +7,7 @@ import { Cover } from "@/components/cover";
 import { PageTitle } from "@/components/ui";
 
 export default async function TrendingPage({ searchParams }: { searchParams: Promise<{ p?: string }> }) {
-  await requireUser();
+  await getUserId();
   const period = (await searchParams).p === "month" ? "month" : "week";
   const artists = await catalog.getTrendingArtists(period);
 

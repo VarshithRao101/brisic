@@ -1,9 +1,9 @@
-import { requireUser } from "@/lib/session";
+import { getUserId } from "@/lib/session";
 import { AIChat } from "@/components/fan-clients";
 import { PageTitle } from "@/components/ui";
 
 export default async function AIPage() {
-  await requireUser();
+  await getUserId();
   return (
     <>
       <div className="mx-auto max-w-3xl">

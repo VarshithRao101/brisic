@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { requireUser } from "@/lib/session";
+import { getUserId } from "@/lib/session";
 import { timeAgo } from "@/lib/format";
 import { BackButton } from "@/components/controls";
 import { Icon } from "@/components/icons";
@@ -8,8 +8,8 @@ import { MarkNotificationsRead } from "@/components/library-clients";
 import { Empty, PageTitle } from "@/components/ui";
 
 export default async function NotificationsPage() {
-  const user = await requireUser();
-  const items = await prisma.notification.findMany({ where: { userId: user.id }, orderBy: { createdAt: "desc" }, take: 60 });
+  const userId = await getUserId();
+  const items = await prisma.notification.findMany({ where: { userId }, orderBy: { createdAt: "desc" }, take: 60 });
   const unread = items.filter((n) => !n.read).length;
 
   return (

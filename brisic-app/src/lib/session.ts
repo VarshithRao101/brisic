@@ -9,14 +9,24 @@ const select = {
   coins: true, isPremium: true, settings: true, passwordHash: true,
 } as const;
 
-/** The signed-in user, or a redirect to /login. Cached per request. */
-export const requireUser = cache(async () => {
+/**
+ * Signed-in user id from the session cookie — no database call. Redirects to /login when
+ * signed out. Use it to start page queries right away, in parallel with requireUser().
+ */
+export const getUserId = cache(async () => {
   const session = await auth();
   const id = session?.user?.id;
   if (!id) redirect("/login");
+  return id;
+});
+
+/** The signed-in user's profile row, or a redirect to /login. Cached per request. */
+export const requireUser = cache(async () => {
+  const id = await getUserId();
 
   let user = await prisma.user.findUnique({ where: { id }, select });
-  if (!user) redirect("/login");
+  // Session cookie for an account that no longer exists (e.g. deleted elsewhere).
+  if (!user) redirect("/login?stale=1");
 
   if (!user.username) {
     await setUpNewUser(id);
@@ -32,6 +42,14 @@ export const requireUser = cache(async () => {
 });
 
 export type CurrentUser = Awaited<ReturnType<typeof requireUser>>;
+
+/** True when the visitor has a session for an account that still exists. */
+export async function hasLiveSession() {
+  const session = await auth();
+  const id = session?.user?.id;
+  if (!id) return false;
+  return !!(await prisma.user.findUnique({ where: { id }, select: { id: true } }));
+}
 
 /** User id for server actions. Throws when signed out. */
 export async function requireUserId() {

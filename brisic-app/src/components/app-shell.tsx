@@ -42,7 +42,7 @@ const isActive = (path: string, href: string) => (href === "/" ? path === "/" : 
 
 function Avatar({ user, size = 36 }: { user: ShellUser; size?: number }) {
   return user.image ? (
-    <Image src={user.image} alt="" width={size} height={size} className="rounded-full border border-line object-cover" style={{ width: size, height: size }} />
+    <Image src={user.image} alt="" width={size} height={size} unoptimized={user.image.startsWith("/api/")} className="rounded-full border border-line object-cover" style={{ width: size, height: size }} />
   ) : (
     <span className="flex items-center justify-center rounded-full bg-primary font-semibold text-primary-ink" style={{ width: size, height: size, fontSize: size * 0.42 }}>
       {user.displayName[0]?.toUpperCase()}
@@ -78,7 +78,7 @@ function AppBanner() {
       >
         <Icon name="x" size={18} />
       </button>
-      <Image src="/assets/logo-b-plain.png" alt="" width={36} height={36} className="h-9 w-auto" />
+      <Image src="/assets/logo-b-plain.png" alt="" width={333} height={640} className="h-9 w-auto" />
       <div className="min-w-0 flex-1 leading-tight">
         <p className="truncate text-[14px] font-semibold text-white">Brisic is better in the app</p>
         <p className="truncate text-[12px] font-light text-muted">Offline downloads and background play</p>
@@ -189,7 +189,7 @@ export function AppShell({
       {/* Desktop sidebar */}
       <aside className="fixed inset-y-0 left-0 z-20 hidden w-64 flex-col gap-5 overflow-y-auto border-r border-line bg-[#040806]/80 px-3 pb-24 pt-5 backdrop-blur lg:flex">
         <Link href="/" className="flex items-center gap-2.5 px-3">
-          <Image src="/assets/logo-b-plain.png" alt="" width={36} height={36} className="h-9 w-auto" />
+          <Image src="/assets/logo-b-plain.png" alt="" width={333} height={640} className="h-9 w-auto" />
           <span className="text-[22px] font-semibold tracking-tight text-white">Brisic</span>
         </Link>
         <nav aria-label="Main" className="flex flex-col gap-5">
@@ -216,7 +216,7 @@ export function AppShell({
 
         <header className="sticky top-0 z-10 flex items-center gap-3 border-b border-white/5 bg-[#050a07]/85 px-4 py-2.5 backdrop-blur sm:px-6 lg:px-8">
           <Link href="/" className="flex items-center gap-2 lg:hidden">
-            <Image src="/assets/logo-b-plain.png" alt="" width={32} height={32} className="h-8 w-auto" />
+            <Image src="/assets/logo-b-plain.png" alt="" width={333} height={640} className="h-8 w-auto" />
             <span className="text-[19px] font-semibold text-white">Brisic</span>
           </Link>
           <form

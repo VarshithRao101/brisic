@@ -1,12 +1,11 @@
 import { redirect } from "next/navigation";
-import { auth } from "@/auth";
+import { hasLiveSession } from "@/lib/session";
 import { AuthFrame, SignupForm } from "@/components/auth-forms";
 
 export const metadata = { title: "Sign up — Brisic" };
 
 export default async function SignupPage() {
-  const session = await auth();
-  if (session?.user?.id) redirect("/");
+  if (await hasLiveSession()) redirect("/");
   return (
     <AuthFrame heading="Join Brisic">
       <SignupForm />

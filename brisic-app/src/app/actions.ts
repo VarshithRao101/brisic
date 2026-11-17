@@ -9,6 +9,8 @@ import { setUpNewUser } from "@/lib/users";
 import { catalog } from "@/lib/catalog";
 import { EXCLUSIVES, GIFTS } from "@/lib/fan";
 import { readSettings, type Settings } from "@/lib/settings";
+import { clientIp, hit, waitText } from "@/lib/rate-limit";
+import { passwordProblem } from "@/lib/password";
 
 export type TrackSnap = { id: string; title: string; artistId: string; artistName: string; durationSec: number };
 type Result<T = object> = ({ ok: true } & T) | { ok: false; error: string };
@@ -61,6 +63,8 @@ export async function createPlaylist(name: string): Promise<Result<{ id: string;
   const userId = await requireUserId();
   const clean = str(name, 60);
   if (!clean) return { ok: false, error: "Give your playlist a name." };
+  const lim = await hit("playlist:" + userId, 30, 60);
+  if (!lim.ok) return { ok: false, error: `Too many new playlists. Try again in ${waitText(lim.retryAfterSec)}.` };
   if ((await prisma.userPlaylist.count({ where: { userId } })) >= 200) return { ok: false, error: "You have reached the playlist limit." };
   const p = await prisma.userPlaylist.create({ data: { userId, name: clean } });
   refresh();
@@ -122,6 +126,11 @@ export async function recordPlay(track: TrackSnap) {
   if (readSettings(user?.settings).privateSession) return;
   if (last && last.trackId === s.trackId && Date.now() - last.playedAt.getTime() < 60_000) return;
   await prisma.playHistory.create({ data: { userId, ...s } });
+  // Keep history bounded: now and then, drop everything older than the newest 500 plays.
+  if (Math.random() < 0.05) {
+    const cutoff = await prisma.playHistory.findFirst({ where: { userId }, orderBy: { playedAt: "desc" }, skip: 499, select: { playedAt: true } });
+    if (cutoff) await prisma.playHistory.deleteMany({ where: { userId, playedAt: { lt: cutoff.playedAt } } });
+  }
 }
 
 export async function clearHistory() {
@@ -182,6 +191,8 @@ async function spend(userId: string, total: number, kind: string, note: string, 
 
 export async function sendGift(artistId: string, giftId: string, quantity: number, message: string): Promise<Result<{ balance: number }>> {
   const userId = await requireUserId();
+  const lim = await hit("coins:" + userId, 20, 60);
+  if (!lim.ok) return { ok: false, error: `Slow down a little. Try again in ${waitText(lim.retryAfterSec)}.` };
   const gift = GIFTS.find((g) => g.id === giftId);
   const qty = Math.floor(Number(quantity));
   const found = await catalog.getArtist(str(artistId, 200));
@@ -202,6 +213,8 @@ export async function sendGift(artistId: string, giftId: string, quantity: numbe
 
 export async function unlockExclusive(artistId: string, key: string): Promise<Result<{ balance: number }>> {
   const userId = await requireUserId();
+  const lim = await hit("coins:" + userId, 20, 60);
+  if (!lim.ok) return { ok: false, error: `Slow down a little. Try again in ${waitText(lim.retryAfterSec)}.` };
   const item = EXCLUSIVES.find((x) => x.key === key);
   const found = await catalog.getArtist(str(artistId, 200));
   if (!item || !found) return { ok: false, error: "That item could not be unlocked." };
@@ -227,9 +240,10 @@ export async function registerUser(input: { name: string; email: string; passwor
   const password = String(input.password ?? "");
   if (!name) return { ok: false, error: "Enter your name." };
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return { ok: false, error: "Enter a valid email like name@gmail.com." };
-  if (password.length < 8 || password.length > 100 || !/[a-z]/.test(password) || !/[A-Z]/.test(password) || !/\d/.test(password) || !/[^A-Za-z0-9]/.test(password)) {
-    return { ok: false, error: "Password needs 8+ characters with upper and lower case, a number and a symbol." };
-  }
+  const problem = passwordProblem(password);
+  if (problem) return { ok: false, error: problem };
+  const lim = await hit("signup:ip:" + (await clientIp()), 5, 3600);
+  if (!lim.ok) return { ok: false, error: `Too many sign-ups from this network. Try again in ${waitText(lim.retryAfterSec)}.` };
   const existing = await prisma.user.findUnique({ where: { email }, select: { passwordHash: true } });
   if (existing) {
     return { ok: false, error: existing.passwordHash ? "An account with this email already exists. Log in instead." : "This email is registered with Google. Use Continue with Google." };

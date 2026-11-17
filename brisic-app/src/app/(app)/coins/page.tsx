@@ -1,14 +1,17 @@
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
-import { requireUser } from "@/lib/session";
+import { getUserId, requireUser } from "@/lib/session";
 import { COIN_PACKS } from "@/lib/fan";
 import { fmtCoins, timeAgo } from "@/lib/format";
 import { BackButton } from "@/components/controls";
 import { PageTitle, Section } from "@/components/ui";
 
 export default async function CoinsPage() {
-  const user = await requireUser();
-  const ledger = await prisma.coinTransaction.findMany({ where: { userId: user.id }, orderBy: { createdAt: "desc" }, take: 50 });
+  const userId = await getUserId();
+  const [user, ledger] = await Promise.all([
+    requireUser(),
+    prisma.coinTransaction.findMany({ where: { userId }, orderBy: { createdAt: "desc" }, take: 50 }),
+  ]);
 
   return (
     <div className="mx-auto max-w-3xl">

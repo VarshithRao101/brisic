@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { requireUser } from "@/lib/session";
+import { getUserId } from "@/lib/session";
 import { catalog } from "@/lib/catalog";
 import { fmtCount } from "@/lib/format";
 import { BackButton, FollowButton, ShareButton } from "@/components/controls";
@@ -10,7 +10,7 @@ import { PlayButtons, TrackList } from "@/components/track-list";
 import { AlbumCard, Hero, RowLink, Section, Shelf } from "@/components/ui";
 
 export default async function ArtistPage({ params }: { params: Promise<{ id: string }> }) {
-  await requireUser();
+  await getUserId();
   const { id } = await params;
   const data = await catalog.getArtist(id);
   if (!data) notFound();

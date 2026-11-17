@@ -6,14 +6,103 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { registerUser } from "@/app/actions";
+import { requestPasswordReset, resetPassword } from "@/app/account-actions";
 import { Icon } from "@/components/icons";
+
+/** Live checklist of the password rules. */
+export function PasswordRules({ password }: { password: string }) {
+  const rules: [string, boolean][] = [
+    ["At least 8 characters", password.length >= 8],
+    ["Uppercase and lowercase letters", /[a-z]/.test(password) && /[A-Z]/.test(password)],
+    ["A number", /\d/.test(password)],
+    ["A symbol", /[^A-Za-z0-9]/.test(password)],
+  ];
+  return (
+    <ul className="m-0 flex list-none flex-col gap-1 p-0 text-[13px]">
+      {rules.map(([text, ok]) => (
+        <li key={text} className={`flex items-center gap-2 ${ok ? "text-primary" : "text-muted"}`}>
+          <Icon name={ok ? "check" : "x"} size={14} /> {text}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+export function ForgotPasswordForm() {
+  const [email, setEmail] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [done, setDone] = useState("");
+  const [error, setError] = useState("");
+
+  if (done) {
+    return (
+      <div className="mt-5 text-center">
+        <p role="status" className="m-0 text-[15px] text-ink">{done}</p>
+        <p className="m-0 mt-2 text-[13.5px] font-light text-muted">Check your spam folder if it does not arrive in a few minutes.</p>
+        <Link href="/login" className="btn btn-primary mt-5 w-full">Back to log in</Link>
+      </div>
+    );
+  }
+  return (
+    <form
+      className="mt-5 flex flex-col gap-2.5"
+      onSubmit={async (e) => {
+        e.preventDefault();
+        setBusy(true);
+        setError("");
+        const r = await requestPasswordReset(email).catch(() => null);
+        setBusy(false);
+        if (!r) return setError("Something went wrong. Try again.");
+        if (r.ok) setDone(r.message ?? "Check your email.");
+        else setError(r.error);
+      }}
+    >
+      <p className="m-0 text-center text-[14px] font-light text-muted">Enter your account email and we will send you a link to choose a new password.</p>
+      <input type="email" name="email" autoComplete="email" required aria-label="Email" placeholder="Email" className="field" value={email} onChange={(e) => setEmail(e.target.value)} />
+      {error && <p role="alert" className="m-0 text-[14px] text-[#ff9b9b]">{error}</p>}
+      <button className="btn btn-primary mt-1 w-full !h-[52px] !text-[17px]" disabled={busy}>{busy ? "Sending…" : "Send reset link"}</button>
+      <Link href="/login" className="mt-1 text-center text-[14px] text-muted hover:text-ink">Back to log in</Link>
+    </form>
+  );
+}
+
+export function ResetPasswordForm({ token }: { token: string }) {
+  const router = useRouter();
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+
+  return (
+    <form
+      className="mt-5 flex flex-col gap-2.5"
+      onSubmit={async (e) => {
+        e.preventDefault();
+        if (password !== confirm) return setError("Passwords do not match.");
+        setBusy(true);
+        setError("");
+        const r = await resetPassword(token, password).catch(() => null);
+        setBusy(false);
+        if (!r) return setError("Something went wrong. Try again.");
+        if (!r.ok) return setError(r.error);
+        router.push("/login?reset=1");
+      }}
+    >
+      <input type="password" name="new-password" autoComplete="new-password" required aria-label="New password" placeholder="New password" className="field" value={password} onChange={(e) => setPassword(e.target.value)} maxLength={100} />
+      <input type="password" name="confirm-password" autoComplete="new-password" required aria-label="Confirm new password" placeholder="Confirm new password" className="field" value={confirm} onChange={(e) => setConfirm(e.target.value)} maxLength={100} />
+      <PasswordRules password={password} />
+      {error && <p role="alert" className="m-0 text-[14px] text-[#ff9b9b]">{error}</p>}
+      <button className="btn btn-primary mt-1 w-full !h-[52px] !text-[17px]" disabled={busy}>{busy ? "Saving…" : "Set new password"}</button>
+    </form>
+  );
+}
 
 export function AuthFrame({ heading, children }: { heading: string; children: ReactNode }) {
   return (
     <main className="flex min-h-dvh w-full flex-col items-center justify-center px-4 py-8">
       <div className="w-full max-w-[430px] rounded-[28px] border border-line bg-[radial-gradient(100%_50%_at_50%_0%,#0f2c18_0%,#050a07_60%,#030504_100%)] px-6 py-9 shadow-[0_30px_70px_rgba(0,0,0,0.6)] sm:px-8">
         <div className="flex flex-col items-center text-center">
-          <Image src="/assets/logo-b-glow.png" alt="Brisic" width={104} height={104} priority className="h-24 w-auto" />
+          <Image src="/assets/logo-b-glow.png" alt="Brisic" width={456} height={656} priority className="h-24 w-auto" />
           <h1 className="m-0 mt-2 text-[27px] font-semibold text-white">{heading}</h1>
           <p className="m-0 mt-1 text-[14.5px] font-light text-accent">Music that understands you.</p>
         </div>
@@ -57,12 +146,12 @@ const OAUTH_ERRORS: Record<string, string> = {
   AccessDenied: "Sign-in was cancelled or not allowed for this account.",
 };
 
-export function LoginForm({ error }: { error?: string }) {
+export function LoginForm({ error, notice, resetEnabled }: { error?: string; notice?: string; resetEnabled: boolean }) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
-  const [message, setMessage] = useState(error ? OAUTH_ERRORS[error] ?? "Could not sign you in. Try again." : "");
+  const [message, setMessage] = useState(error && error !== "CredentialsSignin" ? OAUTH_ERRORS[error] ?? "Could not sign you in. Try again." : "");
 
   return (
     <>
@@ -75,7 +164,7 @@ export function LoginForm({ error }: { error?: string }) {
           const r = await signIn("credentials", { email, password, redirect: false }).catch(() => null);
           if (!r || r.error) {
             setBusy(false);
-            return setMessage("Email or password is incorrect.");
+            return setMessage(r?.code === "rate_limited" ? "Too many attempts. Wait 15 minutes and try again." : "Email or password is incorrect.");
           }
           router.push("/");
           router.refresh();
@@ -83,6 +172,10 @@ export function LoginForm({ error }: { error?: string }) {
       >
         <input type="email" name="email" autoComplete="email" required aria-label="Email" placeholder="Email" className="field" value={email} onChange={(e) => setEmail(e.target.value)} />
         <input type="password" name="password" autoComplete="current-password" required aria-label="Password" placeholder="Password" className="field" value={password} onChange={(e) => setPassword(e.target.value)} />
+        {resetEnabled && (
+          <Link href="/forgot-password" className="self-end text-[13.5px] text-primary hover:underline">Forgot password?</Link>
+        )}
+        {notice && !message && <p role="status" className="m-0 text-[14px] text-primary">{notice}</p>}
         {message && <p role="alert" className="m-0 text-[14px] text-[#ff9b9b]">{message}</p>}
         <button className="btn btn-primary mt-1 w-full !h-[52px] !text-[17px]" disabled={busy}>{busy ? "Logging in…" : "Log in"}</button>
       </form>

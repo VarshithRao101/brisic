@@ -1,10 +1,10 @@
-import { requireUser } from "@/lib/session";
+import { getUserId } from "@/lib/session";
 import { catalog } from "@/lib/catalog";
 import { BackButton } from "@/components/controls";
 import { Grid, PageTitle, ShowCard } from "@/components/ui";
 
 export default async function ShowsPage() {
-  await requireUser();
+  await getUserId();
   const shows = await catalog.getShows();
   return (
     <>

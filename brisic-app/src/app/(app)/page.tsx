@@ -1,16 +1,17 @@
 import { prisma } from "@/lib/prisma";
-import { requireUser } from "@/lib/session";
+import { getUserId, requireUser } from "@/lib/session";
 import { catalog } from "@/lib/catalog";
 import { hydrate, uniqueByTrack } from "@/lib/library";
 import { ArtistCard, PlaylistCard, Section, Shelf } from "@/components/ui";
 import { TrackList } from "@/components/track-list";
 
 export default async function HomePage() {
-  const user = await requireUser();
-  const [sections, trending, history] = await Promise.all([
+  const userId = await getUserId();
+  const [user, sections, trending, history] = await Promise.all([
+    requireUser(),
     catalog.getHomeSections(),
     catalog.getTrendingArtists("week"),
-    prisma.playHistory.findMany({ where: { userId: user.id }, orderBy: { playedAt: "desc" }, take: 40 }),
+    prisma.playHistory.findMany({ where: { userId }, orderBy: { playedAt: "desc" }, take: 40 }),
   ]);
   const recent = await hydrate(uniqueByTrack(history).slice(0, 6));
   const first = user.displayName.split(" ")[0];

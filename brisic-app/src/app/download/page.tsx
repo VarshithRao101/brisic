@@ -20,7 +20,7 @@ export default function DownloadPage() {
       <Link href="/" className="inline-flex items-center gap-1 text-[14px] text-muted hover:text-ink"><Icon name="back" size={18} /> Back to Brisic</Link>
 
       <div className="mt-6 flex flex-col items-center text-center">
-        <Image src="/assets/logo-b-glow.png" alt="" width={120} height={120} priority className="h-28 w-auto" />
+        <Image src="/assets/logo-b-glow.png" alt="" width={456} height={656} priority className="h-28 w-auto" />
         <h1 className="m-0 mt-3 text-[32px] font-semibold leading-tight text-white sm:text-[40px]">Get the Brisic app</h1>
         <p className="m-0 mt-2 max-w-md text-[15.5px] font-light text-muted">Your music, your people, in your pocket.</p>
       </div>

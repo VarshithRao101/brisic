@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { requireUser } from "@/lib/session";
+import { getUserId, requireUser } from "@/lib/session";
 import { hydrate, uniqueByTrack } from "@/lib/library";
 import { Cover } from "@/components/cover";
 import { NewPlaylistButton } from "@/components/library-clients";
@@ -8,15 +8,16 @@ import { TrackList } from "@/components/track-list";
 import { Empty, PageTitle, RowLink, Section } from "@/components/ui";
 
 export default async function LibraryPage() {
-  const user = await requireUser();
-  const [likes, follows, playlists, history] = await Promise.all([
-    prisma.likedTrack.count({ where: { userId: user.id } }),
-    prisma.follow.count({ where: { userId: user.id } }),
+  const userId = await getUserId();
+  const [user, likes, follows, playlists, history] = await Promise.all([
+    requireUser(),
+    prisma.likedTrack.count({ where: { userId } }),
+    prisma.follow.count({ where: { userId } }),
     prisma.userPlaylist.findMany({
-      where: { userId: user.id }, orderBy: { updatedAt: "desc" },
+      where: { userId }, orderBy: { updatedAt: "desc" },
       select: { id: true, name: true, _count: { select: { tracks: true } } },
     }),
-    prisma.playHistory.findMany({ where: { userId: user.id }, orderBy: { playedAt: "desc" }, take: 30 }),
+    prisma.playHistory.findMany({ where: { userId }, orderBy: { playedAt: "desc" }, take: 30 }),
   ]);
   const recent = await hydrate(uniqueByTrack(history).slice(0, 5));
 

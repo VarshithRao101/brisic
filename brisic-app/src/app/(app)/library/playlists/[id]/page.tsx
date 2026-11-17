@@ -1,18 +1,21 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { requireUser } from "@/lib/session";
+import { getUserId, requireUser } from "@/lib/session";
 import { hydrate } from "@/lib/library";
 import { BackButton } from "@/components/controls";
 import { Cover } from "@/components/cover";
 import { UserPlaylistView } from "@/components/library-clients";
 
 export default async function UserPlaylistPage({ params }: { params: Promise<{ id: string }> }) {
-  const user = await requireUser();
+  const userId = await getUserId();
   const { id } = await params;
-  const playlist = await prisma.userPlaylist.findFirst({
-    where: { id, userId: user.id },
-    include: { tracks: { orderBy: { addedAt: "asc" } } },
-  });
+  const [user, playlist] = await Promise.all([
+    requireUser(),
+    prisma.userPlaylist.findFirst({
+      where: { id, userId },
+      include: { tracks: { orderBy: { addedAt: "asc" } } },
+    }),
+  ]);
   if (!playlist) notFound();
   const tracks = await hydrate(playlist.tracks);
 

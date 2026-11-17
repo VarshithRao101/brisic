@@ -1,4 +1,4 @@
-import { requireUser } from "@/lib/session";
+import { getUserId } from "@/lib/session";
 import { catalog } from "@/lib/catalog";
 import { hashStr } from "@/lib/format";
 import { BackButton, StationButton } from "@/components/controls";
@@ -8,7 +8,7 @@ import { PageTitle } from "@/components/ui";
 const TINT = ["#2f7a34", "#7a2a8a", "#d6841a", "#1c6be0", "#c0309a", "#1f9a9a", "#c8452f"];
 
 export default async function StationsPage() {
-  await requireUser();
+  await getUserId();
   const stations = await catalog.getStations();
   return (
     <>

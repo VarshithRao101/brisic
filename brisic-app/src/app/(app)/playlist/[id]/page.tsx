@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { requireUser } from "@/lib/session";
+import { getUserId } from "@/lib/session";
 import { catalog } from "@/lib/catalog";
 import { BackButton, ShareButton } from "@/components/controls";
 import { Cover } from "@/components/cover";
@@ -7,7 +7,7 @@ import { PlayButtons, TrackList } from "@/components/track-list";
 import { Hero } from "@/components/ui";
 
 export default async function PlaylistPage({ params }: { params: Promise<{ id: string }> }) {
-  await requireUser();
+  await getUserId();
   const { id } = await params;
   const data = await catalog.getPlaylist(id);
   if (!data) notFound();

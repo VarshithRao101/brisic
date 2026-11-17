@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { requireUser } from "@/lib/session";
+import { getUserId } from "@/lib/session";
 import { catalog } from "@/lib/catalog";
 import { BackButton } from "@/components/controls";
 import { Icon } from "@/components/icons";
 import { Section } from "@/components/ui";
 
 export default async function WatchPage({ params }: { params: Promise<{ id: string }> }) {
-  await requireUser();
+  await getUserId();
   const { id } = await params;
   const data = await catalog.getEpisode(id);
   if (!data) notFound();

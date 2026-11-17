@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { requireUser } from "@/lib/session";
+import { getUserId } from "@/lib/session";
 import { catalog } from "@/lib/catalog";
 import { SearchBox } from "@/components/search-box";
 import { TrackList } from "@/components/track-list";
@@ -8,7 +8,7 @@ import { AlbumCard, ArtistCard, Empty, GenreTile, PageTitle, PlaylistCard, Secti
 const TYPES = ["all", "songs", "artists", "albums", "playlists", "podcasts"] as const;
 
 export default async function SearchPage({ searchParams }: { searchParams: Promise<{ q?: string; type?: string }> }) {
-  await requireUser();
+  await getUserId();
   const sp = await searchParams;
   const q = (sp.q ?? "").trim();
   const type = (TYPES as readonly string[]).includes(sp.type ?? "") ? sp.type! : "all";

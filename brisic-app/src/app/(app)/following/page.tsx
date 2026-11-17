@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { requireUser } from "@/lib/session";
+import { getUserId } from "@/lib/session";
 import { BackButton, FollowButton } from "@/components/controls";
 import { Cover } from "@/components/cover";
 import { Empty, PageTitle } from "@/components/ui";
 
 export default async function FollowingPage() {
-  const user = await requireUser();
-  const follows = await prisma.follow.findMany({ where: { userId: user.id }, orderBy: { createdAt: "desc" } });
+  const userId = await getUserId();
+  const follows = await prisma.follow.findMany({ where: { userId }, orderBy: { createdAt: "desc" } });
   return (
     <>
       <BackButton />

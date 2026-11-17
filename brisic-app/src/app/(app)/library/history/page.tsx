@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { requireUser } from "@/lib/session";
+import { getUserId } from "@/lib/session";
 import { hydrate, uniqueByTrack } from "@/lib/library";
 import { BackButton } from "@/components/controls";
 import { ClearHistoryButton } from "@/components/library-clients";
@@ -7,8 +7,8 @@ import { TrackList } from "@/components/track-list";
 import { Empty, PageTitle } from "@/components/ui";
 
 export default async function HistoryPage() {
-  const user = await requireUser();
-  const rows = await prisma.playHistory.findMany({ where: { userId: user.id }, orderBy: { playedAt: "desc" }, take: 200 });
+  const userId = await getUserId();
+  const rows = await prisma.playHistory.findMany({ where: { userId }, orderBy: { playedAt: "desc" }, take: 200 });
   const tracks = await hydrate(uniqueByTrack(rows).slice(0, 100));
   return (
     <>

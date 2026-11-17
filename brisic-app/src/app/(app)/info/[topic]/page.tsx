@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { requireUser } from "@/lib/session";
+import { getUserId } from "@/lib/session";
 import { BackButton } from "@/components/controls";
 import { PageTitle } from "@/components/ui";
 
@@ -9,9 +9,9 @@ const TOPICS: Record<string, { title: string; subtitle: string; items: [string, 
     subtitle: "Email, password, username",
     items: [
       ["Email and sign-in", "You sign in with Google or with your email and password. Your email address identifies your account."],
-      ["Username and display name", "Change them any time from Profile, then Edit Profile. Usernames are 3 to 20 letters, numbers or underscores."],
-      ["Password", "Passwords need at least 8 characters with an uppercase and a lowercase letter, a number and a symbol. Accounts created with Google do not have a Brisic password."],
-      ["Delete my account", "Deleting your account removes your profile, playlists, likes and follows. Contact support to request it."],
+      ["Profile photo, username and display name", "Change them any time from Profile, then Edit Profile. Usernames are 3 to 20 letters, numbers or underscores."],
+      ["Password", "Change your password in Settings, under Account. If you signed up with Google you can add a password there too. Passwords need at least 8 characters with an uppercase and a lowercase letter, a number and a symbol."],
+      ["Delete my account", "Open Settings and scroll to Delete account. It permanently removes your profile, playlists, likes, follows, history and B-Coins."],
     ],
   },
   privacy: {
@@ -21,7 +21,7 @@ const TOPICS: Record<string, { title: string; subtitle: string; items: [string, 
       ["What we collect", "Your account details, what you listen to and the playlists you make. We use them to run Brisic and recommend music."],
       ["Private session", "Turn on Private session in Settings and the songs you play are not added to your listening history."],
       ["Listening history", "You can clear your history at any time from Library, then Listening History."],
-      ["Download or delete my data", "Contact support to ask for a copy of your data or to have it deleted."],
+      ["Delete my data", "You can delete your account and all its data yourself in Settings, under Delete account. Clearing your listening history is in Library."],
     ],
   },
   help: {
@@ -48,7 +48,7 @@ const TOPICS: Record<string, { title: string; subtitle: string; items: [string, 
 };
 
 export default async function InfoPage({ params }: { params: Promise<{ topic: string }> }) {
-  await requireUser();
+  await getUserId();
   const topic = TOPICS[(await params).topic];
   if (!topic) notFound();
   return (

@@ -1,4 +1,4 @@
-import { requireUser } from "@/lib/session";
+import { getUserId } from "@/lib/session";
 import { catalog } from "@/lib/catalog";
 import { BackButton } from "@/components/controls";
 import { GenreTile, PageTitle, Section } from "@/components/ui";
@@ -10,7 +10,7 @@ const GROUPS = [
 ] as const;
 
 export default async function GenresPage() {
-  await requireUser();
+  await getUserId();
   const genres = await catalog.getGenres();
   return (
     <>

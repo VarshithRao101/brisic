@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { requireUser } from "@/lib/session";
+import { getUserId } from "@/lib/session";
 import { catalog } from "@/lib/catalog";
 import { BackButton } from "@/components/controls";
 import { PlayButtons, TrackList } from "@/components/track-list";
@@ -8,7 +8,7 @@ import { ArtistCard, PlaylistCard, Section, Shelf, ShowCard } from "@/components
 const KIND = { music: "Genre", podcasts: "Podcasts", moods: "Mood" } as const;
 
 export default async function GenrePage({ params }: { params: Promise<{ id: string }> }) {
-  await requireUser();
+  await getUserId();
   const { id } = await params;
   const data = await catalog.getGenre(id);
   if (!data) notFound();

@@ -1,18 +1,20 @@
 import type { ReactNode } from "react";
 import { prisma } from "@/lib/prisma";
-import { requireUser } from "@/lib/session";
+import { getUserId, requireUser } from "@/lib/session";
 import { catalog } from "@/lib/catalog";
 import { playerHex, readSettings } from "@/lib/settings";
 import { AppState } from "@/components/app-state";
 import { AppShell } from "@/components/app-shell";
 
 export default async function AppLayout({ children }: { children: ReactNode }) {
-  const user = await requireUser();
-  const [likes, follows, playlists, unread] = await Promise.all([
-    prisma.likedTrack.findMany({ where: { userId: user.id }, select: { trackId: true } }),
-    prisma.follow.findMany({ where: { userId: user.id }, select: { artistId: true } }),
-    prisma.userPlaylist.findMany({ where: { userId: user.id }, orderBy: { updatedAt: "desc" }, select: { id: true, name: true } }),
-    prisma.notification.count({ where: { userId: user.id, read: false } }),
+  const userId = await getUserId();
+  // One parallel round trip: profile + everything the shell needs.
+  const [user, likes, follows, playlists, unread] = await Promise.all([
+    requireUser(),
+    prisma.likedTrack.findMany({ where: { userId }, select: { trackId: true }, take: 5000 }),
+    prisma.follow.findMany({ where: { userId }, select: { artistId: true }, take: 2000 }),
+    prisma.userPlaylist.findMany({ where: { userId }, orderBy: { updatedAt: "desc" }, select: { id: true, name: true }, take: 200 }),
+    prisma.notification.count({ where: { userId, read: false } }),
   ]);
 
   return (

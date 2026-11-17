@@ -1,25 +1,26 @@
 import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { requireUser } from "@/lib/session";
+import { getUserId, requireUser } from "@/lib/session";
 import { fmtCoins } from "@/lib/format";
 import { SignOutButton } from "@/components/controls";
 import { Icon } from "@/components/icons";
 import { RowLink } from "@/components/ui";
 
 export default async function ProfilePage() {
-  const user = await requireUser();
-  const [following, playlists, likes] = await Promise.all([
-    prisma.follow.count({ where: { userId: user.id } }),
-    prisma.userPlaylist.count({ where: { userId: user.id } }),
-    prisma.likedTrack.count({ where: { userId: user.id } }),
+  const userId = await getUserId();
+  const [user, following, playlists, likes] = await Promise.all([
+    requireUser(),
+    prisma.follow.count({ where: { userId } }),
+    prisma.userPlaylist.count({ where: { userId } }),
+    prisma.likedTrack.count({ where: { userId } }),
   ]);
 
   return (
     <div className="mx-auto max-w-3xl">
       <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:text-left">
         {user.image ? (
-          <Image src={user.image} alt="" width={104} height={104} className="h-[104px] w-[104px] rounded-full border-2 border-line object-cover" />
+          <Image src={user.image} alt="" width={104} height={104} unoptimized={user.image.startsWith("/api/")} className="h-[104px] w-[104px] rounded-full border-2 border-line object-cover" />
         ) : (
           <span className="flex h-[104px] w-[104px] items-center justify-center rounded-full bg-primary text-[42px] font-semibold text-primary-ink">{user.displayName[0]?.toUpperCase()}</span>
         )}

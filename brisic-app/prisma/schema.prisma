@@ -40,6 +40,8 @@ model User {
   gifts         Gift[]
   unlocks       Unlock[]
   notifications Notification[]
+  resetTokens   PasswordResetToken[]
+  avatar        Avatar?
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -195,4 +197,36 @@ model Notification {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, createdAt])
+  @@index([userId, read])
+}
+
+/// Fixed-window rate limits (login, sign-up, coin actions, password reset).
+model RateLimit {
+  key     String   @id
+  count   Int
+  resetAt DateTime
+
+  @@index([resetAt])
+}
+
+/// One-time password reset links. Only a SHA-256 hash of the token is stored.
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+/// Uploaded profile photo (resized to 256px in the browser, about 20-40 KB).
+model Avatar {
+  userId    String   @id
+  mime      String
+  data      Bytes
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

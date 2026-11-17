@@ -1,13 +1,167 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 import { updateProfile, updateSettings, type ProfileState } from "@/app/actions";
+import { changePassword, deleteAccount, removeAvatar, uploadAvatar } from "@/app/account-actions";
 import { LANGUAGES, PLAYER_COLORS, QUALITIES, type Settings } from "@/lib/settings";
 import { PREMIUM_PERKS, PREMIUM_PLANS, PREMIUM_REGIONS } from "@/lib/fan";
 import { Icon } from "@/components/icons";
 import { useToast } from "@/components/app-state";
+import { PasswordRules } from "@/components/auth-forms";
+
+/** Crops the picked image to a centered square and shrinks it to 256px JPEG in the browser. */
+async function toAvatarDataUrl(file: File): Promise<string> {
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+      const i = new Image();
+      i.onload = () => resolve(i);
+      i.onerror = () => reject(new Error("unreadable"));
+      i.src = url;
+    });
+    const side = Math.min(img.naturalWidth, img.naturalHeight);
+    const canvas = document.createElement("canvas");
+    canvas.width = canvas.height = 256;
+    const ctx = canvas.getContext("2d");
+    if (!ctx || !side) throw new Error("unreadable");
+    ctx.drawImage(img, (img.naturalWidth - side) / 2, (img.naturalHeight - side) / 2, side, side, 0, 0, 256, 256);
+    return canvas.toDataURL("image/jpeg", 0.85);
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
+export function AvatarEditor({ image, initial }: { image: string | null; initial: string }) {
+  const router = useRouter();
+  const toast = useToast();
+  const input = useRef<HTMLInputElement>(null);
+  const [preview, setPreview] = useState(image);
+  const [busy, setBusy] = useState(false);
+
+  return (
+    <div className="mb-6 flex items-center gap-4">
+      {preview ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={preview} alt="Your profile photo" className="h-24 w-24 rounded-full border-2 border-line object-cover" />
+      ) : (
+        <span className="flex h-24 w-24 items-center justify-center rounded-full bg-primary text-[38px] font-semibold text-primary-ink">{initial}</span>
+      )}
+      <div className="flex flex-wrap gap-2">
+        <input
+          ref={input} type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/*" className="sr-only" aria-label="Choose a profile photo"
+          onChange={async (e) => {
+            const file = e.target.files?.[0];
+            e.target.value = "";
+            if (!file) return;
+            if (file.size > 15 * 1024 * 1024) return toast("That photo is too large. Pick one under 15 MB.");
+            setBusy(true);
+            try {
+              const dataUrl = await toAvatarDataUrl(file);
+              const r = await uploadAvatar(dataUrl);
+              if (!r.ok) toast(r.error);
+              else { setPreview(dataUrl); toast("Profile photo updated"); router.refresh(); }
+            } catch {
+              toast("Could not read that photo. Try a JPG or PNG.");
+            }
+            setBusy(false);
+          }}
+        />
+        <button type="button" className="btn btn-sm" disabled={busy} onClick={() => input.current?.click()}>
+          <Icon name="pencil" size={16} /> {busy ? "Uploading…" : preview ? "Change photo" : "Choose photo"}
+        </button>
+        {preview && (
+          <button
+            type="button" className="btn btn-sm" disabled={busy}
+            onClick={async () => {
+              setBusy(true);
+              const r = await removeAvatar().catch(() => null);
+              setBusy(false);
+              if (r?.ok) { setPreview(null); toast("Photo removed"); router.refresh(); } else toast("Could not remove the photo.");
+            }}
+          >
+            <Icon name="trash" size={16} /> Remove
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export function AccountSecurity({ email, hasPassword }: { email: string | null; hasPassword: boolean }) {
+  const [current, setCurrent] = useState("");
+  const [next, setNext] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
+  const [confirmText, setConfirmText] = useState("");
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
+  const [hadPassword, setHadPassword] = useState(hasPassword);
+
+  return (
+    <div className="mx-auto max-w-3xl">
+      <h2 className="mb-2 mt-7 text-[12px] font-semibold uppercase tracking-[0.14em] text-accent">Account</h2>
+      <div className="panel p-4">
+        <p className="m-0 text-[14px] text-muted">Signed in as <span className="text-ink">{email ?? "your account"}</span></p>
+        <form
+          className="mt-4 flex flex-col gap-2.5"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            setBusy(true);
+            setMsg(null);
+            const r = await changePassword(current, next).catch(() => null);
+            setBusy(false);
+            if (!r) return setMsg({ ok: false, text: "Something went wrong. Try again." });
+            if (!r.ok) return setMsg({ ok: false, text: r.error });
+            setMsg({ ok: true, text: r.message ?? "Saved." });
+            setCurrent("");
+            setNext("");
+            setHadPassword(true);
+          }}
+        >
+          <p className="m-0 text-[15.5px] font-medium text-ink">{hadPassword ? "Change password" : "Set a password"}</p>
+          {!hadPassword && <p className="m-0 text-[13px] font-light text-muted">You sign in with Google. Add a password to also log in with your email.</p>}
+          {hadPassword && (
+            <input type="password" autoComplete="current-password" required aria-label="Current password" placeholder="Current password" className="field" value={current} onChange={(e) => setCurrent(e.target.value)} />
+          )}
+          <input type="password" autoComplete="new-password" required aria-label="New password" placeholder="New password" className="field" value={next} onChange={(e) => setNext(e.target.value)} maxLength={100} />
+          {next && <PasswordRules password={next} />}
+          {msg && <p role={msg.ok ? "status" : "alert"} className={`m-0 text-[14px] ${msg.ok ? "text-primary" : "text-[#ff9b9b]"}`}>{msg.text}</p>}
+          <button className="btn btn-primary self-start" disabled={busy || !next}>{busy ? "Saving…" : hadPassword ? "Change password" : "Set password"}</button>
+        </form>
+      </div>
+
+      <h2 className="mb-2 mt-7 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#ff9b9b]">Delete account</h2>
+      <div className="panel border-[#5a2a2a] p-4">
+        <p className="m-0 text-[14px] font-light text-ink/90">
+          This permanently deletes your profile, playlists, liked songs, follows, history and B-Coins. It cannot be undone.
+        </p>
+        <label className="mt-3 block">
+          <span className="mb-1.5 block text-[13.5px] text-muted">Type DELETE to confirm</span>
+          <input className="field" value={confirmText} onChange={(e) => setConfirmText(e.target.value)} autoComplete="off" />
+        </label>
+        {deleteError && <p role="alert" className="m-0 mt-2 text-[14px] text-[#ff9b9b]">{deleteError}</p>}
+        <button
+          type="button" className="btn mt-3 border-[#8a3a3a] text-[#ffb3b3]" disabled={confirmText.trim() !== "DELETE" || deleting}
+          onClick={async () => {
+            setDeleting(true);
+            setDeleteError("");
+            const r = await deleteAccount(confirmText).catch(() => null);
+            if (!r || !r.ok) {
+              setDeleting(false);
+              return setDeleteError(r && !r.ok ? r.error : "Could not delete the account. Try again.");
+            }
+            await signOut({ callbackUrl: "/login?deleted=1" });
+          }}
+        >
+          <Icon name="trash" size={17} /> {deleting ? "Deleting…" : "Delete my account"}
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export function EditProfileForm({ name, username, bio }: { name: string; username: string; bio: string }) {
   const router = useRouter();
