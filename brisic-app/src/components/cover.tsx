@@ -71,7 +71,7 @@ export function Cover({
   const h = hashStr(seed);
   if (round) {
     return (
-      <div className={`relative aspect-square w-full rounded-full p-[3px] ${ring ? "ring-glow" : ""} ${className}`}>
+      <div className={`relative aspect-square w-full rounded-full p-[3px] ${ring ? "ring-glow cover-round" : ""} ${className}`}>
         {src ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={src} alt="" loading="lazy" className="h-full w-full rounded-full object-cover" />
@@ -91,7 +91,7 @@ export function Cover({
   return (
     <div
       aria-hidden="true"
-      className={`relative aspect-square w-full overflow-hidden rounded-2xl border border-white/10 [container-type:inline-size] ${className}`}
+      className={`poster-box relative aspect-square w-full overflow-hidden rounded-2xl border border-white/10 [container-type:inline-size] ${className}`}
       style={{ background: `linear-gradient(150deg, ${a}, ${b})` }}
     >
       {figure !== 2 && (
@@ -107,7 +107,7 @@ export function Cover({
       <div className="absolute inset-0 bg-[radial-gradient(80%_60%_at_20%_0%,rgba(255,255,255,0.16),transparent_60%)]" />
       {lines.length > 0 && (
         <span
-          className="display absolute left-[7%] top-[6%] right-[7%] whitespace-pre-line"
+          className="display poster-label absolute left-[7%] top-[6%] right-[7%] whitespace-pre-line"
           style={{ color: ink, fontSize: Math.min(lines.length > 2 ? 17 : 21, 84 / (Math.max(...lines.map((l) => l.length)) * 0.5)).toFixed(1) + "cqw" }}
         >
           {lines.join("\n")}

@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { requireUserId } from "@/lib/session";
 import { catalog } from "@/lib/catalog";
 import { hit, waitText } from "@/lib/rate-limit";
-import { IDLE_MS, newPartyCode, normalizeCode } from "@/lib/party";
+import { ARTIST_ROOM_SUFFIX, IDLE_MS, newPartyCode, normalizeCode } from "@/lib/party";
 
 type Result<T = object> = ({ ok: true } & T) | { ok: false; error: string };
 const str = (v: unknown, max: number) => String(v ?? "").trim().replace(/\s+/g, " ").slice(0, max);
@@ -20,9 +20,10 @@ async function liveRoom(rawCode: string, userId: string) {
   if (!code) return null;
   const room = await prisma.partyRoom.findUnique({
     where: { code },
-    select: { id: true, code: true, hostId: true, chatOpen: true, endedAt: true, updatedAt: true, members: { where: { userId }, select: { id: true } } },
+    select: { id: true, code: true, hostId: true, artistId: true, chatOpen: true, endedAt: true, updatedAt: true, members: { where: { userId }, select: { id: true } } },
   });
-  if (!room || room.endedAt || Date.now() - room.updatedAt.getTime() > IDLE_MS) return null;
+  if (!room || room.endedAt) return null;
+  if (!room.artistId && Date.now() - room.updatedAt.getTime() > IDLE_MS) return null;
   return { ...room, isMember: room.members.length > 0, isHost: room.hostId === userId };
 }
 const touch = (roomId: string) => prisma.partyRoom.update({ where: { id: roomId }, data: { updatedAt: new Date() } });
@@ -62,6 +63,10 @@ export async function joinParty(rawCode: string): Promise<Result<{ code: string 
   if (!code) return { ok: false, error: "Enter a party code like BRS-7K2Q9, or paste the invite link." };
   const room = await liveRoom(code, userId);
   if (!room) return { ok: false, error: "That party has ended or the code is wrong. Check it with the host." };
+  if (room.artistId && !room.isMember) {
+    const follows = await prisma.follow.findUnique({ where: { userId_artistId: { userId, artistId: room.artistId } }, select: { id: true } });
+    if (!follows) return { ok: false, error: "Only followers can enter this community party. Follow the artist first." };
+  }
   await prisma.partyMember.upsert({
     where: { roomId_userId: { roomId: room.id, userId } },
     create: { roomId: room.id, userId },
@@ -189,4 +194,44 @@ export async function searchPartySongs(q: string) {
 export async function partyTracks(ids: string[]) {
   await requireUserId();
   return catalog.getTracksByIds(ids.slice(0, 20).map((i) => str(i, 200)));
+}
+
+/**
+ * Join an artist's official community party. Fans can only join (not create) these rooms,
+ * and only after following the artist. The room is opened the first time a fan joins.
+ */
+export async function joinArtistParty(artistId: string): Promise<Result<{ code: string }>> {
+  const userId = await requireUserId();
+  const limit = await hit("party:join:" + userId, 30, 600);
+  if (!limit.ok) return { ok: false, error: `Too many tries. Wait ${waitText(limit.retryAfterSec)}.` };
+  const id = str(artistId, 200);
+  const data = await catalog.getArtist(id);
+  if (!data) return { ok: false, error: "Artist not found." };
+  const follows = await prisma.follow.findUnique({ where: { userId_artistId: { userId, artistId: id } }, select: { id: true } });
+  if (!follows) return { ok: false, error: `Follow ${data.artist.name} to join their community party.` };
+
+  let room = await prisma.partyRoom.findUnique({ where: { artistId: id }, select: { id: true, code: true, endedAt: true } });
+  for (let attempt = 0; !room && attempt < 5; attempt++) {
+    try {
+      room = await prisma.partyRoom.create({
+        data: { code: newPartyCode(), name: data.artist.name + ARTIST_ROOM_SUFFIX, artistId: id, hostId: null, isPublic: true, chatOpen: true },
+        select: { id: true, code: true, endedAt: true },
+      });
+    } catch (e) {
+      if (!(e instanceof Error && e.message.includes("Unique constraint"))) throw e;
+      // Another fan opened it at the same moment, or the code was taken: read it again.
+      room = await prisma.partyRoom.findUnique({ where: { artistId: id }, select: { id: true, code: true, endedAt: true } });
+    }
+  }
+  if (!room) return { ok: false, error: "Could not open the community party. Try again." };
+  if (room.endedAt) await prisma.partyRoom.update({ where: { id: room.id }, data: { endedAt: null } });
+
+  const existing = await prisma.partyMember.findUnique({ where: { roomId_userId: { roomId: room.id, userId } }, select: { id: true } });
+  await prisma.partyMember.upsert({
+    where: { roomId_userId: { roomId: room.id, userId } },
+    create: { roomId: room.id, userId },
+    update: { lastSeen: new Date() },
+  });
+  if (!existing) await prisma.partyMessage.create({ data: { roomId: room.id, userId, userName: await nameOf(userId), text: "joined the party" } });
+  return { ok: true, code: room.code };
 }

@@ -268,9 +268,12 @@ export const mockCatalog: CatalogProvider = {
     if (!t) return null;
     return {
       lyrics: t.title === "Lost in the Noise" ? LYRICS : [],
+      about: `"${t.title}" was written during a long night in the studio, when the city outside never went quiet. ${t.artistName} wanted to capture the feeling of finding your own voice in the middle of all the noise, and turn it into something people could dance to and hold on to.`,
       credits: [
         { label: "Performed by", value: t.artistName },
+        { label: "Written by", value: `${t.artistName}, Co-writer` },
         { label: "Album", value: t.albumTitle ?? "Single" },
+        { label: "Label", value: "Brisic Records" },
       ],
     };
   },

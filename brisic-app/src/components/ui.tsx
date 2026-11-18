@@ -60,7 +60,7 @@ const tile = "block w-[156px] shrink-0 sm:w-[176px] lg:w-auto";
 /** Round play mark in the corner of a cover. Decorative: the whole card is the link. */
 export function PlayRing({ className = "" }: { className?: string }) {
   return (
-    <span aria-hidden="true" className={`absolute bottom-2 right-2 flex h-[34px] w-[34px] items-center justify-center rounded-full border-2 border-primary bg-black/55 text-[#e9f2ec] ${className}`}>
+    <span aria-hidden="true" className={`play-ring absolute bottom-2 right-2 flex h-[34px] w-[34px] items-center justify-center rounded-full border-2 border-primary bg-black/55 text-[#e9f2ec] ${className}`}>
       <Icon name="play" size={15} className="ml-0.5" />
     </span>
   );
@@ -78,7 +78,7 @@ function CardText({ title, sub }: { title: string; sub?: string }) {
 export function PlaylistCard({ p, fluid }: { p: Playlist; fluid?: boolean }) {
   return (
     <Link href={`/playlist/${p.id}`} className={`group ${fluid ? "block" : tile}`}>
-      <div className="relative transition group-hover:-translate-y-0.5">
+      <div className="poster relative transition group-hover:-translate-y-0.5">
         <Cover seed={p.id} label={p.title} src={p.artwork} />
         <PlayRing />
       </div>
@@ -90,7 +90,7 @@ export function PlaylistCard({ p, fluid }: { p: Playlist; fluid?: boolean }) {
 export function AlbumCard({ a, fluid }: { a: Album; fluid?: boolean }) {
   return (
     <Link href={`/album/${a.id}`} className={`group ${fluid ? "block" : tile}`}>
-      <div className="relative transition group-hover:-translate-y-0.5">
+      <div className="poster relative transition group-hover:-translate-y-0.5">
         <Cover seed={a.id} label={a.title} src={a.artwork} />
         <PlayRing />
       </div>
@@ -103,7 +103,7 @@ export function AlbumCard({ a, fluid }: { a: Album; fluid?: boolean }) {
 export function ArtistBubble({ a }: { a: Artist }) {
   return (
     <Link href={`/artist/${a.id}`} className="flex w-[76px] shrink-0 flex-col items-center gap-1.5 text-center lg:w-[92px]">
-      <span className="w-[70px] lg:w-[86px]"><Cover seed={a.id} src={a.image} round /></span>
+      <span className="pick-glow w-[70px] lg:w-[86px]"><Cover seed={a.id} src={a.image} round /></span>
       <span className="w-full truncate text-[13px] text-[#e3ece6]">{a.name}</span>
     </Link>
   );
@@ -122,7 +122,7 @@ export function ArtistCard({ a, fluid }: { a: Artist; fluid?: boolean }) {
 export function ShowCard({ s, fluid }: { s: Show; fluid?: boolean }) {
   return (
     <Link href={`/shows/${s.id}`} className={`group ${fluid ? "block" : tile}`}>
-      <div className="relative transition group-hover:-translate-y-0.5">
+      <div className="poster relative transition group-hover:-translate-y-0.5">
         <Cover seed={s.id} label={s.title} />
         <PlayRing />
       </div>

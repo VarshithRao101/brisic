@@ -256,9 +256,16 @@ export async function registerUser(input: { name: string; email: string; passwor
 
 // ---------- Catalog reads used by client components ----------
 
-export async function fetchTrackDetails(trackId: string) {
+export async function fetchTrackDetails(trackId: string, artistId?: string) {
   await requireUserId();
-  return catalog.getTrackDetails(str(trackId, 200));
+  const [details, artist] = await Promise.all([
+    catalog.getTrackDetails(str(trackId, 200)),
+    artistId ? catalog.getArtist(str(artistId, 200)) : null,
+  ]);
+  return {
+    details,
+    artist: artist ? { name: artist.artist.name, genre: artist.artist.genre, bio: artist.artist.bio, monthlyListeners: artist.artist.monthlyListeners } : null,
+  };
 }
 
 export async function fetchStationTracks(stationId: string) {
@@ -269,4 +276,29 @@ export async function fetchStationTracks(stationId: string) {
 export async function askBrisicAI(prompt: string) {
   await requireUserId();
   return catalog.suggest(str(prompt, 300));
+}
+
+/** Heart on a catalog playlist: save a copy of it into the user's own playlists (or remove that copy). */
+export async function toggleSavedPlaylist(catalogPlaylistId: string): Promise<Result<{ saved: boolean }>> {
+  const userId = await requireUserId();
+  const lim = await hit("playlist:" + userId, 30, 60);
+  if (!lim.ok) return { ok: false, error: `Too many changes. Try again in ${waitText(lim.retryAfterSec)}.` };
+  const data = await catalog.getPlaylist(str(catalogPlaylistId, 200));
+  if (!data) return { ok: false, error: "Playlist not found." };
+  const name = str(data.playlist.title, 60);
+  const existing = await prisma.userPlaylist.findFirst({ where: { userId, name }, select: { id: true } });
+  if (existing) {
+    await prisma.userPlaylist.delete({ where: { id: existing.id } });
+    refresh();
+    return { ok: true, saved: false };
+  }
+  if ((await prisma.userPlaylist.count({ where: { userId } })) >= 200) return { ok: false, error: "You have reached the playlist limit." };
+  await prisma.userPlaylist.create({
+    data: {
+      userId, name,
+      tracks: { create: data.tracks.slice(0, 500).map((t) => ({ trackId: t.id, title: t.title, artistId: t.artistId, artistName: t.artistName, durationSec: t.durationSec })) },
+    },
+  });
+  refresh();
+  return { ok: true, saved: true };
 }

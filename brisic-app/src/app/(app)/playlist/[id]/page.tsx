@@ -1,32 +1,24 @@
 import { notFound } from "next/navigation";
+import { prisma } from "@/lib/prisma";
 import { getUserId } from "@/lib/session";
 import { catalog } from "@/lib/catalog";
-import { BackButton, ShareButton } from "@/components/controls";
-import { Cover } from "@/components/cover";
-import { PlayButtons, TrackList } from "@/components/track-list";
-import { Hero } from "@/components/ui";
+import { hashStr } from "@/lib/format";
+import { PlaylistView } from "@/components/playlist-view";
 
 export default async function PlaylistPage({ params }: { params: Promise<{ id: string }> }) {
-  await getUserId();
+  const userId = await getUserId();
   const { id } = await params;
   const data = await catalog.getPlaylist(id);
   if (!data) notFound();
   const { playlist, tracks } = data;
-  const minutes = Math.round(tracks.reduce((n, t) => n + t.durationSec, 0) / 60);
+  const saved = await prisma.userPlaylist.findFirst({ where: { userId, name: playlist.title.slice(0, 60) }, select: { id: true } });
 
   return (
-    <>
-      <BackButton />
-      <Hero
-        cover={<Cover seed={playlist.id} label={playlist.title} src={playlist.artwork} />}
-        kind="Playlist"
-        title={playlist.title}
-        meta={`${playlist.subtitle} · ${tracks.length} songs · ${minutes} min`}
-      >
-        <PlayButtons tracks={tracks} />
-        <ShareButton title={playlist.title} />
-      </Hero>
-      <div className="mt-6"><TrackList tracks={tracks} /></div>
-    </>
+    <PlaylistView
+      playlist={{ id: playlist.id, title: playlist.title, subtitle: playlist.subtitle }}
+      tracks={tracks}
+      saved={!!saved}
+      seed={hashStr(playlist.id)}
+    />
   );
 }

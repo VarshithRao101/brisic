@@ -9,6 +9,8 @@ import { Cover } from "@/components/cover";
 import { Icon } from "@/components/icons";
 import { PlayButtons, TrackList } from "@/components/track-list";
 import { SpotlightTile } from "@/components/spotlight";
+import { ArtistCommunityJoin } from "@/components/party-clients";
+import { artistRoomInfo } from "@/lib/party";
 import { AlbumCard, RowLink, Section, Shelf } from "@/components/ui";
 
 const TABS = ["home", "music", "about", "community"] as const;
@@ -17,10 +19,11 @@ export default async function ArtistPage({ params, searchParams }: { params: Pro
   await getUserId();
   const [{ id }, sp] = await Promise.all([params, searchParams]);
   const tab = (TABS as readonly string[]).includes(sp.tab ?? "") ? sp.tab! : "home";
-  const [data, followers, spotlight] = await Promise.all([
+  const [data, followers, spotlight, room] = await Promise.all([
     catalog.getArtist(id),
     prisma.follow.count({ where: { artistId: id } }),
     catalog.getSpotlight(),
+    tab === "community" ? artistRoomInfo(id) : null,
   ]);
   if (!data) notFound();
   const { artist, topTracks, albums } = data;
@@ -112,13 +115,7 @@ export default async function ArtistPage({ params, searchParams }: { params: Pro
         <>
           <Section title={`${artist.name} Community`}>
             <p className="m-0 -mt-1 mb-3 text-[13.5px] font-light text-muted">{fmtCount(followers)} {followers === 1 ? "fan follows" : "fans follow"} on Brisic. Listen together, chat and send gifts.</p>
-            <div className="panel-glow max-w-xl p-4">
-              <p className="m-0 text-[11px] font-bold uppercase tracking-[0.16em] text-primary">● Community Party</p>
-              <p className="m-0 mt-1 text-[18px] font-semibold text-white">{artist.name} Listening Room</p>
-              <p className="m-0 mt-1 text-[13.5px] font-light text-ink/80">Join fans in the room to listen live, vote the next song and chat.</p>
-              <Link href={`/party?create=1&name=${encodeURIComponent(artist.name + " Listening Room")}`} className="btn btn-outline mt-3 w-full">Start a {artist.name} party</Link>
-              <p className="m-0 mt-2 text-center text-[12px] font-light text-muted">Share the party code with other fans so they can join.</p>
-            </div>
+            <ArtistCommunityJoin artistId={artist.id} artistName={artist.name} listening={room?.listening ?? 0} />
           </Section>
           <Section title="Support this artist">
             <div className="grid gap-2 sm:grid-cols-3">

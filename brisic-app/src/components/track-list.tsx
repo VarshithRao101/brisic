@@ -19,10 +19,10 @@ export function TrackCard({ tracks, index }: { tracks: Track[]; index: number })
         type="button"
         aria-label={`Play ${t.title} by ${t.artistName}`}
         onClick={() => (isCurrent ? p.toggle() : p.playQueue(tracks, index))}
-        className="relative block w-full border-0 bg-transparent p-0 transition hover:-translate-y-0.5"
+        className="poster relative block w-full border-0 bg-transparent p-0 transition hover:-translate-y-0.5"
       >
         <Cover seed={t.albumId ?? t.id} label={t.title} src={t.artwork} />
-        <span aria-hidden="true" className="absolute bottom-2 right-2 flex h-[34px] w-[34px] items-center justify-center rounded-full border-2 border-primary bg-black/55 text-[#e9f2ec]">
+        <span aria-hidden="true" className="play-ring absolute bottom-2 right-2 flex h-[34px] w-[34px] items-center justify-center rounded-full border-2 border-primary bg-black/55 text-[#e9f2ec]">
           <Icon name={isCurrent && p.playing ? "pause" : "play"} size={15} className={isCurrent && p.playing ? "" : "ml-0.5"} />
         </span>
       </button>

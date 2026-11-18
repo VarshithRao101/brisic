@@ -194,9 +194,9 @@ function TabLink({ href, label, icon, on }: { href: string; label: string; icon:
 }
 
 export function AppShell({
-  user, unread, theme, sample, children,
+  user, unread, theme, homeStyle, sample, children,
 }: {
-  user: ShellUser; unread: number; theme: string; sample: boolean; children: ReactNode;
+  user: ShellUser; unread: number; theme: string; homeStyle: string; sample: boolean; children: ReactNode;
 }) {
   const path = usePathname();
   const router = useRouter();
@@ -209,9 +209,31 @@ export function AppShell({
   const active = pickActive([...MAIN, ...DISCOVER, ...YOU]);
   const title = titleFor(path);
 
+  // Guitar-pick outline used by the "Shaped" home style (see .cover-round in globals.css).
+  const pickDefs = (
+    <svg width="0" height="0" aria-hidden="true" className="absolute">
+      <defs>
+        <clipPath id="bpick" clipPathUnits="objectBoundingBox">
+          <path d="M0.2,0.05 C0.36,0.0 0.64,0.0 0.8,0.05 C0.97,0.1 1.0,0.28 0.94,0.44 C0.85,0.67 0.65,0.9 0.55,0.97 C0.51,1.0 0.49,1.0 0.45,0.97 C0.35,0.9 0.15,0.67 0.06,0.44 C0.0,0.28 0.03,0.1 0.2,0.05 Z" />
+        </clipPath>
+      </defs>
+    </svg>
+  );
+
+  // The full player takes the whole screen: no header, tabs or mini player, like a native app.
+  if (path === "/player") {
+    return (
+      <div data-theme={theme} data-home={homeStyle} className="min-h-dvh text-ink">
+        {pickDefs}
+        {children}
+      </div>
+    );
+  }
+
   return (
-    <div data-theme={theme} className="min-h-dvh text-ink">
+    <div data-theme={theme} data-home={homeStyle} className="min-h-dvh text-ink">
       <div aria-hidden="true" className="app-bg fixed inset-0 -z-10" />
+      {pickDefs}
 
       {/* Desktop sidebar */}
       <aside className="fixed inset-y-0 left-0 z-20 hidden w-64 flex-col gap-5 overflow-y-auto border-r border-line-soft bg-surface/80 px-3 pb-24 pt-5 backdrop-blur lg:flex">

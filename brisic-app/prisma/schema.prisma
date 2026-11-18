@@ -239,7 +239,10 @@ model PartyRoom {
   id          String    @id @default(cuid())
   code        String    @unique
   name        String
-  hostId      String
+  // Null for an artist community room, which no listener hosts.
+  hostId      String?
+  // Set for an artist's official community room (one per artist).
+  artistId    String?   @unique
   isPublic    Boolean   @default(true)
   chatOpen    Boolean   @default(true)
   nowItemId   String?
@@ -247,7 +250,7 @@ model PartyRoom {
   endedAt     DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  host        User      @relation(fields: [hostId], references: [id], onDelete: Cascade)
+  host        User?     @relation(fields: [hostId], references: [id], onDelete: Cascade)
   members     PartyMember[]
   queue       PartyQueueItem[]
   messages    PartyMessage[]

@@ -77,10 +77,10 @@ export function SpotlightCard({ item, genre }: { item: SpotlightItem; genre?: st
   const [first, ...rest] = item.artistName.toUpperCase().split(" ");
   return (
     <Link href={`/spotlight/${item.id}`} className="group block w-[156px] shrink-0 sm:w-[176px] lg:w-auto">
-      <div className="relative overflow-hidden rounded-2xl border border-white/10 transition group-hover:-translate-y-0.5">
+      <div className="poster relative overflow-hidden rounded-2xl border border-white/10 transition group-hover:-translate-y-0.5">
         <SpotlightPoster seed={item.artistId} className="aspect-[4/5] w-full" />
-        <span className="display absolute left-2.5 top-2.5 whitespace-pre-line text-[34px] text-white">{[first, rest.join(" ")].filter(Boolean).join("\n")}</span>
-        <span aria-hidden="true" className="absolute bottom-2 right-2 flex h-[34px] w-[34px] items-center justify-center rounded-full border-2 border-primary bg-black/55 text-[#e9f2ec]">
+        <span className="display poster-label absolute left-2.5 top-2.5 whitespace-pre-line text-[34px] text-white">{[first, rest.join(" ")].filter(Boolean).join("\n")}</span>
+        <span aria-hidden="true" className="play-ring absolute bottom-2 right-2 flex h-[34px] w-[34px] items-center justify-center rounded-full border-2 border-primary bg-black/55 text-[#e9f2ec]">
           <Icon name="play" size={15} className="ml-0.5" />
         </span>
       </div>

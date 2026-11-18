@@ -8,11 +8,18 @@ export const THEMES = [
 ] as const;
 export type ThemeId = (typeof THEMES)[number]["id"];
 
+/** How artists and cards look: round frames, or guitar-pick frames with slanted cards. */
+export const HOME_STYLES = [
+  { id: "shaped", name: "Shaped", blurb: "Slanted cards, soft glow" },
+  { id: "classic", name: "Classic", blurb: "Round and simple" },
+] as const;
+
 export const QUALITIES = ["Normal", "High", "Very high"] as const;
 export const LANGUAGES = ["English", "Nigerian Pidgin", "Yoruba", "Igbo", "Hausa", "Twi", "Swahili", "Zulu", "French", "Portuguese", "Spanish"] as const;
 
 export type Settings = {
   theme: string;
+  homeStyle: string;
   streamingQuality: string;
   downloadQuality: string;
   language: string;
@@ -30,6 +37,7 @@ export type Settings = {
 
 export const DEFAULT_SETTINGS: Settings = {
   theme: "green",
+  homeStyle: "shaped",
   streamingQuality: "High",
   downloadQuality: "High",
   language: "English",
@@ -58,6 +66,7 @@ export function readSettings(json: unknown): Settings {
     if (!("theme" in src) && isTheme(src.playerColor)) out.theme = src.playerColor;
   }
   if (!isTheme(out.theme)) out.theme = DEFAULT_SETTINGS.theme;
+  if (!HOME_STYLES.some((h) => h.id === out.homeStyle)) out.homeStyle = DEFAULT_SETTINGS.homeStyle;
   if (!(QUALITIES as readonly string[]).includes(out.streamingQuality)) out.streamingQuality = DEFAULT_SETTINGS.streamingQuality;
   if (!(QUALITIES as readonly string[]).includes(out.downloadQuality)) out.downloadQuality = DEFAULT_SETTINGS.downloadQuality;
   if (!(LANGUAGES as readonly string[]).includes(out.language)) out.language = DEFAULT_SETTINGS.language;

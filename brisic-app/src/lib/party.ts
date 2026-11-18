@@ -16,6 +16,10 @@ export function normalizeCode(input: string): string | null {
 export const ACTIVE_MS = 90_000;
 /** Rooms with no activity for this long are treated as over. */
 export const IDLE_MS = 6 * 3_600_000;
+/** Artist community rooms are named "<Artist> Listening Room" and have no listener host. */
+export const ARTIST_ROOM_SUFFIX = " Listening Room";
+const roomHostName = (r: { artistId: string | null; name: string; host: { name: string | null; username: string | null } | null }) =>
+  r.artistId ? r.name.replace(ARTIST_ROOM_SUFFIX, "") : r.host ? displayName(r.host) : "Listener";
 
 export type PartyState = {
   code: string;
@@ -26,6 +30,8 @@ export type PartyState = {
   isPublic: boolean;
   chatOpen: boolean;
   ended: boolean;
+  /** Set for an artist community room (join only, no host controls). */
+  artistId: string | null;
   listening: number;
   now: { id: string; trackId: string; title: string; artistName: string; addedByName: string; durationSec: number; elapsed: number } | null;
   upNext: { id: string; trackId: string; title: string; artistName: string; addedByName: string; votes: number; voted: boolean; mine: boolean }[];
@@ -66,13 +72,14 @@ export async function getPartyState(code: string, userId: string): Promise<Party
   const room = await prisma.partyRoom.findUnique({
     where: { code },
     select: {
-      id: true, code: true, name: true, hostId: true, isPublic: true, chatOpen: true,
+      id: true, code: true, name: true, hostId: true, artistId: true, isPublic: true, chatOpen: true,
       nowItemId: true, nowStarted: true, endedAt: true, updatedAt: true,
       host: { select: { name: true, username: true } },
     },
   });
   if (!room) return null;
-  const ended = !!room.endedAt || Date.now() - room.updatedAt.getTime() > IDLE_MS;
+  // Artist rooms stay open; listener parties end after IDLE_MS without activity.
+  const ended = !!room.endedAt || (!room.artistId && Date.now() - room.updatedAt.getTime() > IDLE_MS);
 
   // Mark this listener as present (no-op when not a member).
   const seen = ended ? { count: 0 } : await prisma.partyMember.updateMany({ where: { roomId: room.id, userId }, data: { lastSeen: new Date() } });
@@ -95,7 +102,8 @@ export async function getPartyState(code: string, userId: string): Promise<Party
   return {
     code: room.code,
     name: room.name,
-    hostName: displayName(room.host),
+    hostName: roomHostName(room),
+    artistId: room.artistId,
     isHost: room.hostId === userId,
     isMember: seen.count === 1,
     isPublic: room.isPublic,
@@ -122,26 +130,35 @@ export async function getPartyState(code: string, userId: string): Promise<Party
 /** Public rooms with recent activity, busiest first. */
 export async function listLiveParties(limit = 12) {
   const rooms = await prisma.partyRoom.findMany({
-    where: { isPublic: true, endedAt: null, updatedAt: { gte: new Date(Date.now() - IDLE_MS) } },
+    where: { isPublic: true, endedAt: null, artistId: null, updatedAt: { gte: new Date(Date.now() - IDLE_MS) } },
     orderBy: { updatedAt: "desc" },
     take: limit,
     select: {
-      code: true, name: true, createdAt: true,
+      code: true, name: true, createdAt: true, artistId: true,
       host: { select: { name: true, username: true } },
       _count: { select: { members: { where: { lastSeen: { gte: new Date(Date.now() - ACTIVE_MS) } } } } },
     },
   });
   return rooms
-    .map((r) => ({ code: r.code, name: r.name, hostName: displayName(r.host), listening: r._count.members, createdAt: r.createdAt }))
+    .map((r) => ({ code: r.code, name: r.name, hostName: roomHostName(r), listening: r._count.members, createdAt: r.createdAt }))
     .sort((a, b) => b.listening - a.listening);
 }
 
 /** Running parties this user is in, most recently active first. */
 export async function myLiveParties(userId: string) {
   const rows = await prisma.partyMember.findMany({
-    where: { userId, room: { endedAt: null, updatedAt: { gte: new Date(Date.now() - IDLE_MS) } } },
+    where: { userId, room: { endedAt: null, OR: [{ artistId: { not: null } }, { updatedAt: { gte: new Date(Date.now() - IDLE_MS) } }] } },
     orderBy: { lastSeen: "desc" }, take: 5,
     select: { room: { select: { code: true, name: true, hostId: true } } },
   });
   return rows.map((r) => ({ ...r.room, isHost: r.room.hostId === userId }));
+}
+
+/** The artist's community room (if one has started) with how many fans are in it now. */
+export async function artistRoomInfo(artistId: string) {
+  const room = await prisma.partyRoom.findUnique({
+    where: { artistId },
+    select: { code: true, _count: { select: { members: { where: { lastSeen: { gte: new Date(Date.now() - ACTIVE_MS) } } } } } },
+  });
+  return room ? { code: room.code, listening: room._count.members } : null;
 }

@@ -302,3 +302,36 @@
   [data-theme="gold"] .logo-b { filter: hue-rotate(282deg) saturate(1.4) brightness(1.1); }
   [data-theme="chrome"] .logo-b { filter: grayscale(1) brightness(1.2); }
 }
+
+/* "Shaped" home style (Settings): guitar-pick artist frames and slanted, glowing cards. */
+@layer components {
+  [data-home="shaped"] .cover-round {
+    padding: 3px;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: linear-gradient(160deg, var(--accent), var(--primary));
+    clip-path: url(#bpick);
+  }
+  [data-home="shaped"] .cover-round > * {
+    border-radius: 0;
+    clip-path: url(#bpick);
+  }
+  [data-home="shaped"] .pick-glow {
+    filter: drop-shadow(0 0 7px rgba(var(--primary-rgb), 0.45));
+  }
+  [data-home="shaped"] .poster {
+    transform: skewX(-6deg);
+    border-radius: 30px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35), 0 0 14px rgba(var(--primary-rgb), 0.12);
+  }
+  [data-home="shaped"] .poster .poster-box {
+    border-radius: 0;
+    border-width: 0;
+  }
+  [data-home="shaped"] .poster .poster-label,
+  [data-home="shaped"] .poster .play-ring {
+    transform: skewX(6deg);
+  }
+}

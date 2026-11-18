@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { updateProfile, updateSettings, type ProfileState } from "@/app/actions";
 import { changePassword, deleteAccount, removeAvatar, uploadAvatar } from "@/app/account-actions";
-import { LANGUAGES, QUALITIES, THEMES, type Settings } from "@/lib/settings";
+import { HOME_STYLES, LANGUAGES, QUALITIES, THEMES, type Settings } from "@/lib/settings";
 import { PREMIUM_PERKS, PREMIUM_PLANS, PREMIUM_REGIONS } from "@/lib/fan";
 import { Icon } from "@/components/icons";
 import { useToast } from "@/components/app-state";
@@ -237,8 +237,9 @@ export function SettingsForm({ initial }: { initial: Settings }) {
     setS({ ...s, ...patch });
     // Show a new theme straight away; the server copy catches up on refresh.
     if (patch.theme) document.querySelector<HTMLElement>("[data-theme]")?.setAttribute("data-theme", patch.theme);
+    if (patch.homeStyle) document.querySelector<HTMLElement>("[data-home]")?.setAttribute("data-home", patch.homeStyle);
     updateSettings(patch)
-      .then(() => { if ("theme" in patch) router.refresh(); })
+      .then(() => { if ("theme" in patch || "homeStyle" in patch) router.refresh(); })
       .catch(() => { setS(before); toast("Could not save. Check your connection."); });
   };
   const group = "panel divide-y divide-white/5 p-1";
@@ -269,6 +270,36 @@ export function SettingsForm({ initial }: { initial: Settings }) {
             );
           })}
         </div>
+      </div>
+
+      <h2 className={heading}>Home style</h2>
+      <p className="m-0 -mt-1 mb-2 text-[13px] font-light text-muted">How artists and playlists look on Home. You can change it any time.</p>
+      <div className="grid grid-cols-2 gap-3">
+        {HOME_STYLES.map((h) => {
+          const on = s.homeStyle === h.id;
+          const shaped = h.id === "shaped";
+          return (
+            <button
+              key={h.id} type="button" aria-pressed={on} onClick={() => save({ homeStyle: h.id })}
+              className={`flex flex-col items-center gap-2 rounded-2xl border-[1.5px] p-4 text-center transition ${on ? "border-primary bg-primary/10 shadow-[0_0_16px_rgba(var(--primary-rgb),0.25)]" : "border-line bg-white/[0.03]"}`}
+            >
+              <span className="flex gap-2" aria-hidden="true">
+                {[0, 1].map((i) => (
+                  <span
+                    key={i} className="h-7 w-7 border-2 border-primary"
+                    style={shaped ? { clipPath: "url(#bpick)", background: "var(--primary)", borderWidth: 0 } : { borderRadius: 999 }}
+                  />
+                ))}
+              </span>
+              <span className="flex gap-2" aria-hidden="true">
+                <span className="h-8 w-9 bg-[#2f7a34]" style={{ borderRadius: shaped ? 12 : 8, transform: shaped ? "skewX(-6deg)" : undefined }} />
+                <span className="h-8 w-9 bg-[#e8562a]" style={{ borderRadius: shaped ? 12 : 8, transform: shaped ? "skewX(-6deg)" : undefined }} />
+              </span>
+              <span className={`text-[15px] ${on ? "font-semibold text-white" : "text-ink"}`}>{h.name}</span>
+              <span className="text-[12px] font-light text-muted">{h.blurb}</span>
+            </button>
+          );
+        })}
       </div>
 
       <h2 className={heading}>Playback</h2>

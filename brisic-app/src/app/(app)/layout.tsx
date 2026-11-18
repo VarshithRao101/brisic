@@ -17,6 +17,8 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
     prisma.notification.count({ where: { userId, read: false } }),
   ]);
 
+  const settings = readSettings(user.settings);
+
   return (
     <AppState
       initial={{
@@ -29,7 +31,8 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
       <AppShell
         user={{ displayName: user.displayName, handle: user.handle, image: user.image, isPremium: user.isPremium }}
         unread={unread}
-        theme={readSettings(user.settings).theme}
+        theme={settings.theme}
+        homeStyle={settings.homeStyle}
         sample={catalog.isSample}
       >
         {children}

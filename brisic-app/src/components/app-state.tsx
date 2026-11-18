@@ -47,6 +47,9 @@ type Player = {
   playing: boolean;
   position: number;
   shuffle: boolean;
+  repeat: "off" | "all" | "one";
+  /** 0 to 1. */
+  volume: number;
   /** False while the catalog has no audio URLs; progress is then simulated. */
   hasAudio: boolean;
   playQueue: (tracks: Track[], start?: number) => void;
@@ -59,6 +62,8 @@ type Player = {
   removeAt: (i: number) => void;
   clearUpNext: () => void;
   toggleShuffle: () => void;
+  cycleRepeat: () => void;
+  setVolume: (v: number) => void;
 };
 const PlayerCtx = createContext<Player | null>(null);
 export const usePlayer = () => {
@@ -147,6 +152,8 @@ export function AppState({ initial, children }: { initial: LibraryInitial; child
   const [playing, setPlaying] = useState(false);
   const [position, setPosition] = useState(0);
   const [shuffle, setShuffle] = useState(false);
+  const [repeat, setRepeat] = useState<"off" | "all" | "one">("off");
+  const [volume, setVolume] = useState(1);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const restored = useRef(false);
   const current = queue[index] ?? null;
@@ -182,10 +189,22 @@ export function AppState({ initial, children }: { initial: LibraryInitial; child
       setIndex(r);
     } else if (index < queue.length - 1) {
       setIndex(index + 1);
+    } else if (repeat === "all") {
+      setIndex(0);
     } else {
       setPlaying(false);
     }
-  }, [queue.length, shuffle, index]);
+  }, [queue.length, shuffle, index, repeat]);
+
+  /** A song reached its end on its own: repeat it, or move on. */
+  const finished = useCallback(() => {
+    if (repeat === "one") {
+      setPosition(0);
+      if (audioRef.current) { audioRef.current.currentTime = 0; audioRef.current.play().catch(() => {}); }
+      return;
+    }
+    next();
+  }, [repeat, next]);
 
   const prev = useCallback(() => {
     if (position > 3 || index === 0) {
@@ -206,14 +225,18 @@ export function AppState({ initial, children }: { initial: LibraryInitial; child
     }
     const a = audioRef.current;
     const onTime = () => setPosition(a.currentTime);
-    const onEnd = () => next();
+    const onEnd = () => finished();
     a.addEventListener("timeupdate", onTime);
     a.addEventListener("ended", onEnd);
     return () => {
       a.removeEventListener("timeupdate", onTime);
       a.removeEventListener("ended", onEnd);
     };
-  }, [next]);
+  }, [finished]);
+
+  useEffect(() => {
+    if (audioRef.current) audioRef.current.volume = volume;
+  }, [volume]);
 
   useEffect(() => {
     const a = audioRef.current;
@@ -232,11 +255,11 @@ export function AppState({ initial, children }: { initial: LibraryInitial; child
   useEffect(() => {
     if (!playing || !current || streamUrl) return;
     const id = setTimeout(() => {
-      if (position + 1 >= current.durationSec) next();
+      if (position + 1 >= current.durationSec) finished();
       else setPosition(position + 1);
     }, 1000);
     return () => clearTimeout(id);
-  }, [playing, current, streamUrl, position, next]);
+  }, [playing, current, streamUrl, position, finished]);
 
   // Listening history + lock-screen metadata.
   const lastRecorded = useRef("");
@@ -254,7 +277,7 @@ export function AppState({ initial, children }: { initial: LibraryInitial; child
   }, [playing, current]);
 
   const player = useMemo<Player>(() => ({
-    queue, index, current, playing, position, shuffle,
+    queue, index, current, playing, position, shuffle, repeat, volume,
     hasAudio: !!streamUrl,
     playQueue: (tracks, start = 0) => {
       if (!tracks.length) return;
@@ -280,7 +303,9 @@ export function AppState({ initial, children }: { initial: LibraryInitial; child
     },
     clearUpNext: () => setQueue((q) => q.slice(0, index + 1)),
     toggleShuffle: () => setShuffle((s) => !s),
-  }), [queue, index, current, playing, position, shuffle, streamUrl, next, prev, showToast]);
+    cycleRepeat: () => setRepeat((r) => (r === "off" ? "all" : r === "all" ? "one" : "off")),
+    setVolume: (v) => setVolume(Math.max(0, Math.min(1, v))),
+  }), [queue, index, current, playing, position, shuffle, repeat, volume, streamUrl, next, prev, showToast]);
 
   const library = useMemo<Library>(
     () => ({ liked, followed, playlists, coins, setCoins, toggleLike, toggleFollow, newPlaylist, addTo }),

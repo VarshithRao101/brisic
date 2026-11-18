@@ -6,10 +6,10 @@ import { useRouter } from "next/navigation";
 import type { Track } from "@/lib/catalog/types";
 import type { PartyState } from "@/lib/party";
 import {
-  addPartySong, createParty, joinParty, leaveParty, partyTracks, searchPartySongs,
+  addPartySong, createParty, joinArtistParty, joinParty, leaveParty, partyTracks, searchPartySongs,
   sendPartyMessage, setPartyChat, skipPartySong, votePartySong,
 } from "@/app/party-actions";
-import { usePlayer, useToast } from "@/components/app-state";
+import { useLibrary, usePlayer, useToast } from "@/components/app-state";
 import { Cover } from "@/components/cover";
 import { Icon } from "@/components/icons";
 import { fmtTime, hashStr } from "@/lib/format";
@@ -270,7 +270,7 @@ export function PartyRoom({ initial }: { initial: PartyState }) {
     <div className="mx-auto max-w-2xl">
       <div className="flex items-center justify-between gap-3">
         <button type="button" onClick={() => router.push("/party")} aria-label="Back" className="flex h-9 w-9 items-center justify-center rounded-full border-[1.5px] border-primary/70 bg-black/30 text-ink"><Icon name="back" size={18} /></button>
-        <span className="rounded-full bg-primary/15 px-3 py-1 text-[11px] font-bold tracking-[0.14em] text-primary">● LIVE PARTY</span>
+        <span className="rounded-full bg-primary/15 px-3 py-1 text-[11px] font-bold tracking-[0.14em] text-primary">● {s.artistId ? "COMMUNITY PARTY" : "LIVE PARTY"}</span>
         <button type="button" onClick={invite} className="btn btn-outline btn-sm">Invite</button>
       </div>
       <h1 className="m-0 mt-3 text-center text-[26px] font-bold text-white">{s.name}</h1>
@@ -429,6 +429,48 @@ export function PartyRoom({ initial }: { initial: PartyState }) {
       )}
 
       {adding && <AddSongSheet code={s.code} onClose={() => setAdding(false)} onAdded={() => void poll()} />}
+    </div>
+  );
+}
+
+/**
+ * Artist profile → Community: fans join the artist's official listening room.
+ * There is no create option here; only followers can enter.
+ */
+export function ArtistCommunityJoin({ artistId, artistName, listening }: { artistId: string; artistName: string; listening: number }) {
+  const router = useRouter();
+  const lib = useLibrary();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const following = lib.followed.has(artistId);
+
+  return (
+    <div className="panel-glow max-w-xl p-4">
+      <p className="m-0 text-[11px] font-bold uppercase tracking-[0.16em] text-primary">● Community Party</p>
+      <p className="m-0 mt-1 text-[18px] font-semibold text-white">{artistName} Listening Room</p>
+      <p className="m-0 mt-1 text-[13.5px] font-light text-ink/80">
+        {listening > 0 ? `${listening} ${listening === 1 ? "fan is" : "fans are"} in the room now. ` : ""}
+        Join to listen live, vote the next song and chat.
+      </p>
+      {error && <p role="alert" className="m-0 mt-2 text-[13.5px] text-[#ffb3b3]">{error}</p>}
+      {following ? (
+        <button
+          type="button" disabled={busy} className="btn btn-primary mt-3 w-full"
+          onClick={async () => {
+            setBusy(true); setError("");
+            const r = await joinArtistParty(artistId).catch(() => ({ ok: false as const, error: "Could not join. Check your connection." }));
+            if (r.ok) router.push(`/party/${r.code}`);
+            else { setBusy(false); setError(r.error); }
+          }}
+        >
+          <Icon name="users" size={18} /> {busy ? "Joining…" : "Join the party"}
+        </button>
+      ) : (
+        <button type="button" className="btn btn-outline mt-3 w-full" onClick={() => lib.toggleFollow(artistId, artistName)}>
+          Follow {artistName} to join
+        </button>
+      )}
+      <p className="m-0 mt-2 text-center text-[12px] font-light text-muted">Only followers can enter this community party.</p>
     </div>
   );
 }
