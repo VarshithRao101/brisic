@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getUserId } from "@/lib/session";
 import { catalog } from "@/lib/catalog";
-import { hashStr } from "@/lib/format";
+import { playlistArt } from "@/lib/playlist-art";
 import { PlaylistView } from "@/components/playlist-view";
 
 export default async function PlaylistPage({ params }: { params: Promise<{ id: string }> }) {
@@ -18,7 +18,7 @@ export default async function PlaylistPage({ params }: { params: Promise<{ id: s
       playlist={{ id: playlist.id, title: playlist.title, subtitle: playlist.subtitle }}
       tracks={tracks}
       saved={!!saved}
-      seed={hashStr(playlist.id)}
+      art={playlistArt(playlist.id)}
     />
   );
 }

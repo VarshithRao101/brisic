@@ -66,7 +66,7 @@ export default async function ProfilePage() {
             <Icon name="chevron" size={18} className="text-primary" />
           </Link>
         )}
-        <RowLink href="/settings" icon="settings" title="Theme & Settings" subtitle="Green, Red, Chrome, Purple or Gold" />
+        <RowLink href="/settings" icon="settings" title="Player color & Settings" subtitle="Change the player color, home style and playback" />
         <RowLink href="/info/account" icon="user" title="Account" subtitle="Email, password, username" />
         <RowLink href="/notifications" icon="bell" title="Notifications" subtitle="Gifts, releases and updates" />
         <RowLink href="/coins" icon="coin" title="Payments & B-Coins" subtitle="Balance, top-ups and coin history" />

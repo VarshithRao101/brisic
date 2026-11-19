@@ -14,6 +14,7 @@ import type {
   Station,
   Track,
 } from "./types";
+import { HOME_SHELVES } from "./home-data";
 
 const hash = (s: string) => {
   let h = 2166136261;
@@ -78,7 +79,7 @@ const tracks: Track[] = [];
         albumId: albums[ai].id, albumTitle: albums[ai].title,
         durationSec: 165 + (h % 80),
         streams: 300_000 + (h % 3_100_000),
-        streamUrl: null, artwork: null,
+        streamUrl: null, artwork: null, explicit: h % 5 < 3,
       });
     }
   });
@@ -95,19 +96,20 @@ const pick = (seed: string, count: number, from: Track[] = tracks) => {
   return out;
 };
 
-const SECTION_SEED: [string, [string, string][]][] = [
-  ["New Releases", [["Midnight Prayer", "New drop"], ["Joy Ride", "Fresh this week"], ["Lagos Lights", "City sounds"], ["Fresh Start", "Brand new"]]],
-  ["Updated daily", [["Naija Top 10", "This week"], ["Afro Viral", "Trending now"], ["Rising Stars", "Emerging artists"]]],
-  ["Hip-Hop & Rap", [["Street Heat", "Hip-hop hits"], ["Cypher Nights", "Freestyle vibes"], ["Bars & Beats", "Lyrical picks"], ["Rap Naija", "Home grown"]]],
-  ["Chill & R&B", [["Slow Jams", "Smooth R&B"], ["Soft Life", "Easy listening"], ["Sunday Calm", "Wind down"], ["Late Vibes", "After dark"]]],
-  ["Gospel & Worship", [["Morning Worship", "Start the day"], ["Grace Notes", "Gospel favourites"], ["Praise Break", "Upbeat praise"], ["Peace Within", "Calm and prayerful"]]],
-  ["Made for you", [["Afrobeats Hits", "The biggest songs"], ["Good Vibes", "Feel-good picks"], ["Late Nights", "For after midnight"], ["My Vibe", "Your daily mix"]]],
-];
-const sections: HomeSection[] = SECTION_SEED.map(([title, lists]) => ({
-  id: slug(title), title,
-  playlists: lists.map(([name, subtitle]) => ({ id: "pl-" + slug(name), title: name, subtitle, trackCount: 14, artwork: null })),
+// Home shelves come from the prototype layout (see home-data.ts).
+const sections: HomeSection[] = HOME_SHELVES.map((shelf) => ({
+  id: slug(shelf.title),
+  title: shelf.title,
+  kind: shelf.kind,
+  playlists: shelf.cards.map((c) => ({
+    id: "pl-" + slug(c.title), title: c.title, subtitle: c.sub, trackCount: 14, artwork: null, art: c.art,
+    href: shelf.kind === "podcasts" ? "/shows/sh-" + slug(c.title) : c.href,
+  })),
 }));
-const playlists: Playlist[] = sections.flatMap((s) => s.playlists);
+const playlists: Playlist[] = sections
+  .filter((s) => s.kind === "playlists" || s.kind === "large")
+  .flatMap((s) => s.playlists)
+  .filter((p, i, all) => all.findIndex((x) => x.id === p.id) === i);
 
 const GENRE_SEED: [Genre["group"], string, string][] = [
   ["music", "Afrobeats", "The sound of Lagos, loved around the world"],
@@ -159,8 +161,10 @@ const SHOW_SEED: [string, string, string, string[]][] = [
   ["Studio Stories", "Zainab K.", "Behind the scenes", ["The borrowed mic", "One take", "Mixing at 3am"]],
   ["Laugh Lounge", "Femi B.", "Comedy and fun", ["Bad first gigs", "Tour bus rules", "Stage names we regret"]],
 ];
+const showColors = new Map(HOME_SHELVES.find((s) => s.kind === "podcasts")?.cards.map((c) => [c.title, [c.art.from, c.art.to] as [string, string]]) ?? []);
 const shows: Show[] = SHOW_SEED.map(([title, host, blurb, eps]) => ({
   id: "sh-" + slug(title), title, host, blurb, episodeCount: eps.length,
+  colors: showColors.get(title) ?? ["#7a2a8a", "#2a0f45"],
   about: "Real conversations about the early days, the studio nights and the people who believed first. Every week the host sits down with a guest to talk about music, faith, hustle and home.",
 }));
 const episodes: Episode[] = SHOW_SEED.flatMap(([title, , , eps]) =>

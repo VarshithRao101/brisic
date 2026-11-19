@@ -94,7 +94,7 @@ export function NowPlaying() {
 
   if (!t) {
     return (
-      <div className="flex min-h-dvh flex-col items-center justify-center gap-3 px-8 text-center" style={bg}>
+      <div className="player-tint flex min-h-dvh flex-col items-center justify-center gap-3 px-8 text-center" style={bg}>
         <p className="m-0 text-[20px] font-medium text-white">Nothing is playing</p>
         <p className="m-0 text-[15px] text-muted">Pick a song, playlist or station and it will show up here.</p>
         <Link href="/" className="btn btn-outline mt-2">Back to Home</Link>
@@ -112,10 +112,12 @@ export function NowPlaying() {
   const toggleBase = "flex h-[46px] w-[46px] items-center justify-center border-0 bg-transparent";
 
   return (
-    <div className="relative min-h-dvh text-[#e8fff0]" style={bg}>
+    <div className="relative min-h-dvh text-[#e8fff0]">
+      {/* "player-tint" layers take the Music player color from Settings (a hue shift, as in the prototype). */}
+      <div aria-hidden="true" className="player-tint fixed inset-0 -z-10" style={bg} />
       {/* Top controls stay put while the page scrolls */}
-      <div aria-hidden="true" className="pointer-events-none fixed inset-x-0 top-0 z-10 h-[76px]" style={{ background: "linear-gradient(180deg, color-mix(in srgb, var(--primary) 26%, #0b1d14) 0%, color-mix(in srgb, var(--primary) 18%, rgba(11,29,20,0.85)) 55%, transparent 100%)" }} />
-      <div className="pointer-events-none fixed inset-x-0 top-0 z-20 mx-auto flex max-w-[480px] justify-between px-4 pt-[max(14px,env(safe-area-inset-top))]">
+      <div aria-hidden="true" className="player-tint pointer-events-none fixed inset-x-0 top-0 z-10 h-[76px]" style={{ background: "linear-gradient(180deg, color-mix(in srgb, var(--primary) 26%, #0b1d14) 0%, color-mix(in srgb, var(--primary) 18%, rgba(11,29,20,0.85)) 55%, transparent 100%)" }} />
+      <div className="player-tint pointer-events-none fixed inset-x-0 top-0 z-20 mx-auto flex max-w-[480px] justify-between px-4 pt-[max(14px,env(safe-area-inset-top))]">
         <button type="button" onClick={close} aria-label="Close player" className={`pointer-events-auto ${circleBtn}`}>
           <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 9l7 7 7-7" /></svg>
         </button>
@@ -124,7 +126,7 @@ export function NowPlaying() {
         </Link>
       </div>
 
-      <div className="mx-auto flex min-h-dvh w-full max-w-[430px] flex-col items-center px-[clamp(20px,11vw,50px)] pt-[max(20px,env(safe-area-inset-top))]">
+      <div className="player-tint mx-auto flex min-h-dvh w-full max-w-[430px] flex-col items-center px-[clamp(20px,11vw,50px)] pt-[max(20px,env(safe-area-inset-top))]">
         <Image src="/assets/logo-b-glow.png" alt="Brisic" width={333} height={640} priority className="logo-b h-[clamp(110px,18dvh,164px)] w-auto shrink-0 object-contain" />
 
         <div className="mt-6 aspect-[330/326] w-full shrink-0 overflow-hidden rounded-[20px] shadow-[0_18px_44px_rgba(0,0,0,0.5)]">
@@ -219,7 +221,7 @@ export function NowPlaying() {
       </div>
 
       {/* Scroll for more: about the song, credits, about the artist */}
-      <div className="mx-auto w-full max-w-[430px] px-[18px] pb-28 pt-1.5">
+      <div className="player-tint mx-auto w-full max-w-[430px] px-[18px] pb-28 pt-1.5">
         <div className="-mt-2 mb-4 flex items-center justify-center gap-1.5 text-[13px] text-muted">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
           Scroll for more
@@ -279,7 +281,7 @@ export function NowPlaying() {
       </div>
 
       {lyricsOpen && (
-        <div className="fixed inset-0 z-30" onClick={() => setLyricsOpen(false)}>
+        <div className="player-tint fixed inset-0 z-30" onClick={() => setLyricsOpen(false)}>
           <div
             role="dialog" aria-modal="true" aria-label="Lyrics" onClick={(e) => e.stopPropagation()}
             className="absolute inset-x-0 bottom-0 top-24 mx-auto flex max-w-[480px] flex-col rounded-t-[34px] border-t-[1.5px] border-primary shadow-[0_-12px_40px_rgba(var(--primary-rgb),0.22)]"

@@ -14,14 +14,14 @@ export function TrackCard({ tracks, index }: { tracks: Track[]; index: number })
   const t = tracks[index];
   const isCurrent = p.current?.id === t.id;
   return (
-    <div className="w-[156px] shrink-0 sm:w-[176px] lg:w-auto">
+    <div className="w-[160px] shrink-0 sm:w-[176px] lg:w-auto">
       <button
         type="button"
         aria-label={`Play ${t.title} by ${t.artistName}`}
         onClick={() => (isCurrent ? p.toggle() : p.playQueue(tracks, index))}
         className="poster relative block w-full border-0 bg-transparent p-0 transition hover:-translate-y-0.5"
       >
-        <Cover seed={t.albumId ?? t.id} label={t.title} src={t.artwork} />
+        <Cover seed={t.albumId ?? t.id} label={t.title} src={t.artwork} className="!aspect-[176/170]" />
         <span aria-hidden="true" className="play-ring absolute bottom-2 right-2 flex h-[34px] w-[34px] items-center justify-center rounded-full border-2 border-primary bg-black/55 text-[#e9f2ec]">
           <Icon name={isCurrent && p.playing ? "pause" : "play"} size={15} className={isCurrent && p.playing ? "" : "ml-0.5"} />
         </span>
@@ -100,9 +100,11 @@ function PlaylistPicker({ track, onClose }: { track: Track; onClose: () => void 
 
 /** A list of songs. Tapping a row plays the list from that song. */
 export function TrackList({
-  tracks, numbered = true, showStreams = true, onRemove,
+  tracks, numbered = true, showStreams = true, onRemove, thumb,
 }: {
   tracks: Track[]; numbered?: boolean; showStreams?: boolean; onRemove?: (trackId: string) => void;
+  /** Artwork shown on every row instead of each track's cover (playlist artwork from the design). */
+  thumb?: string | null;
 }) {
   const p = usePlayer();
   const lib = useLibrary();
@@ -130,7 +132,14 @@ export function TrackList({
                     {isCurrent ? <Icon name={p.playing ? "pause" : "play"} size={14} className="mx-auto" /> : i + 1}
                   </span>
                 )}
-                <span className="w-11 shrink-0"><Cover seed={t.albumId ?? t.id} src={t.artwork} className="!rounded-lg" /></span>
+                <span className="w-11 shrink-0">
+                  {thumb && !t.artwork ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={thumb} alt="" loading="lazy" className="aspect-square w-full rounded-lg object-cover" />
+                  ) : (
+                    <Cover seed={t.albumId ?? t.id} src={t.artwork} className="!rounded-lg" />
+                  )}
+                </span>
                 <span className="min-w-0 flex-1">
                   <span className={`block truncate text-[15px] font-medium ${isCurrent ? "text-player" : "text-white"}`}>{t.title}</span>
                   <span className="block truncate text-[13px] font-light text-muted">{t.artistName}</span>

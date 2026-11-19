@@ -4,16 +4,27 @@ import { prisma } from "@/lib/prisma";
 import { getUserId } from "@/lib/session";
 import { catalog } from "@/lib/catalog";
 import { fmtCount } from "@/lib/format";
-import { BackButton, FollowButton, ShareButton } from "@/components/controls";
+import { BackButton } from "@/components/controls";
+import { ArtistActions, ArtistBio, ArtistMenu, ArtistSongs } from "@/components/artist-clients";
 import { Cover } from "@/components/cover";
-import { Icon } from "@/components/icons";
-import { PlayButtons, TrackList } from "@/components/track-list";
+import { TrackList } from "@/components/track-list";
 import { SpotlightTile } from "@/components/spotlight";
 import { ArtistCommunityJoin } from "@/components/party-clients";
 import { artistRoomInfo } from "@/lib/party";
 import { AlbumCard, RowLink, Section, Shelf } from "@/components/ui";
 
 const TABS = ["home", "music", "about", "community"] as const;
+
+/** Gold verified rosette from the design. */
+function GoldBadge({ size }: { size: number }) {
+  return (
+    <svg viewBox="0 0 24 24" width={size} height={size} className="shrink-0" aria-label="Verified artist" role="img">
+      <path d="M12 1.5l2.6 1.9 3.2-.2 1 3 2.6 1.9-1 3 1 3-2.6 1.9-1 3-3.2-.2L12 22.5l-2.6-1.9-3.2.2-1-3-2.6-1.9 1-3-1-3 2.6-1.9 1-3 3.2.2z" fill="#e8b830" stroke="#7a5a0a" strokeWidth="0.8" />
+      <circle cx="12" cy="12" r="5.2" fill="#1f5a2a" />
+      <path d="M9.6 12.1l1.6 1.6 3.2-3.3" fill="none" stroke="#f6e6a6" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
 export default async function ArtistPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ tab?: string }> }) {
   await getUserId();
@@ -32,38 +43,42 @@ export default async function ArtistPage({ params, searchParams }: { params: Pro
   return (
     <>
       <div className="relative -mx-4 -mt-3 overflow-hidden px-4 pt-3 sm:-mx-6 sm:px-6 lg:mx-0 lg:mt-0 lg:rounded-3xl lg:px-8 lg:pt-6">
-        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[radial-gradient(60%_70%_at_20%_10%,rgba(var(--primary-rgb),0.28),transparent_70%)]" />
-        <BackButton />
+        {/* Backlit silhouette of the artist behind the header, as in the design */}
+        <div aria-hidden="true" className="absolute inset-0 -z-10" style={{ background: "radial-gradient(60% 55% at 85% 20%, rgba(74,222,128,0.22), transparent 70%), linear-gradient(180deg, #0f2a1c 0%, #07120c 70%, transparent 100%)" }} />
+        <svg aria-hidden="true" viewBox="0 0 200 260" className="absolute -right-6 top-6 -z-10 h-[300px] w-auto opacity-90 sm:right-6 sm:h-[340px]">
+          <ellipse cx="110" cy="70" rx="44" ry="52" fill="#040706" />
+          <path d="M66 60 C66 20 154 20 154 60 C150 36 70 36 66 60 Z" fill="#040706" />
+          <path d="M150 52 C175 40 192 60 186 90 L160 80 Z" fill="#040706" />
+          <rect x="94" y="112" width="34" height="34" rx="12" fill="#040706" />
+          <path d="M20 260 C20 180 60 146 112 146 C164 146 200 180 200 260 Z" fill="#040706" />
+        </svg>
+        <div className="flex items-center justify-between">
+          <BackButton />
+          <ArtistMenu artistName={artist.name} />
+        </div>
         <div className="flex items-center gap-4 sm:gap-6">
-          <div className="relative w-[104px] shrink-0 sm:w-[150px]">
-            <Cover seed={artist.id} src={artist.image} round />
-            <span className="absolute bottom-1 right-1 flex h-6 w-6 items-center justify-center rounded-full border-2 border-black bg-[#f2c94c] text-black sm:h-7 sm:w-7">
-              <Icon name="check" size={14} />
-            </span>
+          <div className="relative w-[96px] shrink-0 sm:w-[140px]">
+            <Cover seed={artist.id} src={artist.image} round className="keep-round" />
+            <span aria-hidden="true" className="absolute bottom-0 right-0"><GoldBadge size={26} /></span>
           </div>
           <div className="min-w-0">
-            <h1 className="m-0 flex items-center gap-2 text-[28px] font-bold leading-tight text-white sm:text-[40px]">
+            <h1 className="m-0 flex items-center gap-2 text-[26px] font-bold leading-tight text-white sm:text-[38px]">
               <span className="truncate">{artist.name}</span>
-              <Icon name="check" size={18} className="shrink-0 rounded-full bg-primary p-[2px] text-primary-ink" />
+              <GoldBadge size={20} />
             </h1>
-            <p className="m-0 text-[13px] font-light text-muted">Artist · {artist.genre}</p>
+            <p className="m-0 text-[13px] font-light text-ink/80">Artist · {artist.genre}</p>
           </div>
         </div>
-        <p className="m-0 mt-4 text-[13.5px] font-semibold text-primary">Music. Culture. Africa.</p>
-        <p className="m-0 mt-1 line-clamp-2 max-w-2xl text-[14px] font-light text-ink/85">{artist.bio}</p>
+        <p className="m-0 mt-4 text-[14px] font-semibold text-primary">Music. Culture. Africa <span aria-hidden="true">🌍</span></p>
+        <ArtistBio text={artist.bio} />
 
-        <div className="mt-4 grid max-w-md grid-cols-3 text-center">
-          <div><p className="m-0 text-[20px] font-semibold text-white">{fmtCount(followers)}</p><p className="m-0 text-[12px] font-light text-muted">Followers on Brisic</p></div>
-          <div><p className="m-0 text-[20px] font-semibold text-white">{fmtCount(artist.monthlyListeners)}</p><p className="m-0 text-[12px] font-light text-muted">Monthly Listeners</p></div>
-          <div><p className="m-0 text-[20px] font-semibold text-white">{albums.length}</p><p className="m-0 text-[12px] font-light text-muted">{albums.length === 1 ? "Album" : "Albums"}</p></div>
+        <div className="mt-4 grid max-w-lg grid-cols-3 divide-x divide-white/15 text-center">
+          <div><p className="m-0 text-[20px] font-semibold text-white">{fmtCount(followers)}</p><p className="m-0 text-[12px] font-light text-ink/80">Followers</p></div>
+          <div><p className="m-0 text-[20px] font-semibold text-white">{fmtCount(artist.monthlyListeners)}</p><p className="m-0 text-[12px] font-light text-ink/80">Monthly Listeners</p></div>
+          <div><p className="m-0 text-[20px] font-semibold text-white">{albums.length}</p><p className="m-0 text-[12px] font-light text-ink/80">{albums.length === 1 ? "Album" : "Albums"}</p></div>
         </div>
 
-        <div className="mt-4 flex flex-wrap items-center gap-2">
-          <PlayButtons tracks={topTracks} label="Play Artist" />
-          <FollowButton artistId={artist.id} artistName={artist.name} small />
-          <Link href={`/artist/${artist.id}/support`} className="btn btn-outline btn-sm"><Icon name="gift" size={16} /> Support Artist</Link>
-          <ShareButton title={artist.name} />
-        </div>
+        <ArtistActions artistId={artist.id} artistName={artist.name} tracks={topTracks} />
 
         <nav aria-label="Artist sections" className="no-scrollbar mt-5 flex gap-1 overflow-x-auto border-b border-line-soft">
           {TABS.map((t) => (
@@ -82,7 +97,7 @@ export default async function ArtistPage({ params, searchParams }: { params: Pro
 
       {tab === "home" && (
         <>
-          <Section title="Popular Songs"><TrackList tracks={topTracks} /></Section>
+          <Section title="Popular Songs" href={`/artist/${artist.id}?tab=music`}><ArtistSongs tracks={topTracks} /></Section>
           {videos.length > 0 && (
             <Section title="Spotlight" href="/spotlight">
               <Shelf wide>{videos.map((v) => <SpotlightTile key={v.id} item={v} />)}</Shelf>

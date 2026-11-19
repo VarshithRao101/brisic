@@ -1,12 +1,26 @@
-/** App-wide color themes. Each id maps to a [data-theme] block in globals.css. */
-export const THEMES = [
-  { id: "green", name: "Green", swatch: "linear-gradient(135deg,#a8eeb3,#4ade80 55%,#14532d)" },
-  { id: "red", name: "Red", swatch: "linear-gradient(135deg,#ffb3ad,#ff4a4a 55%,#5a0f0f)" },
-  { id: "chrome", name: "Chrome", swatch: "linear-gradient(135deg,#ffffff,#b9c2be 45%,#4b5651 75%,#e3e8e6)" },
-  { id: "purple", name: "Purple", swatch: "linear-gradient(135deg,#dcc6ff,#a56bff 55%,#2a0f45)" },
-  { id: "gold", name: "Gold", swatch: "linear-gradient(135deg,#fff1c2,#f2c94c 50%,#7a5a0a)" },
+/**
+ * Music player colors, exactly as in the prototype: the green player is hue-shifted by
+ * `hue` degrees (Chrome turns it silver). Only the full-screen player changes; the rest of
+ * the app stays Brisic green.
+ */
+export const PLAYER_COLORS = [
+  { id: "green", name: "Green", hue: 0, swatch: "#4ade80" },
+  { id: "blue", name: "Blue", hue: 89, swatch: "#4aa3ff" },
+  { id: "purple", name: "Purple", hue: 149, swatch: "#a56bff" },
+  { id: "pink", name: "Pink", hue: 199, swatch: "#ff5fb0" },
+  { id: "red", name: "Red", hue: 229, swatch: "#ff4a4a" },
+  { id: "orange", name: "Orange", hue: 259, swatch: "#ff9a3c" },
+  { id: "gold", name: "Gold", hue: 282, swatch: "#f2c94c" },
+  { id: "teal", name: "Teal", hue: 49, swatch: "#2fd8c8" },
+  { id: "chrome", name: "Chrome", hue: null, swatch: "#cfd6d2" },
 ] as const;
-export type ThemeId = (typeof THEMES)[number]["id"];
+export const isPlayerColor = (v: unknown) => PLAYER_COLORS.some((c) => c.id === v);
+/** CSS filter that turns the green player into the chosen color. */
+export const playerFilter = (id: string) => {
+  const c = PLAYER_COLORS.find((x) => x.id === id);
+  if (!c || c.hue === 0) return "none";
+  return c.hue === null ? "grayscale(1) brightness(1.15)" : `hue-rotate(${c.hue}deg)`;
+};
 
 /** How artists and cards look: round frames, or guitar-pick frames with slanted cards. */
 export const HOME_STYLES = [
@@ -18,7 +32,7 @@ export const QUALITIES = ["Normal", "High", "Very high"] as const;
 export const LANGUAGES = ["English", "Nigerian Pidgin", "Yoruba", "Igbo", "Hausa", "Twi", "Swahili", "Zulu", "French", "Portuguese", "Spanish"] as const;
 
 export type Settings = {
-  theme: string;
+  playerColor: string;
   homeStyle: string;
   streamingQuality: string;
   downloadQuality: string;
@@ -36,7 +50,7 @@ export type Settings = {
 };
 
 export const DEFAULT_SETTINGS: Settings = {
-  theme: "green",
+  playerColor: "green",
   homeStyle: "shaped",
   streamingQuality: "High",
   downloadQuality: "High",
@@ -53,8 +67,6 @@ export const DEFAULT_SETTINGS: Settings = {
   privateSession: false,
 };
 
-export const isTheme = (v: unknown): v is ThemeId => THEMES.some((t) => t.id === v);
-
 export function readSettings(json: unknown): Settings {
   const out: Settings = { ...DEFAULT_SETTINGS };
   if (json && typeof json === "object") {
@@ -62,10 +74,10 @@ export function readSettings(json: unknown): Settings {
     for (const k of Object.keys(DEFAULT_SETTINGS) as (keyof Settings)[]) {
       if (typeof src[k] === typeof DEFAULT_SETTINGS[k]) (out as Record<string, unknown>)[k] = src[k];
     }
-    // Older accounts saved a player color; carry it over when it matches a theme.
-    if (!("theme" in src) && isTheme(src.playerColor)) out.theme = src.playerColor;
+    // Accounts from the short-lived app-wide themes keep their pick as the player color.
+    if (!isPlayerColor(src.playerColor) && isPlayerColor(src.theme)) out.playerColor = src.theme as string;
   }
-  if (!isTheme(out.theme)) out.theme = DEFAULT_SETTINGS.theme;
+  if (!isPlayerColor(out.playerColor)) out.playerColor = DEFAULT_SETTINGS.playerColor;
   if (!HOME_STYLES.some((h) => h.id === out.homeStyle)) out.homeStyle = DEFAULT_SETTINGS.homeStyle;
   if (!(QUALITIES as readonly string[]).includes(out.streamingQuality)) out.streamingQuality = DEFAULT_SETTINGS.streamingQuality;
   if (!(QUALITIES as readonly string[]).includes(out.downloadQuality)) out.downloadQuality = DEFAULT_SETTINGS.downloadQuality;

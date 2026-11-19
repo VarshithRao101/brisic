@@ -18,8 +18,10 @@ export const ACTIVE_MS = 90_000;
 export const IDLE_MS = 6 * 3_600_000;
 /** Artist community rooms are named "<Artist> Listening Room" and have no listener host. */
 export const ARTIST_ROOM_SUFFIX = " Listening Room";
-const roomHostName = (r: { artistId: string | null; name: string; host: { name: string | null; username: string | null } | null }) =>
-  r.artistId ? r.name.replace(ARTIST_ROOM_SUFFIX, "") : r.host ? displayName(r.host) : "Listener";
+const roomHostName = (r: { artistId: string | null; featureKey?: string | null; name: string; host: { name: string | null; username: string | null } | null }) =>
+  r.artistId ? r.name.replace(ARTIST_ROOM_SUFFIX, "") : r.featureKey ? "Brisic" : r.host ? displayName(r.host) : "Listener";
+/** Artist and featured rooms stay open; listener parties end after IDLE_MS without activity. */
+export const alwaysOpen = (r: { artistId: string | null; featureKey: string | null }) => !!(r.artistId || r.featureKey);
 
 export type PartyState = {
   code: string;
@@ -72,14 +74,14 @@ export async function getPartyState(code: string, userId: string): Promise<Party
   const room = await prisma.partyRoom.findUnique({
     where: { code },
     select: {
-      id: true, code: true, name: true, hostId: true, artistId: true, isPublic: true, chatOpen: true,
+      id: true, code: true, name: true, hostId: true, artistId: true, featureKey: true, isPublic: true, chatOpen: true,
       nowItemId: true, nowStarted: true, endedAt: true, updatedAt: true,
       host: { select: { name: true, username: true } },
     },
   });
   if (!room) return null;
   // Artist rooms stay open; listener parties end after IDLE_MS without activity.
-  const ended = !!room.endedAt || (!room.artistId && Date.now() - room.updatedAt.getTime() > IDLE_MS);
+  const ended = !!room.endedAt || (!alwaysOpen(room) && Date.now() - room.updatedAt.getTime() > IDLE_MS);
 
   // Mark this listener as present (no-op when not a member).
   const seen = ended ? { count: 0 } : await prisma.partyMember.updateMany({ where: { roomId: room.id, userId }, data: { lastSeen: new Date() } });
@@ -130,7 +132,7 @@ export async function getPartyState(code: string, userId: string): Promise<Party
 /** Public rooms with recent activity, busiest first. */
 export async function listLiveParties(limit = 12) {
   const rooms = await prisma.partyRoom.findMany({
-    where: { isPublic: true, endedAt: null, artistId: null, updatedAt: { gte: new Date(Date.now() - IDLE_MS) } },
+    where: { isPublic: true, endedAt: null, artistId: null, featureKey: null, updatedAt: { gte: new Date(Date.now() - IDLE_MS) } },
     orderBy: { updatedAt: "desc" },
     take: limit,
     select: {
@@ -147,7 +149,7 @@ export async function listLiveParties(limit = 12) {
 /** Running parties this user is in, most recently active first. */
 export async function myLiveParties(userId: string) {
   const rows = await prisma.partyMember.findMany({
-    where: { userId, room: { endedAt: null, OR: [{ artistId: { not: null } }, { updatedAt: { gte: new Date(Date.now() - IDLE_MS) } }] } },
+    where: { userId, room: { endedAt: null, OR: [{ artistId: { not: null } }, { featureKey: { not: null } }, { updatedAt: { gte: new Date(Date.now() - IDLE_MS) } }] } },
     orderBy: { lastSeen: "desc" }, take: 5,
     select: { room: { select: { code: true, name: true, hostId: true } } },
   });
@@ -161,4 +163,33 @@ export async function artistRoomInfo(artistId: string) {
     select: { code: true, _count: { select: { members: { where: { lastSeen: { gte: new Date(Date.now() - ACTIVE_MS) } } } } } },
   });
   return room ? { code: room.code, listening: room._count.members } : null;
+}
+
+/**
+ * Home "Join a Party": Brisic's featured rooms (always open, anyone can join) plus listener
+ * parties that are live right now. Featured rooms are created the first time Home needs them.
+ */
+export async function homeParties(featured: { key: string; name: string }[]) {
+  const existing = await prisma.partyRoom.findMany({ where: { featureKey: { in: featured.map((f) => f.key) } }, select: { featureKey: true } });
+  const have = new Set(existing.map((e) => e.featureKey));
+  for (const f of featured.filter((x) => !have.has(x.key))) {
+    try {
+      await prisma.partyRoom.create({ data: { code: newPartyCode(), name: f.name, featureKey: f.key, hostId: null, isPublic: true, chatOpen: true } });
+    } catch {
+      // Created by another request at the same moment, or a code clash: Home tries again next load.
+    }
+  }
+  const since = new Date(Date.now() - ACTIVE_MS);
+  const [rooms, live] = await Promise.all([
+    prisma.partyRoom.findMany({
+      where: { featureKey: { in: featured.map((f) => f.key) }, endedAt: null },
+      select: { code: true, featureKey: true, _count: { select: { members: { where: { lastSeen: { gte: since } } } } } },
+    }),
+    listLiveParties(6),
+  ]);
+  const byKey = new Map(rooms.map((r) => [r.featureKey, r]));
+  return {
+    featured: featured.map((f) => ({ key: f.key, code: byKey.get(f.key)?.code ?? null, listening: byKey.get(f.key)?._count.members ?? 0 })),
+    live,
+  };
 }

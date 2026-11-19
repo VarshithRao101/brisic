@@ -1,3 +1,4 @@
+import type { CoverArt } from "@/lib/catalog/types";
 import { hashStr } from "@/lib/format";
 
 // [from, to, label color] — the prototype's poster palette.
@@ -59,16 +60,76 @@ export function ArtistFace({ seed, className = "" }: { seed: string; className?:
 }
 
 /**
+ * Poster card drawn exactly like the prototype's home cards: gradient, Bebas label
+ * top-left (or a soft label on large cards) and an optional figure.
+ */
+export function ArtCover({ art, className = "" }: { art: CoverArt; className?: string }) {
+  const soft = !!art.soft;
+  // Prototype sizes are in px on a 176px card (252px for large ones), times 1.4.
+  const base = soft ? 252 : 176;
+  const lines = (art.label ?? "").split("\n");
+  const longest = Math.max(1, ...lines.map((l) => l.length));
+  let size = ((art.size ?? (soft ? 20 : 30)) * 1.4 * 100) / base;
+  if (!soft && longest > 8) size = Math.min(size, (88 / (longest * 0.47)));
+  const px = art.px ?? 80;
+  const fill = art.pfill ?? "#0b0b0b";
+  const person = (vb: number, cy: number, top: number) => (
+    <svg viewBox={`0 0 125 ${vb}`} preserveAspectRatio="xMidYMid slice" className="absolute inset-0 h-full w-full" aria-hidden="true">
+      <circle cx={px} cy={cy} r={soft ? 16 : 15} fill={fill} />
+      <path d={`M${px - 34} ${vb} C${px - 34} ${top + 12} ${px - 20} ${top} ${px} ${top} C${px + 20} ${top} ${px + 34} ${top + 12} ${px + 34} ${vb} Z`} fill={fill} />
+    </svg>
+  );
+  return (
+    <div
+      aria-hidden="true"
+      className={`poster-box relative w-full overflow-hidden rounded-2xl border border-white/10 [container-type:inline-size] ${soft ? "aspect-[252/280]" : "aspect-[176/162]"} ${className}`}
+      style={{ background: art.bg ?? `linear-gradient(${art.angle ?? 150}deg, ${art.from}, ${art.to})` }}
+    >
+      {art.figure === "person" && person(98, 40, 58)}
+      {art.figure === "stars" && (
+        <>
+          <svg viewBox="0 0 125 104" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 h-full w-full" aria-hidden="true">
+            {[[14, 12, 0.9], [40, 30, 0.8], [78, 14, 1], [108, 26, 0.8], [96, 50, 0.9], [26, 58, 0.8], [60, 8, 0.7]].map(([cx, cy, r]) => <circle key={cx} cx={cx} cy={cy} r={r} fill="#cfe0ff" />)}
+          </svg>
+          {person(104, 52, 70)}
+        </>
+      )}
+      {art.figure === "palm" && (
+        <svg viewBox="0 0 125 98" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 h-full w-full" aria-hidden="true">
+          <path d="M98 98 Q100 60 104 28" stroke="#0b2b2b" strokeWidth="3" fill="none" />
+          <path d="M104 28 Q88 20 78 30 M104 28 Q96 12 82 12 M104 28 Q112 12 124 16 M104 28 Q118 26 124 38" stroke="#0b2b2b" strokeWidth="3.5" fill="none" strokeLinecap="round" />
+          <path d="M0 98 L0 84 Q30 74 60 86 Q90 76 125 88 L125 98 Z" fill="#0c3a46" />
+        </svg>
+      )}
+      {art.figure === "heart" && (
+        <svg viewBox="0 0 125 102" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 h-full w-full" aria-hidden="true">
+          <path d="M62 62 C40 46 32 36 36 24 C40 14 54 14 62 26 C70 14 84 14 88 24 C92 36 84 46 62 62 Z" fill="#4c9a3e" stroke="#8fd27a" strokeWidth="1.5" opacity="0.9" />
+        </svg>
+      )}
+      {art.label && (
+        <span
+          className={`poster-label absolute whitespace-pre-line ${soft ? "font-light leading-[1.2]" : "display"}`}
+          style={{ color: art.ink ?? "#ffffff", fontSize: size.toFixed(2) + "cqw", left: soft ? "4.4cqw" : "6.25cqw", top: soft ? "4cqw" : "6.25cqw" }}
+        >
+          {art.label}
+        </span>
+      )}
+    </div>
+  );
+}
+
+/**
  * Square (or round) artwork. Uses the image when the catalog provides one,
  * otherwise a poster-style cover: gradient, block title and a silhouette.
  * Round covers are artist portraits with a glowing ring.
  */
 export function Cover({
-  seed, label, src, round, className = "", ring = true,
+  seed, label, src, round, className = "", ring = true, art,
 }: {
-  seed: string; label?: string; src?: string | null; round?: boolean; className?: string; ring?: boolean;
+  seed: string; label?: string; src?: string | null; round?: boolean; className?: string; ring?: boolean; art?: CoverArt;
 }) {
   const h = hashStr(seed);
+  if (art && !src && !round) return <ArtCover art={art} className={className} />;
   if (round) {
     return (
       <div className={`relative aspect-square w-full rounded-full p-[3px] ${ring ? "ring-glow cover-round" : ""} ${className}`}>

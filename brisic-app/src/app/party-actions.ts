@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { requireUserId } from "@/lib/session";
 import { catalog } from "@/lib/catalog";
 import { hit, waitText } from "@/lib/rate-limit";
-import { ARTIST_ROOM_SUFFIX, IDLE_MS, newPartyCode, normalizeCode } from "@/lib/party";
+import { ARTIST_ROOM_SUFFIX, IDLE_MS, alwaysOpen, newPartyCode, normalizeCode } from "@/lib/party";
 
 type Result<T = object> = ({ ok: true } & T) | { ok: false; error: string };
 const str = (v: unknown, max: number) => String(v ?? "").trim().replace(/\s+/g, " ").slice(0, max);
@@ -20,10 +20,10 @@ async function liveRoom(rawCode: string, userId: string) {
   if (!code) return null;
   const room = await prisma.partyRoom.findUnique({
     where: { code },
-    select: { id: true, code: true, hostId: true, artistId: true, chatOpen: true, endedAt: true, updatedAt: true, members: { where: { userId }, select: { id: true } } },
+    select: { id: true, code: true, hostId: true, artistId: true, featureKey: true, chatOpen: true, endedAt: true, updatedAt: true, members: { where: { userId }, select: { id: true } } },
   });
   if (!room || room.endedAt) return null;
-  if (!room.artistId && Date.now() - room.updatedAt.getTime() > IDLE_MS) return null;
+  if (!alwaysOpen(room) && Date.now() - room.updatedAt.getTime() > IDLE_MS) return null;
   return { ...room, isMember: room.members.length > 0, isHost: room.hostId === userId };
 }
 const touch = (roomId: string) => prisma.partyRoom.update({ where: { id: roomId }, data: { updatedAt: new Date() } });

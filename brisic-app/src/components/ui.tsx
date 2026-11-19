@@ -55,7 +55,7 @@ export function Grid({ children }: { children: ReactNode }) {
   return <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 lg:gap-5 xl:grid-cols-6">{children}</div>;
 }
 
-const tile = "block w-[156px] shrink-0 sm:w-[176px] lg:w-auto";
+const tile = "block w-[160px] shrink-0 sm:w-[176px] lg:w-auto";
 
 /** Round play mark in the corner of a cover. Decorative: the whole card is the link. */
 export function PlayRing({ className = "" }: { className?: string }) {
@@ -75,14 +75,19 @@ function CardText({ title, sub }: { title: string; sub?: string }) {
   );
 }
 
-export function PlaylistCard({ p, fluid }: { p: Playlist; fluid?: boolean }) {
+/** Playlist poster. "large" is the bigger "Playlist made for you" card (no caption, like the design). */
+export function PlaylistCard({ p, fluid, large }: { p: Playlist; fluid?: boolean; large?: boolean }) {
   return (
-    <Link href={`/playlist/${p.id}`} className={`group ${fluid ? "block" : tile}`}>
+    <Link
+      href={p.href ?? `/playlist/${p.id}`}
+      aria-label={large ? p.title : undefined}
+      className={`group ${fluid ? "block" : large ? "block w-[230px] shrink-0 sm:w-[252px] lg:w-auto" : tile}`}
+    >
       <div className="poster relative transition group-hover:-translate-y-0.5">
-        <Cover seed={p.id} label={p.title} src={p.artwork} />
+        <Cover seed={p.id} label={p.title} src={p.artwork} art={p.art} />
         <PlayRing />
       </div>
-      <CardText title={p.title} sub={p.subtitle} />
+      {!large && <CardText title={p.title} sub={p.subtitle} />}
     </Link>
   );
 }

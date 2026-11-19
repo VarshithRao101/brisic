@@ -243,6 +243,8 @@ model PartyRoom {
   hostId      String?
   // Set for an artist's official community room (one per artist).
   artistId    String?   @unique
+  // Set for Brisic's always-open featured rooms on Home ("Join a Party"), e.g. "friday-night-vibes".
+  featureKey  String?   @unique
   isPublic    Boolean   @default(true)
   chatOpen    Boolean   @default(true)
   nowItemId   String?

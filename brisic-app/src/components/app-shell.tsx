@@ -32,7 +32,7 @@ const YOU: NavItem[] = [
   { href: "/library/liked", label: "Liked Songs", icon: "heart" },
   { href: "/coins", label: "B-Coins", icon: "coin" },
   { href: "/premium", label: "Premium", icon: "crown" },
-  { href: "/settings", label: "Settings & Theme", icon: "settings" },
+  { href: "/settings", label: "Settings", icon: "settings" },
 ];
 
 // Title shown next to the logo on the main tabs, like the prototype's "LISTEN NOW" / "Library".
@@ -194,9 +194,9 @@ function TabLink({ href, label, icon, on }: { href: string; label: string; icon:
 }
 
 export function AppShell({
-  user, unread, theme, homeStyle, sample, children,
+  user, unread, playerColor, homeStyle, sample, children,
 }: {
-  user: ShellUser; unread: number; theme: string; homeStyle: string; sample: boolean; children: ReactNode;
+  user: ShellUser; unread: number; playerColor: string; homeStyle: string; sample: boolean; children: ReactNode;
 }) {
   const path = usePathname();
   const router = useRouter();
@@ -220,10 +220,10 @@ export function AppShell({
     </svg>
   );
 
-  // The full player takes the whole screen: no header, tabs or mini player, like a native app.
-  if (path === "/player") {
+  // Players take the whole screen (music, podcast audio, podcast video): no header, tabs or mini player.
+  if (path === "/player" || path.startsWith("/listen/") || path.startsWith("/watch/")) {
     return (
-      <div data-theme={theme} data-home={homeStyle} className="min-h-dvh text-ink">
+      <div data-player={playerColor} data-home={homeStyle} className="min-h-dvh text-ink">
         {pickDefs}
         {children}
       </div>
@@ -231,7 +231,7 @@ export function AppShell({
   }
 
   return (
-    <div data-theme={theme} data-home={homeStyle} className="min-h-dvh text-ink">
+    <div data-player={playerColor} data-home={homeStyle} data-route={path === "/" ? "home" : "page"} className="min-h-dvh text-ink">
       <div aria-hidden="true" className="app-bg fixed inset-0 -z-10" />
       {pickDefs}
 

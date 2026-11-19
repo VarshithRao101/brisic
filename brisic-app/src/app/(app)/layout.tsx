@@ -31,7 +31,7 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
       <AppShell
         user={{ displayName: user.displayName, handle: user.handle, image: user.image, isPremium: user.isPremium }}
         unread={unread}
-        theme={settings.theme}
+        playerColor={settings.playerColor}
         homeStyle={settings.homeStyle}
         sample={catalog.isSample}
       >

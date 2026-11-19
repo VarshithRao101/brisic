@@ -13,6 +13,8 @@ export type Track = {
   streamUrl?: string | null;
   /** Cover image URL. null falls back to a generated cover. */
   artwork?: string | null;
+  /** Explicit lyrics (shown as an "E" badge). */
+  explicit?: boolean;
 };
 
 export type Artist = {
@@ -34,12 +36,36 @@ export type Album = {
   artwork?: string | null;
 };
 
+/** Drawn poster artwork (sample catalog), used when there is no artwork image. */
+export type CoverArt = {
+  from: string;
+  to: string;
+  /** Gradient angle in degrees (default 150). */
+  angle?: number;
+  /** Full CSS background, overrides from/to. */
+  bg?: string;
+  /** Poster text; a line break ("\n") starts a new line. */
+  label?: string;
+  ink?: string;
+  /** Label size in the prototype's units (default 30 for posters, 20 for soft labels). */
+  size?: number;
+  /** Light, mixed-case label for the large "made for you" cards. */
+  soft?: boolean;
+  figure?: "person" | "palm" | "heart" | "stars";
+  /** Figure position (0-125) and colour. */
+  px?: number;
+  pfill?: string;
+};
+
 export type Playlist = {
   id: string;
   title: string;
   subtitle: string;
   trackCount: number;
   artwork?: string | null;
+  art?: CoverArt;
+  /** Where the card opens, when it is not a playlist (a podcast, a party, a spotlight). */
+  href?: string;
 };
 
 export type Genre = {
@@ -58,6 +84,8 @@ export type Show = {
   blurb: string;
   about: string;
   episodeCount: number;
+  /** Card colours [from, to]; the show screens use them for their look. */
+  colors?: [string, string];
 };
 
 export type Episode = {
@@ -88,7 +116,13 @@ export type SpotlightItem = {
   poster?: string | null;
 };
 
-export type HomeSection = { id: string; title: string; playlists: Playlist[] };
+export type HomeSection = {
+  id: string;
+  title: string;
+  playlists: Playlist[];
+  /** How Home shows it: poster cards, large cards, podcasts, live parties or artist spotlight. */
+  kind?: "playlists" | "large" | "podcasts" | "parties" | "spotlight";
+};
 
 export type SearchResults = {
   tracks: Track[];

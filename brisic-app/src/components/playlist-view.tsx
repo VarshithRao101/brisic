@@ -10,49 +10,14 @@ import { usePlayer, useToast } from "@/components/app-state";
 import { Icon } from "@/components/icons";
 import { TrackList } from "@/components/track-list";
 
-/** Flowing ribbons of light in the theme color, behind the neon B (the playlist hero in the design). */
-export function SilkWaves({ seed = 0 }: { seed?: number }) {
-  const v = seed % 3;
-  const id = `silk${v}`;
-  const ribbons = [
-    "M-40 210 C 60 120, 150 250, 250 170 S 390 90, 460 140",
-    "M-40 240 C 70 160, 170 280, 270 200 S 400 130, 460 175",
-    "M-40 180 C 40 110, 160 210, 240 150 S 380 60, 460 100",
-    "M-40 270 C 90 200, 190 300, 290 230 S 410 170, 460 210",
-  ];
+/** The neon-B hero image, blended into the black page at the edges. */
+export function PlaylistHero({ src }: { src: string }) {
   return (
-    <svg viewBox="0 0 420 300" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 h-full w-full" aria-hidden="true">
-      <defs>
-        <linearGradient id={`${id}g`} x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stopColor="var(--primary)" stopOpacity="0" />
-          <stop offset="0.45" stopColor="var(--primary)" stopOpacity="0.95" />
-          <stop offset="0.75" stopColor="var(--accent)" stopOpacity="0.7" />
-          <stop offset="1" stopColor="var(--primary)" stopOpacity="0.15" />
-        </linearGradient>
-        <radialGradient id={`${id}r`} cx="0.5" cy="0.25" r="0.5">
-          <stop offset="0" stopColor="var(--primary)" stopOpacity="0.35" />
-          <stop offset="1" stopColor="var(--primary)" stopOpacity="0" />
-        </radialGradient>
-        <filter id={`${id}b`} x="-10%" y="-30%" width="120%" height="160%"><feGaussianBlur stdDeviation="9" /></filter>
-        <filter id={`${id}s`} x="-10%" y="-30%" width="120%" height="160%"><feGaussianBlur stdDeviation="1.6" /></filter>
-      </defs>
-      <rect width="420" height="300" fill="#020403" />
-      <rect width="420" height="300" fill={`url(#${id}r)`} />
-      <g transform={v === 1 ? "translate(0 -30) scale(1 1.1)" : v === 2 ? "translate(420 0) scale(-1 1)" : undefined}>
-        <path d={ribbons[1] + " L460 320 L-40 320 Z"} fill={`url(#${id}g)`} opacity="0.22" filter={`url(#${id}b)`} />
-        {ribbons.map((d, i) => (
-          <path key={i} d={d} fill="none" stroke={`url(#${id}g)`} strokeWidth={[26, 14, 8, 18][i]} opacity={[0.45, 0.6, 0.5, 0.3][i]} filter={`url(#${id}b)`} />
-        ))}
-        {ribbons.map((d, i) => (
-          <path key={"s" + i} d={d} fill="none" stroke={`url(#${id}g)`} strokeWidth={[2.2, 1.4, 1, 1.6][i]} opacity="0.95" filter={`url(#${id}s)`} />
-        ))}
-      </g>
-      <rect y="200" width="420" height="100" fill="url(#silkFade)" />
-      <linearGradient id="silkFade" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stopColor="#000" stopOpacity="0" />
-        <stop offset="1" stopColor="#000" stopOpacity="0.9" />
-      </linearGradient>
-    </svg>
+    <>
+      <Image src={src} alt="" fill priority sizes="(min-width: 1024px) 1100px, 100vw" className="object-cover object-top" />
+      <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,transparent_45%,rgba(0,0,0,0.6)_72%,#000_100%)]" />
+      <div aria-hidden="true" className="absolute inset-0 hidden bg-[linear-gradient(90deg,#000_0%,transparent_22%,transparent_78%,#000_100%)] lg:block" />
+    </>
   );
 }
 
@@ -70,11 +35,12 @@ const fmtLength = (sec: number) => {
 };
 
 /** Playlist screen from the design: neon B hero, Play / Shuffle / like / more, sortable tracks. */
-export function PlaylistView({ playlist, tracks, saved: savedInitial, seed }: {
+export function PlaylistView({ playlist, tracks, saved: savedInitial, art }: {
   playlist: { id: string; title: string; subtitle: string };
   tracks: Track[];
   saved: boolean;
-  seed: number;
+  /** Hero image and row thumbnail from the design (see lib/playlist-art). */
+  art: { hero: string; thumb: string | null };
 }) {
   const router = useRouter();
   const player = usePlayer();
@@ -89,11 +55,7 @@ export function PlaylistView({ playlist, tracks, saved: savedInitial, seed }: {
   return (
     <>
       <div className="relative -mx-4 -mt-3 h-[300px] overflow-hidden sm:-mx-6 sm:h-[340px] lg:mx-0 lg:mt-0 lg:rounded-3xl">
-        <SilkWaves seed={seed} />
-        <Image
-          src="/assets/logo-b-glow.png" alt="" width={333} height={640} priority
-          className="logo-b absolute left-1/2 top-6 h-[150px] w-auto -translate-x-1/2 drop-shadow-[0_0_22px_rgba(var(--primary-rgb),0.85)] sm:h-[180px]"
-        />
+        <PlaylistHero src={art.hero} />
         <button type="button" onClick={() => router.back()} aria-label="Back" className="absolute left-4 top-4 flex h-10 w-10 items-center justify-center border-0 bg-transparent p-0 text-white">
           <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" /></svg>
         </button>
@@ -173,7 +135,7 @@ export function PlaylistView({ playlist, tracks, saved: savedInitial, seed }: {
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="pointer-events-none absolute right-0"><path d="M6 9l6 6 6-6" /></svg>
         </label>
       </div>
-      <div className="mt-1"><TrackList tracks={shown} numbered={false} showStreams={false} /></div>
+      <div className="mt-1"><TrackList tracks={shown} numbered={false} showStreams={false} thumb={art.thumb} /></div>
     </>
   );
 }

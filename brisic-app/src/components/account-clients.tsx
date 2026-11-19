@@ -1,12 +1,13 @@
 "use client";
 
 import { useActionState, useRef, useState } from "react";
+import NextImage from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { updateProfile, updateSettings, type ProfileState } from "@/app/actions";
 import { changePassword, deleteAccount, removeAvatar, uploadAvatar } from "@/app/account-actions";
-import { HOME_STYLES, LANGUAGES, QUALITIES, THEMES, type Settings } from "@/lib/settings";
+import { HOME_STYLES, LANGUAGES, PLAYER_COLORS, QUALITIES, playerFilter, type Settings } from "@/lib/settings";
 import { PREMIUM_PERKS, PREMIUM_PLANS, PREMIUM_REGIONS } from "@/lib/fan";
 import { Icon } from "@/components/icons";
 import { useToast } from "@/components/app-state";
@@ -236,10 +237,10 @@ export function SettingsForm({ initial }: { initial: Settings }) {
     const before = s;
     setS({ ...s, ...patch });
     // Show a new theme straight away; the server copy catches up on refresh.
-    if (patch.theme) document.querySelector<HTMLElement>("[data-theme]")?.setAttribute("data-theme", patch.theme);
+    if (patch.playerColor) document.querySelector<HTMLElement>("[data-player]")?.setAttribute("data-player", patch.playerColor);
     if (patch.homeStyle) document.querySelector<HTMLElement>("[data-home]")?.setAttribute("data-home", patch.homeStyle);
     updateSettings(patch)
-      .then(() => { if ("theme" in patch || "homeStyle" in patch) router.refresh(); })
+      .then(() => { if ("playerColor" in patch || "homeStyle" in patch) router.refresh(); })
       .catch(() => { setS(before); toast("Could not save. Check your connection."); });
   };
   const group = "panel divide-y divide-white/5 p-1";
@@ -247,31 +248,6 @@ export function SettingsForm({ initial }: { initial: Settings }) {
 
   return (
     <div className="mx-auto max-w-3xl">
-      <h2 className={heading}>Theme</h2>
-      <div className="panel-glow p-4">
-        <p className="m-0 text-[13.5px] font-light text-ink/80">Pick the look of Brisic. It changes the colors across the whole app, including the player.</p>
-        <div className="mt-4 grid grid-cols-5 gap-2 sm:gap-4">
-          {THEMES.map((t) => {
-            const on = s.theme === t.id;
-            return (
-              <button
-                key={t.id} type="button" aria-pressed={on}
-                onClick={() => save({ theme: t.id })}
-                className="flex flex-col items-center gap-2 border-0 bg-transparent p-0 text-[13px] text-ink"
-              >
-                <span
-                  className={`flex h-14 w-14 items-center justify-center rounded-full text-black sm:h-16 sm:w-16 ${on ? "outline outline-[3px] outline-offset-2 outline-white" : ""}`}
-                  style={{ background: t.swatch, boxShadow: on ? "0 0 18px rgba(255,255,255,0.35)" : "0 0 6px rgba(0,0,0,0.6)" }}
-                >
-                  {on && <Icon name="check" size={22} />}
-                </span>
-                <span className={on ? "font-semibold text-white" : "text-muted"}>{t.name}</span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
       <h2 className={heading}>Home style</h2>
       <p className="m-0 -mt-1 mb-2 text-[13px] font-light text-muted">How artists and playlists look on Home. You can change it any time.</p>
       <div className="grid grid-cols-2 gap-3">
@@ -301,6 +277,46 @@ export function SettingsForm({ initial }: { initial: Settings }) {
           );
         })}
       </div>
+
+      <h2 className={heading}>Music player color</h2>
+      <p className="m-0 -mt-1 mb-2 text-[13px] font-light text-muted">Pick the color of the music player screen. The rest of the app stays green.</p>
+      <div className="panel grid grid-cols-3 gap-y-4 p-4 sm:grid-cols-5">
+        {PLAYER_COLORS.map((c) => {
+          const on = s.playerColor === c.id;
+          return (
+            <button
+              key={c.id} type="button" aria-pressed={on} onClick={() => save({ playerColor: c.id })}
+              className="flex flex-col items-center gap-1.5 border-0 bg-transparent p-0 text-[13px] text-ink"
+            >
+              <span
+                className={`flex h-[54px] w-[54px] items-center justify-center rounded-full text-black ${on ? "outline outline-[3px] outline-offset-2 outline-white" : ""}`}
+                style={{ background: c.swatch, boxShadow: `0 0 ${on ? 16 : 6}px ${c.swatch}` }}
+              >
+                {on && <Icon name="check" size={22} />}
+              </span>
+              <span className={on ? "font-semibold text-white" : "text-muted"}>{c.name}</span>
+            </button>
+          );
+        })}
+      </div>
+      <p className="m-0 mb-2 mt-4 text-[13px] font-semibold text-white">Preview</p>
+      <div
+        className="flex items-center gap-3 rounded-[18px] border border-[#4fae63] p-4"
+        style={{ background: "linear-gradient(135deg, #12351d, #08150d)", boxShadow: "0 0 18px rgba(110,230,60,0.18)", filter: playerFilter(s.playerColor) }}
+      >
+        <NextImage src="/assets/logo-b-glow.png" alt="" width={333} height={640} className="h-12 w-auto" />
+        <div className="min-w-0 flex-1">
+          <p className="m-0 text-[15px] font-semibold text-white">Your Brisic</p>
+          <p className="m-0 text-[12.5px] font-light text-[#a9c2b3]">This is how your player will look</p>
+          <div className="mt-2 h-1 overflow-hidden rounded-full bg-white/20"><div className="h-full w-2/5 bg-[#7ee08a]" /></div>
+        </div>
+        <span className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-white text-white" style={{ background: "radial-gradient(circle at 50% 35%, rgba(255,255,255,0.28), rgba(255,255,255,0.06))" }}>
+          <Icon name="play" size={18} />
+        </span>
+      </div>
+      {s.playerColor !== "green" && (
+        <button type="button" className="btn btn-sm mt-3" onClick={() => save({ playerColor: "green" })}>Reset to Brisic green</button>
+      )}
 
       <h2 className={heading}>Playback</h2>
       <div className={group}>
