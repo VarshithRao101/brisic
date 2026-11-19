@@ -267,12 +267,12 @@ export function AppShell({
       <div className="lg:pl-64">
         <AppBanner />
 
-        <header className="sticky top-0 z-10 flex h-[68px] items-center gap-3 bg-[color-mix(in_srgb,var(--bg)_86%,transparent)] px-4 backdrop-blur sm:px-6 lg:h-16 lg:border-b lg:border-line-soft lg:px-8">
+        <header className="sticky top-0 z-10 flex h-[68px] items-center gap-2 bg-[color-mix(in_srgb,var(--bg)_86%,transparent)] px-4 backdrop-blur sm:px-6 lg:h-16 lg:border-b lg:border-line-soft lg:px-8">
           <Link href="/" aria-label="Brisic home" className="flex shrink-0 items-center lg:hidden">
             <Image src="/assets/logo-b-glow.png" alt="" width={333} height={640} priority className="logo-b h-[50px] w-auto" />
           </Link>
-          <span aria-hidden="true" className="h-10 w-px shrink-0 bg-line lg:hidden" />
-          <p className={`m-0 min-w-0 flex-1 truncate text-white lg:hidden ${title ? "text-[24px] font-normal" : "text-[23px] font-semibold uppercase tracking-[0.14em]"}`}>
+          <span aria-hidden="true" className="mx-1 h-10 w-px shrink-0 bg-line lg:hidden" />
+          <p className={`m-0 min-w-0 flex-1 truncate text-white lg:hidden ${title ? "text-[clamp(19px,6vw,24px)] font-normal" : "whitespace-nowrap text-[clamp(16px,5.3vw,23px)] font-semibold uppercase tracking-[0.12em]"}`}>
             {title === null ? "Listen Now" : title || "Brisic"}
           </p>
           <form
