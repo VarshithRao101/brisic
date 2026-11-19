@@ -22,8 +22,19 @@ const VARIANTS: { hero: string; thumb: string | null }[] = [
   { hero: "30", thumb: "30" }, // cyan
 ];
 
+/** The five designs the team picked for Throwback Classics and Playlist made for you. */
+const PICKED = ["x17", "x18", "x19", "x20", "x21"].map((k) => ({ hero: k, thumb: k }));
+const PICKED_FOR = [
+  // Playlist made for you
+  "pl-late-nights", "pl-good-vibes", "pl-morning-rise", "pl-gym-fire", "pl-slow-dance",
+  "pl-road-trip", "pl-focus-mode", "pl-weekend-party", "pl-sunday-soul",
+  // Throwback Classics
+  "pl-2000s-naija", "pl-90s-gold", "pl-highlife-roots", "pl-old-school-jams", "pl-fuji-and-juju", "pl-disco-days",
+];
+
 export function playlistArt(playlistId: string) {
-  const v = VARIANTS[hashStr(playlistId) % VARIANTS.length];
+  const picked = PICKED_FOR.indexOf(playlistId);
+  const v = picked >= 0 ? PICKED[picked % PICKED.length] : VARIANTS[hashStr(playlistId) % VARIANTS.length];
   return {
     hero: `/assets/playlists/hero-${v.hero}.jpg`,
     thumb: v.thumb ? `/assets/playlists/thumb-${v.thumb}.jpg` : null,

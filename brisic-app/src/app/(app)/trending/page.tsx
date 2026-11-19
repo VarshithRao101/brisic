@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { getUserId } from "@/lib/session";
 import { catalog } from "@/lib/catalog";
@@ -33,16 +34,24 @@ function Block({ place, height }: { place: 1 | 2 | 3; height: number }) {
   );
 }
 
+// Reveal order: 3rd, then 2nd, then 1st, then the crown (seconds).
+const DELAY = { 3: 0.25, 2: 1.05, 1: 1.85 } as const;
+const CROWN_AT = 2.75;
+
 function Podium({ a, place, period }: { a: Artist; place: 1 | 2 | 3; period: "week" | "month" }) {
   const first = place === 1;
   return (
-    <div className={`flex flex-col items-center ${first ? "w-[38%]" : "w-[31%]"}`}>
+    <div className={`podium-rise relative flex flex-col items-center ${first ? "w-[38%]" : "w-[31%]"}`} style={{ animationDelay: `${DELAY[place]}s` }}>
       {first && (
-        <svg viewBox="0 0 64 40" className="mb-1 w-14 drop-shadow-[0_0_10px_rgba(190,255,200,0.75)]" aria-hidden="true" fill="none" stroke="#c6f5cc" strokeWidth="2.6" strokeLinejoin="round" strokeLinecap="round">
-          <path d="M8 32 L4 10 L19 21 L32 4 L45 21 L60 10 L56 32 Z" />
-          <path d="M8 37 H56" />
-          <circle cx="4" cy="8" r="2.4" fill="#c6f5cc" /><circle cx="32" cy="3" r="2.4" fill="#c6f5cc" /><circle cx="60" cy="8" r="2.4" fill="#c6f5cc" />
-        </svg>
+        <>
+          {/* Spotlight on the winner */}
+          <span aria-hidden="true" className="spotlight-on pointer-events-none absolute -top-16 left-1/2 -z-10 h-[150%] w-[150%] -translate-x-1/2" style={{ animationDelay: `${CROWN_AT - 0.2}s`, background: "radial-gradient(45% 55% at 50% 0%, rgba(255,236,170,0.28), transparent 70%)" }} />
+          <Image
+            src="/assets/crown.png" alt="Number one" width={256} height={256}
+            className="crown-drop -mb-2 w-[92px] drop-shadow-[0_0_10px_rgba(140,255,170,0.95)] [filter:drop-shadow(0_0_6px_rgba(140,255,170,0.9))_drop-shadow(0_0_16px_rgba(140,255,170,0.6))_brightness(1.25)] sm:w-[104px]"
+            style={{ animationDelay: `${CROWN_AT}s` }}
+          />
+        </>
       )}
       <Link href={`/artist/${a.id}`} aria-label={a.name} className={`block overflow-hidden rounded-[18px] p-[3px] ${first ? "w-[82%] bg-[#e8b830] shadow-[0_0_22px_rgba(232,184,48,0.55)]" : "w-[78%] bg-[#d9dee4] shadow-[0_0_12px_rgba(220,225,230,0.3)]"}`}>
         <ArtistFace seed={a.id} className="block aspect-square w-full rounded-[15px]" />
@@ -94,19 +103,19 @@ export default async function TrendingPage({ searchParams }: { searchParams: Pro
       </div>
 
       {one && two && three && (
-        <div className="mt-6 flex items-end justify-center gap-[2%] px-1">
+        <div key={period} className="relative isolate mt-6 flex items-end justify-center gap-[2%] px-1">
           <Podium a={two} place={2} period={period} />
           <Podium a={one} place={1} period={period} />
           <Podium a={three} place={3} period={period} />
         </div>
       )}
 
-      <ol className="m-0 mt-5 flex list-none flex-col gap-2.5 p-0">
+      <ol key={period} className="m-0 mt-5 flex list-none flex-col gap-2.5 p-0">
         {top.slice(3).map((a, k) => {
           const i = k + 3;
           const m = moved(a, i);
           return (
-            <li key={a.id} className="flex items-center gap-3 rounded-2xl border border-line px-3 py-2.5" style={{ background: "color-mix(in srgb, var(--card) 80%, transparent)" }}>
+            <li key={a.id} className="fade-up flex items-center gap-3 rounded-2xl border border-line px-3 py-2.5" style={{ background: "color-mix(in srgb, var(--card) 80%, transparent)", animationDelay: `${CROWN_AT + 0.4 + k * 0.06}s` }}>
               <span className="w-6 shrink-0 text-center text-[17px] font-semibold tabular-nums text-muted">{i + 1}</span>
               <Link href={`/artist/${a.id}`} className="flex min-w-0 flex-1 items-center gap-3">
                 <span className="h-12 w-12 shrink-0 overflow-hidden rounded-full border-2 border-primary p-[2px] shadow-[0_0_8px_rgba(var(--primary-rgb),0.35)]">
