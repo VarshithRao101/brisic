@@ -222,7 +222,10 @@ export const mockCatalog: CatalogProvider = {
 
   async getTrendingArtists(period) {
     const list = [...artists].sort((a, b) => b.monthlyListeners - a.monthlyListeners);
-    return period === "week" ? list : [...list.slice(2), ...list.slice(0, 2)];
+    if (period === "week") return list;
+    // Sample monthly chart: same artists, a different order (a steadier, longer window).
+    const monthScore = (x: Artist) => x.monthlyListeners * (0.7 + (hash(x.id + "month") % 60) / 100);
+    return [...artists].sort((x, y) => monthScore(y) - monthScore(x));
   },
 
   async getArtist(id) {

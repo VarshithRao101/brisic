@@ -11,20 +11,9 @@ import { TrackList } from "@/components/track-list";
 import { SpotlightTile } from "@/components/spotlight";
 import { ArtistCommunityJoin } from "@/components/party-clients";
 import { artistRoomInfo } from "@/lib/party";
-import { AlbumCard, RowLink, Section, Shelf } from "@/components/ui";
+import { AlbumCard, GoldBadge, RowLink, Section, Shelf } from "@/components/ui";
 
 const TABS = ["home", "music", "about", "community"] as const;
-
-/** Gold verified rosette from the design. */
-function GoldBadge({ size }: { size: number }) {
-  return (
-    <svg viewBox="0 0 24 24" width={size} height={size} className="shrink-0" aria-label="Verified artist" role="img">
-      <path d="M12 1.5l2.6 1.9 3.2-.2 1 3 2.6 1.9-1 3 1 3-2.6 1.9-1 3-3.2-.2L12 22.5l-2.6-1.9-3.2.2-1-3-2.6-1.9 1-3-1-3 2.6-1.9 1-3 3.2.2z" fill="#e8b830" stroke="#7a5a0a" strokeWidth="0.8" />
-      <circle cx="12" cy="12" r="5.2" fill="#1f5a2a" />
-      <path d="M9.6 12.1l1.6 1.6 3.2-3.3" fill="none" stroke="#f6e6a6" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
 
 export default async function ArtistPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ tab?: string }> }) {
   await getUserId();

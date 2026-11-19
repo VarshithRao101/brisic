@@ -127,3 +127,17 @@ export function ArtistMenu({ artistName }: { artistName: string }) {
     </div>
   );
 }
+
+/** Outline Follow pill used on the Trending Artists list. */
+export function TrendingFollow({ artistId, artistName }: { artistId: string; artistName: string }) {
+  const lib = useLibrary();
+  const on = lib.followed.has(artistId);
+  return (
+    <button
+      type="button" aria-pressed={on} onClick={() => lib.toggleFollow(artistId, artistName)}
+      className={`h-8 shrink-0 rounded-full border-[1.5px] border-primary px-4 text-[13px] font-semibold ${on ? "bg-primary text-primary-ink" : "bg-transparent text-accent"}`}
+    >
+      {on ? "Following" : "Follow"}
+    </button>
+  );
+}
