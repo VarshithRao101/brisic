@@ -10,7 +10,6 @@ const VARIANTS: { hero: string; thumb: string | null }[] = [
   { hero: "10", thumb: "10" }, // blue
   { hero: "11", thumb: "11" }, // magenta
   { hero: "12", thumb: "12" }, // crimson
-  { hero: "13", thumb: null }, // teal glow
   { hero: "14", thumb: null }, // green with red sparks
   { hero: "17", thumb: "17" }, // sage
   { hero: "18", thumb: "18" }, // yellow
@@ -18,9 +17,7 @@ const VARIANTS: { hero: string; thumb: string | null }[] = [
   { hero: "20", thumb: "20" }, // purple
   { hero: "21", thumb: "21" }, // orange fire
   { hero: "22", thumb: "22" }, // electric blue
-  { hero: "24", thumb: null }, // golden haze
   { hero: "25", thumb: "25" }, // red
-  { hero: "26", thumb: null }, // bronze
   { hero: "27", thumb: "27" }, // aqua
   { hero: "30", thumb: "30" }, // cyan
 ];

@@ -71,6 +71,12 @@ export function NowPlaying() {
   const t = p.current;
   const [loaded, setLoaded] = useState<{ id: string; details: TrackDetails | null; artist: ArtistInfo } | null>(null);
   const [lyricsOpen, setLyricsOpen] = useState(false);
+  // The B starts visible every time the player opens, then fades while music plays.
+  const [fadeB, setFadeB] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setFadeB(p.playing), p.playing ? 120 : 0);
+    return () => clearTimeout(t);
+  }, [p.playing]);
   const trackId = t?.id;
   const artistId = t?.artistId;
   // Only show details that belong to the current song.
@@ -127,7 +133,16 @@ export function NowPlaying() {
       </div>
 
       <div className="player-tint mx-auto flex min-h-dvh w-full max-w-[430px] flex-col items-center px-[clamp(20px,11vw,50px)] pt-[max(20px,env(safe-area-inset-top))]">
-        <Image src="/assets/logo-b-glow.png" alt="Brisic" width={333} height={640} priority className="logo-b h-[clamp(110px,18dvh,164px)] w-auto shrink-0 object-contain" />
+        {/* While music plays the B shrinks and fades away together over 15 seconds; it returns when paused. */}
+        <Image
+          src="/assets/logo-b-glow.png" alt="Brisic" width={333} height={640} priority
+          className="logo-b h-[clamp(110px,18dvh,164px)] w-auto shrink-0 object-contain will-change-[opacity,transform]"
+          style={{
+            opacity: fadeB ? 0 : 1,
+            transform: fadeB ? "scale(0.55)" : "scale(1)",
+            transition: fadeB ? "opacity 15s linear, transform 15s linear" : "opacity 0.6s ease, transform 0.6s ease",
+          }}
+        />
 
         <div className="mt-6 aspect-[330/326] w-full shrink-0 overflow-hidden rounded-[20px] shadow-[0_18px_44px_rgba(0,0,0,0.5)]">
           {t.artwork ? (

@@ -86,6 +86,8 @@ export function UserPlaylistView({ id, name, tracks }: { id: string; name: strin
         ) : (
           <TrackList
             tracks={list}
+            numbered={false}
+            variant="playlist"
             showStreams={false}
             onRemove={(trackId) => {
               setList((l) => l.filter((t) => t.id !== trackId));

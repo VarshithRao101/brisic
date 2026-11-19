@@ -10,16 +10,22 @@ import { usePlayer, useToast } from "@/components/app-state";
 import { Icon } from "@/components/icons";
 import { TrackList } from "@/components/track-list";
 
-/** The neon-B hero image, blended into the black page at the edges. */
+/**
+ * The neon-B hero strip from the design: short and wide, a small B with the light waves
+ * running across. Phones show it edge to edge; wide screens centre it with dark sides.
+ */
 export function PlaylistHero({ src }: { src: string }) {
   return (
     <>
-      <Image src={src} alt="" fill priority sizes="(min-width: 1024px) 1100px, 100vw" className="object-cover object-top" />
-      <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,transparent_45%,rgba(0,0,0,0.6)_72%,#000_100%)]" />
-      <div aria-hidden="true" className="absolute inset-0 hidden bg-[linear-gradient(90deg,#000_0%,transparent_22%,transparent_78%,#000_100%)] lg:block" />
+      <Image src={src} alt="" fill priority sizes="(min-width: 1024px) 760px, 100vw" className="object-cover lg:object-contain" />
+      <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-b from-transparent to-black" />
+      <div aria-hidden="true" className="absolute inset-0 hidden bg-[linear-gradient(90deg,#000_0%,transparent_20%,transparent_80%,#000_100%)] lg:block" />
     </>
   );
 }
+
+/** Hero box sized to the image (720 × 226), capped on wide screens. */
+export const HERO_BOX = "relative -mx-4 -mt-3 aspect-[720/226] overflow-hidden bg-black sm:-mx-6 lg:mx-0 lg:mt-0 lg:aspect-auto lg:h-[240px] lg:rounded-3xl";
 
 const SORTS = [
   { id: "popular", label: "Most Popular", by: (a: Track, b: Track) => b.streams - a.streams },
@@ -54,19 +60,18 @@ export function PlaylistView({ playlist, tracks, saved: savedInitial, art }: {
 
   return (
     <>
-      <div className="relative -mx-4 -mt-3 h-[300px] overflow-hidden sm:-mx-6 sm:h-[340px] lg:mx-0 lg:mt-0 lg:rounded-3xl">
+      <div className={HERO_BOX}>
         <PlaylistHero src={art.hero} />
-        <button type="button" onClick={() => router.back()} aria-label="Back" className="absolute left-4 top-4 flex h-10 w-10 items-center justify-center border-0 bg-transparent p-0 text-white">
+        <button type="button" onClick={() => router.back()} aria-label="Back" className="absolute left-3 top-[10%] flex h-10 w-10 items-center justify-center border-0 bg-transparent p-0 text-white">
           <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" /></svg>
         </button>
-        <Link href="/profile" aria-label="Profile" className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border-2 border-primary text-primary">
+        <Link href="/profile" aria-label="Profile" className="absolute right-3 top-[10%] flex h-10 w-10 items-center justify-center rounded-full border-2 border-primary bg-black/40 text-primary">
           <Icon name="user" size={20} />
         </Link>
-        <div className="absolute inset-x-4 bottom-3 sm:inset-x-6">
-          <p className="m-0 text-[12px] font-semibold uppercase tracking-[0.2em] text-primary">Playlist</p>
-          <h1 className="m-0 text-[40px] font-bold leading-[1.05] text-primary sm:text-[52px]">{playlist.title}</h1>
-        </div>
       </div>
+
+      <p className="m-0 mt-4 text-[12px] font-semibold uppercase tracking-[0.2em] text-primary">Playlist</p>
+      <h1 className="m-0 text-[36px] font-bold leading-[1.05] text-primary sm:text-[48px]">{playlist.title}</h1>
 
       <p className="m-0 mt-2 max-w-2xl text-[15px] text-white/90">
         {playlist.subtitle ? `${playlist.subtitle}. ` : ""}The best of {playlist.title} on Brisic. Fresh picks from emerging African artists, updated every week.
@@ -135,7 +140,7 @@ export function PlaylistView({ playlist, tracks, saved: savedInitial, art }: {
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="pointer-events-none absolute right-0"><path d="M6 9l6 6 6-6" /></svg>
         </label>
       </div>
-      <div className="mt-1"><TrackList tracks={shown} numbered={false} showStreams={false} thumb={art.thumb} /></div>
+      <div className="mt-1"><TrackList tracks={shown} numbered={false} showStreams={false} thumb={art.thumb} variant="playlist" /></div>
     </>
   );
 }

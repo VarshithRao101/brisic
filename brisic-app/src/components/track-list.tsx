@@ -100,12 +100,15 @@ function PlaylistPicker({ track, onClose }: { track: Track; onClose: () => void 
 
 /** A list of songs. Tapping a row plays the list from that song. */
 export function TrackList({
-  tracks, numbered = true, showStreams = true, onRemove, thumb,
+  tracks, numbered = true, showStreams = true, onRemove, thumb, variant = "default",
 }: {
   tracks: Track[]; numbered?: boolean; showStreams?: boolean; onRemove?: (trackId: string) => void;
   /** Artwork shown on every row instead of each track's cover (playlist artwork from the design). */
   thumb?: string | null;
+  /** "playlist": rows like the playlist design (bigger art, duration always shown, like in the menu). */
+  variant?: "default" | "playlist";
 }) {
+  const plain = variant === "playlist";
   const p = usePlayer();
   const lib = useLibrary();
   const [menu, setMenu] = useState<string | null>(null);
@@ -120,7 +123,7 @@ export function TrackList({
           const isCurrent = p.current?.id === t.id;
           const likedNow = lib.liked.has(t.id);
           return (
-            <li key={t.id + i} className={`group relative flex items-center gap-3 rounded-xl px-2 py-2 ${isCurrent ? "bg-white/[0.07]" : "hover:bg-white/5"}`}>
+            <li key={t.id + i} className={`group relative flex items-center gap-3 px-2 ${plain ? "border-b border-white/[0.07] py-2.5" : "rounded-xl py-2"} ${isCurrent ? "bg-white/[0.07]" : "hover:bg-white/5"}`}>
               <button
                 type="button"
                 aria-label={`Play ${t.title} by ${t.artistName}`}
@@ -132,7 +135,7 @@ export function TrackList({
                     {isCurrent ? <Icon name={p.playing ? "pause" : "play"} size={14} className="mx-auto" /> : i + 1}
                   </span>
                 )}
-                <span className="w-11 shrink-0">
+                <span className={`${plain ? "w-[50px]" : "w-11"} shrink-0`}>
                   {thumb && !t.artwork ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={thumb} alt="" loading="lazy" className="aspect-square w-full rounded-lg object-cover" />
@@ -146,10 +149,12 @@ export function TrackList({
                 </span>
               </button>
               {showStreams && <span className="hidden w-24 shrink-0 text-right text-[13px] font-light tabular-nums text-muted md:block">{fmtCount(t.streams)} streams</span>}
-              <span className="hidden w-10 shrink-0 text-right text-[13px] tabular-nums text-muted sm:block">{fmtTime(t.durationSec)}</span>
-              <button type="button" aria-label={likedNow ? "Remove from Liked Songs" : "Add to Liked Songs"} aria-pressed={likedNow} onClick={() => lib.toggleLike(t)} className={`shrink-0 border-0 bg-transparent p-1.5 ${likedNow ? "text-primary" : "text-muted hover:text-ink"}`}>
-                <Icon name="heart" size={19} fill={likedNow} />
-              </button>
+              <span className={`${plain ? "block text-white" : "hidden text-muted sm:block"} w-10 shrink-0 text-right text-[13px] tabular-nums`}>{fmtTime(t.durationSec)}</span>
+              {!plain && (
+                <button type="button" aria-label={likedNow ? "Remove from Liked Songs" : "Add to Liked Songs"} aria-pressed={likedNow} onClick={() => lib.toggleLike(t)} className={`shrink-0 border-0 bg-transparent p-1.5 ${likedNow ? "text-primary" : "text-muted hover:text-ink"}`}>
+                  <Icon name="heart" size={19} fill={likedNow} />
+                </button>
+              )}
               <button type="button" aria-label="More options" aria-expanded={menu === t.id} onClick={() => setMenu(menu === t.id ? null : t.id)} className="shrink-0 border-0 bg-transparent p-1.5 text-muted hover:text-ink">
                 <Icon name="more" size={20} />
               </button>
@@ -158,6 +163,7 @@ export function TrackList({
                   <button type="button" aria-label="Close menu" className="fixed inset-0 z-40 cursor-default border-0 bg-transparent" onClick={() => setMenu(null)} />
                   <div role="menu" className="absolute right-2 top-12 z-50 w-52 overflow-hidden rounded-xl border border-line bg-card py-1 shadow-xl">
                     <button role="menuitem" type="button" className="block w-full border-0 bg-transparent px-4 py-2.5 text-left text-[14.5px] text-ink hover:bg-white/5" onClick={() => { p.enqueue(t); setMenu(null); }}>Add to queue</button>
+                    {plain && <button role="menuitem" type="button" className="block w-full border-0 bg-transparent px-4 py-2.5 text-left text-[14.5px] text-ink hover:bg-white/5" onClick={() => { lib.toggleLike(t); setMenu(null); }}>{likedNow ? "Remove from Liked Songs" : "Add to Liked Songs"}</button>}
                     <button role="menuitem" type="button" className="block w-full border-0 bg-transparent px-4 py-2.5 text-left text-[14.5px] text-ink hover:bg-white/5" onClick={() => { setPicking(t); setMenu(null); }}>Add to playlist</button>
                     <Link role="menuitem" href={`/artist/${t.artistId}`} className="block px-4 py-2.5 text-[14.5px] text-ink hover:bg-white/5">Go to artist</Link>
                     {t.albumId && <Link role="menuitem" href={`/album/${t.albumId}`} className="block px-4 py-2.5 text-[14.5px] text-ink hover:bg-white/5">Go to album</Link>}

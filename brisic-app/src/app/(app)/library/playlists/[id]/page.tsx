@@ -4,7 +4,7 @@ import { getUserId, requireUser } from "@/lib/session";
 import { hydrate } from "@/lib/library";
 import { playlistArt } from "@/lib/playlist-art";
 import { BackButton } from "@/components/controls";
-import { PlaylistHero } from "@/components/playlist-view";
+import { HERO_BOX, PlaylistHero } from "@/components/playlist-view";
 import { UserPlaylistView } from "@/components/library-clients";
 
 export default async function UserPlaylistPage({ params }: { params: Promise<{ id: string }> }) {
@@ -22,14 +22,12 @@ export default async function UserPlaylistPage({ params }: { params: Promise<{ i
 
   return (
     <>
-      <div className="relative -mx-4 -mt-3 h-[280px] overflow-hidden sm:-mx-6 lg:mx-0 lg:mt-0 lg:rounded-3xl">
+      <div className={HERO_BOX}>
         <PlaylistHero src={playlistArt(playlist.id).hero} />
-        <div className="absolute left-4 top-4"><BackButton /></div>
-        <div className="absolute inset-x-4 bottom-3 sm:inset-x-6">
-          <p className="m-0 text-[12px] font-semibold uppercase tracking-[0.2em] text-primary">Your playlist</p>
-          <h1 className="m-0 truncate text-[36px] font-bold leading-[1.05] text-primary sm:text-[48px]">{playlist.name}</h1>
-        </div>
+        <div className="absolute left-3 top-[10%]"><BackButton /></div>
       </div>
+      <p className="m-0 mt-4 text-[12px] font-semibold uppercase tracking-[0.2em] text-primary">Your playlist</p>
+      <h1 className="m-0 truncate text-[34px] font-bold leading-[1.05] text-primary sm:text-[46px]">{playlist.name}</h1>
       <p className="m-0 mt-2 text-[14px] text-ink/85">{tracks.length} {tracks.length === 1 ? "song" : "songs"} · by {user.displayName}</p>
       <UserPlaylistView key={tracks.map((t) => t.id).join("|")} id={playlist.id} name={playlist.name} tracks={tracks} />
     </>
