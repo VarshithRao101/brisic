@@ -96,8 +96,11 @@ export type Episode = {
   title: string;
   minutes: number;
   description: string;
-  /** Video/audio URL. null until the media API is connected. */
+  /** Audio URL for listening (uploaded audio). */
   mediaUrl?: string | null;
+  /** YouTube video (or live) for watching. */
+  youtubeId?: string | null;
+  isLive?: boolean;
 };
 
 /** Artist Spotlight: interviews, documentaries, performances and lives. */
@@ -114,6 +117,9 @@ export type SpotlightItem = {
   /** Video/audio URL. null until the media API is connected. */
   mediaUrl?: string | null;
   poster?: string | null;
+  /** YouTube video (or live) played in Brisic's embedded player. */
+  youtubeId?: string | null;
+  isLive?: boolean;
 };
 
 export type HomeSection = {
@@ -121,7 +127,9 @@ export type HomeSection = {
   title: string;
   playlists: Playlist[];
   /** How Home shows it: poster cards, large cards, podcasts, live parties or artist spotlight. */
-  kind?: "playlists" | "large" | "podcasts" | "parties" | "spotlight";
+  kind?: "playlists" | "large" | "podcasts" | "parties" | "spotlight" | "tracks";
+  /** Songs, for a "tracks" shelf (e.g. New on Brisic). */
+  tracks?: Track[];
 };
 
 export type SearchResults = {

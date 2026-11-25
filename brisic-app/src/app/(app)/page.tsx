@@ -81,6 +81,15 @@ export default async function HomePage() {
             </Section>
           );
         }
+        if (s.kind === "tracks" && s.tracks?.length) {
+          // Newest songs uploaded by Brisic creators.
+          const list = s.tracks;
+          return (
+            <Section key={s.id} title={s.title}>
+              <Shelf>{list.map((t, i) => <TrackCard key={t.id} tracks={list} index={i} />)}</Shelf>
+            </Section>
+          );
+        }
         if (s.kind === "spotlight") {
           return (
             <Section key={s.id} title={s.title} href="/spotlight">

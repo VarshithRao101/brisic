@@ -49,7 +49,7 @@ export default async function SpotlightItemPage({ params }: { params: Promise<{ 
               <li key={v.id}>
                 <Link href={`/spotlight/${v.id}`} className="flex items-center gap-3 rounded-xl p-1.5 hover:bg-white/5">
                   <span className="relative w-28 shrink-0 overflow-hidden rounded-lg">
-                    <SpotlightPoster seed={v.id} className="aspect-video w-full" />
+                    <SpotlightPoster seed={v.id} youtubeId={v.youtubeId} className="aspect-video w-full" />
                     <span className="absolute bottom-1 right-1 rounded bg-black/70 px-1 text-[10px] text-white">{spotLength(v)}</span>
                   </span>
                   <span className="min-w-0 flex-1">

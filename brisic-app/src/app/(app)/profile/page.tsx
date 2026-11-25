@@ -6,14 +6,16 @@ import { fmtCoins } from "@/lib/format";
 import { SignOutButton } from "@/components/controls";
 import { Icon } from "@/components/icons";
 import { RowLink } from "@/components/ui";
+import { getAccess } from "@/lib/creators";
 
 export default async function ProfilePage() {
   const userId = await getUserId();
-  const [user, following, playlists, likes] = await Promise.all([
+  const [user, following, playlists, likes, access] = await Promise.all([
     requireUser(),
     prisma.follow.count({ where: { userId } }),
     prisma.userPlaylist.count({ where: { userId } }),
     prisma.likedTrack.count({ where: { userId } }),
+    getAccess(),
   ]);
 
   return (
@@ -66,6 +68,8 @@ export default async function ProfilePage() {
             <Icon name="chevron" size={18} className="text-primary" />
           </Link>
         )}
+        {access.role && <RowLink href="/studio" icon="mic" title={access.role === "artist" ? "Creator Studio" : "Podcast Studio"} subtitle={access.role === "artist" ? "Upload songs, add videos, go live" : "Publish episodes and go live"} />}
+        {access.isAdmin && <RowLink href="/admin" icon="users" title="Admin" subtitle="Invite artists and podcasters" />}
         <RowLink href="/settings" icon="settings" title="Player color & Settings" subtitle="Change the player color, home style and playback" />
         <RowLink href="/info/account" icon="user" title="Account" subtitle="Email, password, username" />
         <RowLink href="/notifications" icon="bell" title="Notifications" subtitle="Gifts, releases and updates" />

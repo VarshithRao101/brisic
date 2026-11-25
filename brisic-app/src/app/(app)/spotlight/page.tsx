@@ -45,7 +45,7 @@ export default async function SpotlightPage({ searchParams }: { searchParams: Pr
         <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0">
           {byArtist.map((a) => (
             <Link key={a.artistId} href={`/artist/${a.artistId}`} className="relative w-[84px] shrink-0 overflow-hidden rounded-xl border border-white/10">
-              <SpotlightPoster seed={a.artistId} className="aspect-square w-full" />
+              <SpotlightPoster seed={a.artistId} youtubeId={a.youtubeId} className="aspect-square w-full" />
               <span className="display absolute inset-x-1 bottom-1 truncate text-[13px] text-primary">{a.artistName.toUpperCase()}</span>
             </Link>
           ))}
@@ -84,7 +84,7 @@ export default async function SpotlightPage({ searchParams }: { searchParams: Pr
               {top.map((t, i) => (
                 <Link key={t.id} href={`/spotlight/${t.id}`} className="text-center">
                   <span className="relative block overflow-hidden rounded-xl">
-                    <SpotlightPoster seed={t.artistId} className="aspect-square w-full" />
+                    <SpotlightPoster seed={t.artistId} youtubeId={t.youtubeId} className="aspect-square w-full" />
                     <span className="absolute left-1 top-1 flex h-6 w-6 items-center justify-center rounded-full border-2 border-primary bg-black/70 text-[12px] font-bold text-primary">{i + 1}</span>
                   </span>
                   <span className="mt-1 block truncate text-[12px] text-ink">{t.artistName}</span>
@@ -100,7 +100,7 @@ export default async function SpotlightPage({ searchParams }: { searchParams: Pr
                 <li key={v.id}>
                   <Link href={`/spotlight/${v.id}`} className="flex items-center gap-3 rounded-xl p-1.5 hover:bg-white/5">
                     <span className="relative w-24 shrink-0 overflow-hidden rounded-lg">
-                      <SpotlightPoster seed={v.id} className="aspect-video w-full" />
+                      <SpotlightPoster seed={v.id} youtubeId={v.youtubeId} className="aspect-video w-full" />
                       <span className="absolute bottom-1 right-1 rounded bg-black/70 px-1 text-[10px] text-white">{spotLength(v)}</span>
                     </span>
                     <span className="min-w-0 flex-1">

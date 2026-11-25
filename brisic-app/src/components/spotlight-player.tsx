@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import type { SpotlightItem } from "@/lib/catalog/types";
 import { Icon } from "@/components/icons";
 import { SpotlightPoster } from "@/components/spotlight";
+import { YouTubePlayer } from "@/components/youtube-player";
 import { fmtTime } from "@/lib/format";
 
 /**
@@ -26,6 +27,7 @@ export function SpotlightPlayer({ item }: { item: SpotlightItem }) {
     return () => clearInterval(t);
   }, [playing, total, item.mediaUrl]);
 
+  if (item.youtubeId) return <YouTubePlayer id={item.youtubeId} title={item.title} live={item.isLive} autoplay />;
   if (item.mediaUrl) {
     return <video src={item.mediaUrl} poster={item.poster ?? undefined} controls playsInline className="aspect-video w-full rounded-2xl bg-black" />;
   }

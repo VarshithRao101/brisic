@@ -28,6 +28,8 @@ model User {
   bio           String?
   coins         Int       @default(0)
   isPremium     Boolean   @default(false)
+  // Invite-only creators: "artist" or "podcaster" (granted by an admin), null for listeners.
+  creatorRole   String?
   settings      Json?
 
   accounts      Account[]
@@ -44,6 +46,8 @@ model User {
   avatar        Avatar?
   partyRooms    PartyRoom[]
   partyMembers  PartyMember[]
+  artistProfile ArtistProfile?
+  podcastShows  PodcastShow[]
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -148,6 +152,7 @@ model PlayHistory {
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, playedAt])
+  @@index([artistId, playedAt])
 }
 
 model CoinTransaction {
@@ -310,4 +315,93 @@ model PartyMessage {
   room      PartyRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
 
   @@index([roomId, createdAt])
+}
+
+// ---------- Brisic catalog: creators, songs, videos, podcasts ----------
+
+/** A creator's public artist page. id is the URL slug, e.g. "ama-joy". */
+model ArtistProfile {
+  id        String   @id
+  userId    String   @unique
+  name      String
+  genre     String
+  bio       String   @default("")
+  imageKey  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  songs     Song[]
+  videos    Video[]
+}
+
+/** An uploaded song. Files live in object storage; rows keep the keys. */
+model Song {
+  id          String        @id @default(cuid())
+  artistId    String
+  title       String
+  albumTitle  String?
+  durationSec Int
+  audioKey    String
+  audioType   String
+  coverKey    String?
+  explicit    Boolean       @default(false)
+  plays       Int           @default(0)
+  createdAt   DateTime      @default(now())
+  artist      ArtistProfile @relation(fields: [artistId], references: [id], onDelete: Cascade)
+
+  @@index([artistId, createdAt])
+  @@index([createdAt])
+}
+
+/** Artist Spotlight videos and lives, played from YouTube inside Brisic. */
+model Video {
+  id          String        @id @default(cuid())
+  artistId    String
+  title       String
+  kind        String
+  youtubeId   String
+  isLive      Boolean       @default(false)
+  blurb       String        @default("")
+  durationSec Int           @default(0)
+  views       Int           @default(0)
+  createdAt   DateTime      @default(now())
+  artist      ArtistProfile @relation(fields: [artistId], references: [id], onDelete: Cascade)
+
+  @@index([createdAt])
+  @@index([artistId, createdAt])
+}
+
+/** A podcaster's show. id is the URL slug. */
+model PodcastShow {
+  id        String           @id
+  userId    String
+  title     String
+  host      String
+  blurb     String           @default("")
+  about     String           @default("")
+  colorFrom String           @default("#7a2a8a")
+  colorTo   String           @default("#2a0f45")
+  createdAt DateTime         @default(now())
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  episodes  PodcastEpisode[]
+
+  @@index([userId])
+}
+
+/** An episode: a YouTube video (or live), an uploaded audio file, or both. */
+model PodcastEpisode {
+  id          String      @id @default(cuid())
+  showId      String
+  number      Int
+  title       String
+  description String      @default("")
+  minutes     Int         @default(0)
+  youtubeId   String?
+  audioKey    String?
+  audioType   String?
+  isLive      Boolean     @default(false)
+  createdAt   DateTime    @default(now())
+  show        PodcastShow @relation(fields: [showId], references: [id], onDelete: Cascade)
+
+  @@unique([showId, number])
 }

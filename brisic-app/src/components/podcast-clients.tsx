@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { Episode, Show } from "@/lib/catalog/types";
 import { useToast } from "@/components/app-state";
 import { Icon } from "@/components/icons";
+import { YouTubePlayer } from "@/components/youtube-player";
 import { fmtTime, hashStr } from "@/lib/format";
 
 /** Warm accent used on every podcast screen in the design; the show colour sets the rest. */
@@ -153,7 +154,10 @@ const bars = (seed: string) => Array.from({ length: 48 }, (_, i) => 22 + ((hashS
 export function ListenPlayer({ show, episode, episodes }: { show: Show; episode: Episode; episodes: Episode[] }) {
   const router = useRouter();
   const toast = useToast();
-  const total = episode.minutes * 60;
+  const real = !!episode.mediaUrl; // uploaded audio plays for real; otherwise a preview
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [realTotal, setRealTotal] = useState(0);
+  const total = realTotal || episode.minutes * 60 || 1;
   const [pos, setPos] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState(0);
@@ -169,15 +173,27 @@ export function ListenPlayer({ show, episode, episodes }: { show: Show; episode:
   const prevEp = idx > 0 ? episodes[idx - 1] : null;
   const nextEp = idx >= 0 && idx < episodes.length - 1 ? episodes[idx + 1] : null;
 
+  // Preview mode: move the timeline once a second.
   useEffect(() => {
-    if (!playing) return;
+    if (!playing || real) return;
     const t = setInterval(() => setPos((p) => {
       const n = p + SPEEDS[speed];
       if (n >= total) { setPlaying(false); return total; }
       return n;
     }), 1000);
     return () => clearInterval(t);
-  }, [playing, speed, total]);
+  }, [playing, speed, total, real]);
+
+  // Real audio: follow play/pause and speed.
+  useEffect(() => {
+    const a = audioRef.current;
+    if (!a || !real) return;
+    if (playing) a.play().catch(() => { setPlaying(false); toast("Couldn't play this episode. Check your connection."); });
+    else a.pause();
+  }, [playing, real, toast]);
+  useEffect(() => {
+    if (audioRef.current) audioRef.current.playbackRate = SPEEDS[speed];
+  }, [speed]);
 
   useEffect(() => {
     if (!playing || !SLEEP[sleep]) return;
@@ -185,7 +201,11 @@ export function ListenPlayer({ show, episode, episodes }: { show: Show; episode:
     return () => clearTimeout(t);
   }, [playing, sleep, toast]);
 
-  const seek = (s: number) => setPos(Math.max(0, Math.min(total, s)));
+  const seek = (s: number) => {
+    const to = Math.max(0, Math.min(total, s));
+    setPos(to);
+    if (audioRef.current && real) audioRef.current.currentTime = to;
+  };
   const pct = pos / Math.max(1, total);
   const currentChapter = chapters.filter((c) => c.at <= pos).length - 1;
 
@@ -261,7 +281,18 @@ export function ListenPlayer({ show, episode, episodes }: { show: Show; episode:
             <button key={label as string} type="button" onClick={fn as () => void} className="h-8 rounded-full border-[1.5px] border-[var(--acc)] bg-transparent px-3.5 text-[13px] text-[var(--acc)]">{label as string}</button>
           ))}
         </div>
-        {!episode.mediaUrl && <p className="m-0 mt-3 text-center text-[11.5px] font-light text-white/45">Preview: audio streams once the media source is connected.</p>}
+        {real ? (
+          <audio
+            ref={audioRef} src={episode.mediaUrl!} preload="metadata"
+            onLoadedMetadata={(e) => setRealTotal(Math.round(e.currentTarget.duration) || 0)}
+            onTimeUpdate={(e) => setPos(e.currentTarget.currentTime)}
+            onEnded={() => setPlaying(false)}
+          />
+        ) : episode.youtubeId ? (
+          <p className="m-0 mt-3 text-center text-[12.5px] text-white/70">This episode is video only. <Link href={`/watch/${episode.id}`} className="font-semibold text-[var(--acc)]">Watch it here</Link>.</p>
+        ) : (
+          <p className="m-0 mt-3 text-center text-[11.5px] font-light text-white/45">Preview: audio streams once the media source is connected.</p>
+        )}
 
         <h2 className="m-0 mb-2 mt-6 text-[16px] font-semibold">Chapters</h2>
         <div className="flex flex-col gap-2">
@@ -322,8 +353,8 @@ export function WatchPlayer({ show, episode, more }: { show: Show; episode: Epis
         </div>
       </div>
 
-      {episode.mediaUrl ? (
-        <video src={episode.mediaUrl} controls playsInline className="mt-4 aspect-video w-full rounded-2xl bg-black" />
+      {episode.youtubeId ? (
+        <div className="mt-4"><YouTubePlayer id={episode.youtubeId} title={`${show.title}, Ep. ${episode.number}`} live={episode.isLive} /></div>
       ) : (
         <div className="relative mt-4 aspect-video w-full overflow-hidden rounded-2xl border border-white/10" style={{ background: "linear-gradient(160deg, var(--pod), var(--pod2))" }}>
           <span aria-hidden="true" className="absolute left-[8%] top-[6%] h-[38%] w-[22%] rounded-full bg-white/10" />
@@ -350,11 +381,15 @@ export function WatchPlayer({ show, episode, more }: { show: Show; episode: Epis
       )}
 
       <div className="no-scrollbar mt-3 flex gap-2 overflow-x-auto">
+        {episode.youtubeId ? (
+          episode.mediaUrl && <Link href={`/listen/${episode.id}`} className="chip shrink-0">Audio only</Link>
+        ) : (<>
         <button type="button" className="chip shrink-0" onClick={() => setSpeed((s) => (s + 1) % SPEEDS.length)}>Speed {SPEEDS[speed]}x</button>
         <button type="button" className="chip shrink-0" aria-pressed={captions} onClick={() => setCaptions((c) => !c)}>Captions</button>
         <Link href={`/listen/${episode.id}`} className="chip shrink-0">Audio only</Link>
         <button type="button" className="chip shrink-0" onClick={() => seek(pos - 15)}>-15s</button>
         <button type="button" className="chip shrink-0" onClick={() => seek(pos + 15)}>+15s</button>
+        </>)}
       </div>
 
       <h1 className="m-0 mt-4 text-[22px] font-bold text-white">{show.title}, Ep. {episode.number}</h1>

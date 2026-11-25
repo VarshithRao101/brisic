@@ -307,7 +307,7 @@ export function AppShell({
           {children}
           {sample && (
             <p className="mt-10 text-center text-[12px] font-light text-muted/70">
-              Showing the sample catalog. Live music and audio appear once the Global Tune API is connected.
+              Some shelves show sample music while Brisic artists upload their catalog.
             </p>
           )}
         </main>

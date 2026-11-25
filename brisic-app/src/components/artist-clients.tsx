@@ -72,7 +72,7 @@ export function ArtistSongs({ tracks }: { tracks: Track[] }) {
                   <span className={`truncate text-[15px] font-medium ${current ? "text-primary" : "text-white"}`}>{t.title}</span>
                   {t.explicit && <span aria-label="Explicit" className="shrink-0 rounded-[3px] bg-[#7a6ae0] px-1 text-[10px] font-bold leading-[15px] text-white">E</span>}
                 </span>
-                <span className="block text-[12.5px] font-light text-muted">{t.streams.toLocaleString("en-US")} streams</span>
+                <span className="block text-[12.5px] font-light text-muted">{t.streams.toLocaleString("en-US")} {t.streams === 1 ? "stream" : "streams"}</span>
               </span>
             </button>
             <button type="button" aria-label="More options" aria-expanded={menu === t.id} onClick={() => setMenu(menu === t.id ? null : t.id)} className="shrink-0 border-0 bg-transparent p-2 text-muted hover:text-ink">

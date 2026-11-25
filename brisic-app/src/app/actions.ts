@@ -126,6 +126,8 @@ export async function recordPlay(track: TrackSnap) {
   if (readSettings(user?.settings).privateSession) return;
   if (last && last.trackId === s.trackId && Date.now() - last.playedAt.getTime() < 60_000) return;
   await prisma.playHistory.create({ data: { userId, ...s } });
+  // Plays of creator uploads count towards the song's stream total.
+  if (s.trackId.startsWith("s-")) await prisma.song.updateMany({ where: { id: s.trackId.slice(2) }, data: { plays: { increment: 1 } } });
   // Keep history bounded: now and then, drop everything older than the newest 500 plays.
   if (Math.random() < 0.05) {
     const cutoff = await prisma.playHistory.findFirst({ where: { userId }, orderBy: { playedAt: "desc" }, skip: 499, select: { playedAt: true } });

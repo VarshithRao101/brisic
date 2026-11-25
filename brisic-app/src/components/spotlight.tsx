@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { SpotlightItem } from "@/lib/catalog/types";
 import { Icon } from "@/components/icons";
 import { fmtCount, fmtTime, hashStr } from "@/lib/format";
+import { youtubeThumb } from "@/lib/youtube";
 
 // Stage-light backdrops behind the silhouette. "theme" follows the user's theme color.
 const STAGES = [
@@ -13,7 +14,16 @@ const STAGES = [
 ];
 
 /** Silhouette of an artist (afro, cap or locs) cut out against a stage light. */
-export function SpotlightPoster({ seed, className = "" }: { seed: string; className?: string }) {
+export function SpotlightPoster({ seed, className = "", youtubeId }: { seed: string; className?: string; youtubeId?: string | null }) {
+  // Real videos show their YouTube thumbnail.
+  if (youtubeId) {
+    return (
+      <div aria-hidden="true" className={`relative overflow-hidden bg-black ${className}`}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={youtubeThumb(youtubeId)} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
+      </div>
+    );
+  }
   const h = hashStr(seed);
   const style = h % 3;
   return (
@@ -37,7 +47,7 @@ export const spotLength = (i: SpotlightItem) => (i.kind === "Live" ? "Live" : fm
 export function FeaturedSpotlight({ item, badge = "SPOTLIGHT" }: { item: SpotlightItem; badge?: string }) {
   return (
     <div className="panel-glow relative w-[300px] shrink-0 overflow-hidden !rounded-3xl sm:w-[360px] lg:w-auto">
-      <SpotlightPoster seed={item.artistId} className="h-[230px] w-full sm:h-[260px]" />
+      <SpotlightPoster seed={item.artistId} youtubeId={item.youtubeId} className="h-[230px] w-full sm:h-[260px]" />
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
       <span className="absolute left-3 top-3 rounded-md bg-primary px-2 py-0.5 text-[11px] font-bold tracking-wider text-primary-ink">{badge}</span>
       <span className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-lg border border-white/40 text-white"><Icon name="video" size={17} /></span>
@@ -58,7 +68,7 @@ export function SpotlightTile({ item, fluid }: { item: SpotlightItem; fluid?: bo
   return (
     <Link href={`/spotlight/${item.id}`} className={`group block ${fluid ? "" : "w-[200px] shrink-0 sm:w-[220px] lg:w-auto"}`}>
       <div className="relative overflow-hidden rounded-2xl border border-white/10 transition group-hover:-translate-y-0.5">
-        <SpotlightPoster seed={item.id} className="aspect-video w-full" />
+        <SpotlightPoster seed={item.id} youtubeId={item.youtubeId} className="aspect-video w-full" />
         <span className="absolute right-2 top-2 rounded-md bg-black/70 px-1.5 py-0.5 text-[11px] font-semibold tabular-nums text-white">
           {item.kind === "Live" ? <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-[#ff4a4a]" />LIVE</span> : spotLength(item)}
         </span>
@@ -78,7 +88,7 @@ export function SpotlightCard({ item, genre }: { item: SpotlightItem; genre?: st
   return (
     <Link href={`/spotlight/${item.id}`} className="group block w-[156px] shrink-0 sm:w-[176px] lg:w-auto">
       <div className="poster relative overflow-hidden rounded-2xl border border-white/10 transition group-hover:-translate-y-0.5">
-        <SpotlightPoster seed={item.artistId} className="aspect-[4/5] w-full" />
+        <SpotlightPoster seed={item.artistId} youtubeId={item.youtubeId} className="aspect-[4/5] w-full" />
         <span className="display poster-label absolute left-2.5 top-2.5 whitespace-pre-line text-[34px] text-white">{[first, rest.join(" ")].filter(Boolean).join("\n")}</span>
         <span aria-hidden="true" className="play-ring absolute bottom-2 right-2 flex h-[34px] w-[34px] items-center justify-center rounded-full border-2 border-primary bg-black/55 text-[#e9f2ec]">
           <Icon name="play" size={15} className="ml-0.5" />

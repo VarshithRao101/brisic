@@ -51,17 +51,33 @@ Every prototype screen is a real, responsive page (phone → tablet → desktop 
 - Indexed lookups for every per-user list (likes, history, notifications incl. unread count, playlists, ledger).
 - **Keep-awake:** `netlify/functions/keep-warm.mjs` pings `/api/health` every 4 minutes during peak hours (08:00–17:59 UTC) so Neon does not fall asleep. Neon's free plan has a monthly compute allowance; staying awake 24/7 would use it up in about two weeks, so widen the hours only on a paid plan.
 
-## Connecting the Global Tune API (one file)
-All screens read music, and Spotlight videos (`getSpotlight`, `getSpotlightItem`), through `src/lib/catalog/types.ts`. Right now they use sample data (`mock.ts`).
-1. Fill in `src/lib/catalog/globaltune.ts` — map the API's responses to `Track`, `Artist`, `Album`, ... Each method you leave out keeps using sample data. `Track.streamUrl` is what makes songs play.
-2. Set `GLOBAL_TUNE_API_URL`, `GLOBAL_TUNE_API_KEY` and `CATALOG_PROVIDER="globaltune"`.
-3. Set `isSample: false` in `globaltune.ts` to remove the "sample catalog" note.
+## Brisic's own catalog (creators)
+Global Tune has no release date, so Brisic runs its own catalog (`src/lib/catalog/brisic.ts`): songs, videos, lives and podcasts uploaded by **invited creators**, stored in Postgres with files in object storage. Real content comes first on every screen; sample content fills the rest until there is enough real music. Uploaded songs count real plays, and an artist's monthly listeners are the distinct listeners in the last 30 days.
+
+- **Admins** (emails in `ADMIN_EMAILS`) open **/admin** and invite a creator by the email of their Brisic account (they sign up first), as an *artist* or a *podcaster*.
+- **Artists** open **Profile → Creator Studio** (/studio): edit their artist page and photo, upload songs (MP3/M4A/WAV up to 80 MB, with cover art), add Artist Spotlight videos by YouTube link, and **go live** by pasting a YouTube live link (shown as LIVE until they end it).
+- **Podcasters** open **Podcast Studio**: create shows, publish episodes with a YouTube link (video or live) and/or an audio-only file for the Listen player.
+- **Video playback** stays inside Brisic: YouTube embed with `playsinline=1` and `rel=0` (youtube-nocookie domain), so phones never leave the app and no outside channels are suggested.
+- **Song and audio files** go straight from the phone to storage with a signed upload link, and play through `/api/media/...`, which checks the user is signed in and redirects to a one-hour signed link (range requests work for seeking).
+
+### File storage (Neon Object Storage), one-time setup
+1. Neon Console → the Brisic project → branch **production** → **Object storage** → **New bucket**, name `brisic-media`, access **private**.
+2. **Connect** → **Storage** → **Parameters only**: copy the endpoint, region, access key id and secret.
+3. Netlify → Environment variables: add `NEON_S3_ENDPOINT`, `NEON_S3_REGION`, `NEON_S3_ACCESS_KEY_ID`, `NEON_S3_SECRET_ACCESS_KEY`, `NEON_S3_BUCKET=brisic-media` (mark the two keys as secret). Netlify reserves the `AWS_*` names, so don't use those.
+4. Allow uploads from the website (CORS), once: put the same values in `.env` and run `node --env-file=.env scripts/setup-storage.mjs`.
+5. Redeploy. /admin shows "Neon storage connected".
+
+### YouTube direct upload (later)
+Already built: the creator picks a video file, the server opens a YouTube upload session on Brisic's channel with `privacyStatus: "unlisted"`, and the phone sends the file straight to YouTube. To switch it on: create the Brisic YouTube channel, enable **YouTube Data API v3** in the Google Cloud project, create an OAuth client, get a refresh token for the channel owner (scope `youtube.upload`), and set `YOUTUBE_CLIENT_ID`, `YOUTUBE_CLIENT_SECRET`, `YOUTUBE_REFRESH_TOKEN` in Netlify. Until Google approves the app (API audit), YouTube keeps API uploads private, so keep using pasted links for launch.
+
+### Global Tune (if it arrives)
+`src/lib/catalog/globaltune.ts` is still the plug-in point; set `CATALOG_PROVIDER="globaltune"` to use it.
 
 ## Turning on password-reset emails
 Create a free account at resend.com, verify a domain, then add `RESEND_API_KEY` and `EMAIL_FROM` (e.g. `Brisic <noreply@yourdomain.com>`) to Netlify's environment variables and redeploy. Until then "Forgot password?" is hidden on the live site.
 
 ## Not live yet
-- **Audio / music catalog:** waits for the Global Tune API.
+- **Song uploads in production:** need the Neon storage bucket (see above). YouTube videos and lives work without it.
 - **Payments:** Premium, the Paystack Naira coin bundles (₦100 to ₦250,000) and merch checkout are shown but disabled.
 - **Spotlight video and party audio:** Spotlight shows posters with a preview timeline until videos come from the API; in a party, "Listen along" starts the current song at the room's position once audio exists.
 - **Artist accounts and payouts, real AI recommendations, song recognition, offline downloads:** depend on the music catalog, payments, a recognition service or the APK.
