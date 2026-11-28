@@ -18,7 +18,7 @@ Every prototype screen is a real, responsive page (phone → tablet → desktop 
 
 | Area | Routes |
 |---|---|
-| Sign in | `/login`, `/signup`, `/forgot-password`, `/reset-password` |
+| Sign in | `/login`, `/signup` (email, Google, Apple, Facebook), `/forgot-password`, `/reset-password` |
 | Listen | `/` Home, `/search`, `/genres`, `/genre/[id]`, `/trending`, `/stations`, `/see-all/[id]` |
 | Music | `/artist/[id]`, `/album/[id]`, `/playlist/[id]`, `/player` (full player + lyrics), `/queue` |
 | Library | `/library`, `/library/liked`, `/library/history`, `/library/playlists/[id]`, `/following` |
@@ -27,6 +27,8 @@ Every prototype screen is a real, responsive page (phone → tablet → desktop 
 | Party | `/party` (create or join by code), `/party/[code]` (live room: queue, votes, chat) |
 | Podcasts | `/shows`, `/shows/[id]`, `/watch/[id]` |
 | You | `/profile`, `/profile/edit` (photo upload), `/settings` (password, delete account), `/notifications`, `/premium`, `/info/[topic]` |
+| Creators | `/studio` (artists: overview & earnings, music, videos & live, exclusives & merch, profile; podcasters: shows & episodes) |
+| Admin | `/admin` (overview & setup checklist), `/admin/creators`, `/admin/playlists`, `/admin/parties`, `/admin/content` |
 | Other | `/ai` Brisic AI, `/download` (get-the-app page), `/api/health`, `/api/party/[code]` |
 
 **Design:** matches the prototype in `Brisic-Prototype/`: B logo header, a 4-tab bottom bar (Home, Search, Library, Profile) around a centre Brisic AI waveform button, poster covers in Bebas Neue, illustrated artist portraits. **Themes:** Green, Red, Chrome, Purple and Gold (Settings) recolour the whole app and are saved per account.
@@ -51,14 +53,44 @@ Every prototype screen is a real, responsive page (phone → tablet → desktop 
 - Indexed lookups for every per-user list (likes, history, notifications incl. unread count, playlists, ledger).
 - **Keep-awake:** `netlify/functions/keep-warm.mjs` pings `/api/health` every 4 minutes during peak hours (08:00–17:59 UTC) so Neon does not fall asleep. Neon's free plan has a monthly compute allowance; staying awake 24/7 would use it up in about two weeks, so widen the hours only on a paid plan.
 
-## Brisic's own catalog (creators)
-Global Tune has no release date, so Brisic runs its own catalog (`src/lib/catalog/brisic.ts`): songs, videos, lives and podcasts uploaded by **invited creators**, stored in Postgres with files in object storage. Real content comes first on every screen; sample content fills the rest until there is enough real music. Uploaded songs count real plays, and an artist's monthly listeners are the distinct listeners in the last 30 days.
+## Keys still needed (add in Netlify → Environment variables, then redeploy)
+Everything below is already built; each part switches on by itself when its keys are set. /admin shows a live checklist.
 
-- **Admins** (emails in `ADMIN_EMAILS`) open **/admin** and invite a creator by the email of their Brisic account (they sign up first), as an *artist* or a *podcaster*.
-- **Artists** open **Profile → Creator Studio** (/studio): edit their artist page and photo, upload songs (MP3/M4A/WAV up to 80 MB, with cover art), add Artist Spotlight videos by YouTube link, and **go live** by pasting a YouTube live link (shown as LIVE until they end it).
-- **Podcasters** open **Podcast Studio**: create shows, publish episodes with a YouTube link (video or live) and/or an audio-only file for the Listen player.
+| What | Variables | Until then |
+|---|---|---|
+| Admin access | `ADMIN_EMAILS` (your email, comma separated) | /admin is hidden |
+| Song, audio, photo uploads | `NEON_S3_ENDPOINT`, `NEON_S3_REGION`, `NEON_S3_ACCESS_KEY_ID`, `NEON_S3_SECRET_ACCESS_KEY`, `NEON_S3_BUCKET` | creators can only add YouTube videos, lives and links |
+| Payments (B-Coins, Premium) | `PAYSTACK_SECRET_KEY` (+ webhook URL in Paystack) | Pay buttons are disabled |
+| Emails (password reset, email confirmation) | `RESEND_API_KEY`, `EMAIL_FROM` | "Forgot password" is hidden, no confirmation emails |
+| Facebook sign-in | `AUTH_FACEBOOK_ID`, `AUTH_FACEBOOK_SECRET` | button says "being set up" |
+| Apple sign-in | `AUTH_APPLE_ID`, `AUTH_APPLE_SECRET` | button says "being set up" |
+| YouTube direct upload (optional) | `YOUTUBE_CLIENT_ID`, `YOUTUBE_CLIENT_SECRET`, `YOUTUBE_REFRESH_TOKEN` | creators paste YouTube links |
+
+For local testing put the same names in `brisic-app/.env.local` (gitignored).
+
+## Brisic's own catalog (no sample content)
+Everything listeners see comes from the database; there is no sample music. A screen with nothing on it yet shows a friendly empty state ("Brisic is just getting started").
+
+**Who makes what**
+- **Admins** (`ADMIN_EMAILS`) at **/admin**:
+  - *Overview*: listeners, creators, songs, plays, coin sales, gifts, Premium members, and the setup checklist.
+  - *Creators*: invite an existing Brisic account as an **artist** (with name and genre) or a **podcaster**; remove access.
+  - *Playlists*: make Brisic playlists from creators' songs, pick the **Home shelf** (Afro-pop, Playlist Made for you, Street Anthem, … Mood Boosters, or a new shelf), the card colour and the playlist-page artwork, add/reorder/remove songs, and order playlists inside a shelf. A playlist with no songs stays hidden.
+  - *Parties*: start featured listening parties for Home's "Join a Party"; end them.
+  - *Content*: search everything creators published (songs, videos, episodes, exclusives, merch) and take anything down.
+- **Artists** at **/studio** (also "Open Creator Studio" on Profile and Settings):
+  - *Overview*: total plays, plays this week, monthly listeners, followers, top songs and **earnings** (gifts + exclusive unlocks, in B-Coins).
+  - *Music*: upload songs (MP3/M4A/WAV up to 80 MB, cover art, lyrics with `[Chorus]`-style sections, explicit flag). Songs with the same album name form an **album**. Edit or delete songs.
+  - *Videos & Live*: Artist Spotlight videos by YouTube link, **go live** with a YouTube live link (followers are notified), end lives.
+  - *Exclusives & Merch*: fan-only content sold for B-Coins (an unlisted YouTube video and/or an audio file; only fans who unlocked it can play it), and merch items with price, photo and a buy link to the artist's own store.
+  - *Profile*: name, genre (drives genre pages and radio stations), bio, photo.
+- **Podcasters** at **/studio**: create shows, publish episodes with a YouTube link (video or live) and/or an audio file.
+- **Listeners**: everything else — Home, search, genres, stations (one per genre with songs), trending (real plays in the last 7 / 30 days), albums, playlists, Spotlight, podcasts, parties, library, gifts, exclusives, merch, coins, Premium.
+
+**Notifications** are sent for: a new song, exclusive or live from an artist you follow; a gift or unlock you received (artists); coins added or Premium started after a payment.
+
 - **Video playback** stays inside Brisic: YouTube embed with `playsinline=1` and `rel=0` (youtube-nocookie domain), so phones never leave the app and no outside channels are suggested.
-- **Song and audio files** go straight from the phone to storage with a signed upload link, and play through `/api/media/...`, which checks the user is signed in and redirects to a one-hour signed link (range requests work for seeking).
+- **Uploaded files** go straight from the phone to storage with a signed upload link, and play through `/api/media/...`, which checks the user is signed in (and, for exclusives, that they unlocked it) and redirects to a short-lived signed link.
 
 ### File storage (Neon Object Storage), one-time setup
 1. Neon Console → the Brisic project → branch **production** → **Object storage** → **New bucket**, name `brisic-media`, access **private**.
@@ -70,23 +102,35 @@ Global Tune has no release date, so Brisic runs its own catalog (`src/lib/catalo
 ### YouTube direct upload (later)
 Already built: the creator picks a video file, the server opens a YouTube upload session on Brisic's channel with `privacyStatus: "unlisted"`, and the phone sends the file straight to YouTube. To switch it on: create the Brisic YouTube channel, enable **YouTube Data API v3** in the Google Cloud project, create an OAuth client, get a refresh token for the channel owner (scope `youtube.upload`), and set `YOUTUBE_CLIENT_ID`, `YOUTUBE_CLIENT_SECRET`, `YOUTUBE_REFRESH_TOKEN` in Netlify. Until Google approves the app (API audit), YouTube keeps API uploads private, so keep using pasted links for launch.
 
-### Global Tune (if it arrives)
-`src/lib/catalog/globaltune.ts` is still the plug-in point; set `CATALOG_PROVIDER="globaltune"` to use it.
+### Global Tune (if it ever arrives)
+`src/lib/catalog/globaltune.ts` is still a plug-in point; set `CATALOG_PROVIDER="globaltune"` to use it. Anything it doesn't implement falls back to Brisic's own catalog.
+
+## Paystack (B-Coin bundles)
+Built: **Premium (Individual)** is paid once with Paystack in Naira for 1 or 12 months (no automatic renewal; buying again adds time; Duo, Family and Student say "coming soon"). The Coins page opens a Paystack checkout (card, bank transfer, USSD, mobile money) for the chosen bundle (₦100 to ₦250,000, 1 B-Coin = ₦1). Coins are added only after the server confirms the payment with Paystack's verify API, once per payment, from either the return page (`/api/paystack/callback`) or the webhook (`/api/paystack/webhook`, signature checked). Every checkout is stored in the `Payment` table.
+
+To switch it on: Paystack Dashboard → Settings → **API Keys & Webhooks** → copy the **secret key** into Netlify as `PAYSTACK_SECRET_KEY` (mark it secret) and set the **Webhook URL** to `https://brisic.netlify.app/api/paystack/webhook`. Use the test key (`sk_test_…`) first; the page then says "Test mode" and Paystack's test cards work. Swap in the live key (`sk_live_…`) after Paystack approves the business. Merch is bought through each artist's own store link for now.
+
+## Sign in with Apple and Facebook
+The login and sign-up pages show Google, Apple and Facebook. Apple and Facebook start working when their keys are in Netlify:
+- **Facebook:** developers.facebook.com → create an app → add **Facebook Login** → valid redirect URI `https://brisic.netlify.app/api/auth/callback/facebook` → set `AUTH_FACEBOOK_ID` (App ID) and `AUTH_FACEBOOK_SECRET` (App secret).
+- **Apple:** needs an Apple Developer account (paid). Create a **Services ID** with Sign in with Apple, domain `brisic.netlify.app`, return URL `https://brisic.netlify.app/api/auth/callback/apple`, and a Sign in with Apple **key**. Set `AUTH_APPLE_ID` (the Services ID) and `AUTH_APPLE_SECRET` (the client-secret JWT made from the key; it expires every 6 months, so regenerate it).
+Until then those buttons say the option is being set up.
 
 ## Turning on password-reset emails
 Create a free account at resend.com, verify a domain, then add `RESEND_API_KEY` and `EMAIL_FROM` (e.g. `Brisic <noreply@yourdomain.com>`) to Netlify's environment variables and redeploy. Until then "Forgot password?" is hidden on the live site.
 
 ## Not live yet
 - **Song uploads in production:** need the Neon storage bucket (see above). YouTube videos and lives work without it.
-- **Payments:** Premium, the Paystack Naira coin bundles (₦100 to ₦250,000) and merch checkout are shown but disabled.
-- **Spotlight video and party audio:** Spotlight shows posters with a preview timeline until videos come from the API; in a party, "Listen along" starts the current song at the room's position once audio exists.
-- **Artist accounts and payouts, real AI recommendations, song recognition, offline downloads:** depend on the music catalog, payments, a recognition service or the APK.
-- **Email verification at sign-up:** not built (needs the email service above).
+- **Payments:** B-Coin bundles and Premium go live with `PAYSTACK_SECRET_KEY` (above). Merch checkout inside Brisic is not built (artists link their own store).
+- **Artist payouts:** earnings are recorded; paying artists to their bank needs Paystack Transfers (a Paystack business feature) and a payout form.
+- **Premium perks:** Premium is sold and tracked, but nothing in the app is locked behind it yet (no ads exist, and offline downloads need the APK).
+- **Smarter AI recommendations and song recognition:** Brisic AI matches genres, moods and names from the catalog; recognising a song playing nearby needs a recognition service.
+- **Offline downloads:** need the Android app (APK).
 
 ## Deploy (Netlify)
 `netlify.toml` at the repo root sets the base directory (`brisic-app`), Node 22, the build command (`npm run build:deploy`, which also applies database migrations), the Next.js runtime plugin and the secret-scan exceptions. Every push to `main` on `VarshithRao101/brisic` redeploys.
 
-Netlify environment variables: `DATABASE_URL`, `DIRECT_URL`, `AUTH_SECRET`, `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`, `AUTH_URL=https://brisic.netlify.app`, `AUTH_TRUST_HOST=true`, `CATALOG_PROVIDER=mock` (+ `RESEND_API_KEY`, `EMAIL_FROM` for email).
+Netlify environment variables: `DATABASE_URL`, `DIRECT_URL`, `AUTH_SECRET`, `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`, `AUTH_URL=https://brisic.netlify.app`, `AUTH_TRUST_HOST=true`, plus the keys in "Keys still needed" above. `CATALOG_PROVIDER` is no longer needed (remove it or leave it as anything except `globaltune`).
 
 Google Cloud → Google Auth Platform → Clients → "Brisic Web" has `https://brisic.netlify.app` (origin) and `https://brisic.netlify.app/api/auth/callback/google` (redirect). Google login is in Testing mode: add testers under Audience → Test users, or publish the app.
 

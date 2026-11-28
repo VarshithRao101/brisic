@@ -6,7 +6,7 @@ import { setUpNewUser } from "@/lib/users";
 
 const select = {
   id: true, name: true, email: true, image: true, username: true, bio: true,
-  coins: true, isPremium: true, settings: true, passwordHash: true,
+  coins: true, isPremium: true, premiumUntil: true, settings: true, passwordHash: true,
 } as const;
 
 /**
@@ -35,6 +35,8 @@ export const requireUser = cache(async () => {
   const { passwordHash, ...rest } = user;
   return {
     ...rest,
+    // Paid Premium ends at premiumUntil; Premium granted without a date has no end.
+    isPremium: user.isPremium && (!user.premiumUntil || user.premiumUntil > new Date()),
     hasPassword: !!passwordHash,
     displayName: user.name || user.username || "Listener",
     handle: user.username || "listener",

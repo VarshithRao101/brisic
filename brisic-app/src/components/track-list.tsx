@@ -35,7 +35,7 @@ export function TrackCard({ tracks, index }: { tracks: Track[]; index: number })
 }
 
 /** Play and Shuffle buttons for a list of tracks. */
-export function PlayButtons({ tracks, label = "Play" }: { tracks: Track[]; label?: string }) {
+export function PlayButtons({ tracks, label = "Play", children }: { tracks: Track[]; label?: string; children?: React.ReactNode }) {
   const p = usePlayer();
   if (!tracks.length) return null;
   return (
@@ -49,6 +49,7 @@ export function PlayButtons({ tracks, label = "Play" }: { tracks: Track[]; label
       >
         <Icon name="shuffle" size={18} /> Shuffle
       </button>
+      {children}
     </div>
   );
 }

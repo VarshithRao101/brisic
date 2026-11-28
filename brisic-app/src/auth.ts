@@ -1,11 +1,16 @@
 import NextAuth, { CredentialsSignin } from "next-auth";
 import Google from "next-auth/providers/google";
+import Apple from "next-auth/providers/apple";
+import Facebook from "next-auth/providers/facebook";
 import Credentials from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { hit, ipFrom } from "@/lib/rate-limit";
 import { setUpNewUser } from "@/lib/users";
+import { socialProviders } from "@/lib/social";
+
+const social = socialProviders();
 
 /** Sent to the login form when too many attempts were made. */
 class TooManyAttempts extends CredentialsSignin {
@@ -21,8 +26,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   // JWT sessions: required for email + password sign-in, and fast on serverless.
   session: { strategy: "jwt" },
   providers: [
-    // Reads AUTH_GOOGLE_ID / AUTH_GOOGLE_SECRET from env automatically.
+    // Each reads AUTH_<NAME>_ID / AUTH_<NAME>_SECRET from env and is only switched on when both are set.
     Google,
+    ...(social.apple ? [Apple] : []),
+    ...(social.facebook ? [Facebook] : []),
     Credentials({
       credentials: { email: {}, password: {} },
       async authorize(creds, request) {

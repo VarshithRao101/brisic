@@ -165,31 +165,22 @@ export async function artistRoomInfo(artistId: string) {
   return room ? { code: room.code, listening: room._count.members } : null;
 }
 
+/** featureKey prefix for rooms Brisic admins create and feature on Home. */
+export const FEATURED_PREFIX = "fx-";
+
 /**
- * Home "Join a Party": Brisic's featured rooms (always open, anyone can join) plus listener
- * parties that are live right now. Featured rooms are created the first time Home needs them.
+ * Home "Join a Party": rooms Brisic admins feature (always open, anyone can join) plus listener
+ * parties that are live right now.
  */
-export async function homeParties(featured: { key: string; name: string }[]) {
-  const existing = await prisma.partyRoom.findMany({ where: { featureKey: { in: featured.map((f) => f.key) } }, select: { featureKey: true } });
-  const have = new Set(existing.map((e) => e.featureKey));
-  for (const f of featured.filter((x) => !have.has(x.key))) {
-    try {
-      await prisma.partyRoom.create({ data: { code: newPartyCode(), name: f.name, featureKey: f.key, hostId: null, isPublic: true, chatOpen: true } });
-    } catch {
-      // Created by another request at the same moment, or a code clash: Home tries again next load.
-    }
-  }
+export async function homeParties() {
   const since = new Date(Date.now() - ACTIVE_MS);
   const [rooms, live] = await Promise.all([
     prisma.partyRoom.findMany({
-      where: { featureKey: { in: featured.map((f) => f.key) }, endedAt: null },
-      select: { code: true, featureKey: true, _count: { select: { members: { where: { lastSeen: { gte: since } } } } } },
+      where: { featureKey: { startsWith: FEATURED_PREFIX }, endedAt: null },
+      orderBy: { createdAt: "asc" },
+      select: { code: true, name: true, _count: { select: { members: { where: { lastSeen: { gte: since } } } } } },
     }),
     listLiveParties(6),
   ]);
-  const byKey = new Map(rooms.map((r) => [r.featureKey, r]));
-  return {
-    featured: featured.map((f) => ({ key: f.key, code: byKey.get(f.key)?.code ?? null, listening: byKey.get(f.key)?._count.members ?? 0 })),
-    live,
-  };
+  return { featured: rooms.map((r) => ({ code: r.code, name: r.name, listening: r._count.members })), live };
 }

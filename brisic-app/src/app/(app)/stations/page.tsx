@@ -3,7 +3,7 @@ import { catalog } from "@/lib/catalog";
 import { hashStr } from "@/lib/format";
 import { BackButton, StationButton } from "@/components/controls";
 import { Icon } from "@/components/icons";
-import { PageTitle } from "@/components/ui";
+import { Empty, PageTitle } from "@/components/ui";
 
 const TINT = ["#2f7a34", "#7a2a8a", "#d6841a", "#1c6be0", "#c0309a", "#1f9a9a", "#c8452f"];
 
@@ -14,6 +14,7 @@ export default async function StationsPage() {
     <>
       <BackButton />
       <PageTitle title="Stations" subtitle="Radio made for you. Tap a station to start listening." />
+      {!stations.length && <Empty title="No stations yet" body="A station starts for each genre as soon as Brisic artists upload songs in it." />}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {stations.map((s) => (
           <StationButton

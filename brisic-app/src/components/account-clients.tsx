@@ -5,8 +5,8 @@ import NextImage from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
-import { updateProfile, updateSettings, type ProfileState } from "@/app/actions";
-import { changePassword, deleteAccount, removeAvatar, uploadAvatar } from "@/app/account-actions";
+import { startPremiumPurchase, type ProfileState, updateProfile, updateSettings } from "@/app/actions";
+import { changePassword, deleteAccount, removeAvatar, resendVerification, uploadAvatar } from "@/app/account-actions";
 import { HOME_STYLES, LANGUAGES, PLAYER_COLORS, QUALITIES, playerFilter, type Settings } from "@/lib/settings";
 import { PREMIUM_PERKS, PREMIUM_PLANS, PREMIUM_REGIONS } from "@/lib/fan";
 import { Icon } from "@/components/icons";
@@ -353,7 +353,9 @@ export function SettingsForm({ initial }: { initial: Settings }) {
   );
 }
 
-export function PremiumPlans({ isPremium }: { isPremium: boolean }) {
+export function PremiumPlans({ isPremium, until, payEnabled, testMode, nairaMonthly, nairaYearly }: { isPremium: boolean; until: string | null; payEnabled: boolean; testMode: boolean; nairaMonthly: number; nairaYearly: number }) {
+  const toast = useToast();
+  const [busy, setBusy] = useState(false);
   const [yearly, setYearly] = useState(false);
   const [plan, setPlan] = useState(0);
   const [region, setRegion] = useState(0);
@@ -368,7 +370,7 @@ export function PremiumPlans({ isPremium }: { isPremium: boolean }) {
 
   return (
     <div className="mx-auto max-w-3xl">
-      {isPremium && <p className="panel mb-5 p-4 text-[15px] text-primary">You are on Brisic Premium.</p>}
+      {isPremium && <p className="panel mb-5 p-4 text-[15px] text-primary">You are on Brisic Premium{until ? ` until ${until}` : ""}.{until ? " Buying again adds time." : ""}</p>}
 
       <div className="flex flex-wrap items-center gap-2">
         <button type="button" aria-pressed={!yearly} onClick={() => setYearly(false)} className={`btn btn-sm ${!yearly ? "btn-primary" : "font-normal"}`}>Monthly</button>
@@ -405,12 +407,49 @@ export function PremiumPlans({ isPremium }: { isPremium: boolean }) {
         </ul>
       </div>
 
-      <button type="button" className="btn btn-primary mt-5 w-full !h-[52px] text-[16px]" disabled>
-        Get {PREMIUM_PLANS[plan].name} for {price(PREMIUM_PLANS[plan].mult)}
+      {PREMIUM_PLANS[plan].id === "individual" ? (
+        <>
+          <button
+            type="button" className="btn btn-primary mt-5 w-full !h-[52px] text-[16px]" disabled={!payEnabled || busy}
+            onClick={async () => {
+              setBusy(true);
+              const r = await startPremiumPurchase(yearly).catch(() => null);
+              if (r?.ok) { window.location.href = r.url; return; }
+              setBusy(false);
+              toast(r && !r.ok ? r.error : "Could not open Paystack. Check your connection.");
+            }}
+          >
+            {busy ? "Opening Paystack…" : `Get Individual for ₦${(yearly ? nairaYearly : nairaMonthly).toLocaleString("en-US")}${yearly ? "/yr" : "/mo"}`}
+          </button>
+          <p className="mt-3 flex items-center justify-center gap-1.5 text-center text-[12.5px] font-light text-muted">
+            <Icon name="lock" size={13} /> {payEnabled ? `Paid once with Paystack in Naira for ${yearly ? "12 months" : "1 month"}. No automatic renewal.${testMode ? " Test mode: no real money is charged." : ""}` : "Checkout opens when payments go live. No payment is taken."}
+          </p>
+        </>
+      ) : (
+        <p className="panel mt-5 p-4 text-center text-[14px] text-ink/85">{PREMIUM_PLANS[plan].name} plans are coming soon. Individual is available now.</p>
+      )}
+    </div>
+  );
+}
+
+/** "Confirm your email" banner on Profile, with a button to send the link again. */
+export function VerifyEmailBanner({ email }: { email: string }) {
+  const toast = useToast();
+  const [busy, setBusy] = useState(false);
+  return (
+    <div className="panel mb-4 flex flex-wrap items-center gap-3 border border-[#ffcf87]/40 px-4 py-3">
+      <span className="min-w-0 flex-1 text-[14px] text-ink">Confirm your email <b className="text-white">{email}</b> so you can always get back into your account.</span>
+      <button
+        type="button" className="btn btn-sm" disabled={busy}
+        onClick={async () => {
+          setBusy(true);
+          const r = await resendVerification().catch(() => null);
+          setBusy(false);
+          toast(r ? (r.ok ? r.message ?? "Link sent." : r.error) : "Could not send. Try again.");
+        }}
+      >
+        {busy ? "Sending…" : "Send link"}
       </button>
-      <p className="mt-3 text-center text-[12.5px] font-light text-muted">
-        Checkout is not open yet. Prices shown are the planned launch prices and may change. No payment is taken.
-      </p>
     </div>
   );
 }

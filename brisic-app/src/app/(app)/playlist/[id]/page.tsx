@@ -18,7 +18,7 @@ export default async function PlaylistPage({ params }: { params: Promise<{ id: s
       playlist={{ id: playlist.id, title: playlist.title, subtitle: playlist.subtitle }}
       tracks={tracks}
       saved={!!saved}
-      art={playlistArt(playlist.id)}
+      art={playlistArt(playlist.id, playlist.hero)}
     />
   );
 }

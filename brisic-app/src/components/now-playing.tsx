@@ -217,7 +217,7 @@ export function NowPlaying() {
         </div>
 
         {!p.hasAudio && (
-          <p className="m-0 mt-1 text-center text-[12px] font-light text-white/55">Preview: audio plays once the Global Tune catalog is connected.</p>
+          <p className="m-0 mt-1 text-center text-[12px] font-light text-white/55">This song has no audio file yet.</p>
         )}
 
         <div className="mb-1 mt-auto flex w-full items-center gap-2.5 pt-5 text-white">
@@ -313,7 +313,7 @@ export function NowPlaying() {
             </div>
             <div className="no-scrollbar flex-1 overflow-y-auto px-7 pb-6 pt-2">
               {lyrics.length === 0 ? (
-                <p className="m-0 pt-6 text-center text-[16px] font-light text-muted">Lyrics for this song arrive with the Global Tune catalog.</p>
+                <p className="m-0 pt-6 text-center text-[16px] font-light text-muted">The artist hasn&apos;t added lyrics for this song yet.</p>
               ) : (
                 lyrics.map((l, i) => (
                   <button

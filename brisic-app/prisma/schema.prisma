@@ -4,7 +4,7 @@
 // so the library renders without calling the music API.
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   // "native" for local dev; rhel-openssl-3.0.x for Netlify/AWS Lambda (Amazon Linux 2023).
   binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
@@ -23,14 +23,16 @@ model User {
   image         String?
 
   // Brisic-specific
-  username      String?   @unique
-  passwordHash  String?
-  bio           String?
-  coins         Int       @default(0)
-  isPremium     Boolean   @default(false)
+  username     String?   @unique
+  passwordHash String?
+  bio          String?
+  coins        Int       @default(0)
+  isPremium    Boolean   @default(false)
+  // Paid Premium runs until this date (null = no paid Premium).
+  premiumUntil DateTime?
   // Invite-only creators: "artist" or "podcaster" (granted by an admin), null for listeners.
-  creatorRole   String?
-  settings      Json?
+  creatorRole  String?
+  settings     Json?
 
   accounts      Account[]
   sessions      Session[]
@@ -38,6 +40,7 @@ model User {
   playlists     UserPlaylist[]
   follows       Follow[]
   history       PlayHistory[]
+  payments      Payment[]
   coinLedger    CoinTransaction[]
   gifts         Gift[]
   unlocks       Unlock[]
@@ -49,8 +52,8 @@ model User {
   artistProfile ArtistProfile?
   podcastShows  PodcastShow[]
 
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Account {
@@ -241,26 +244,26 @@ model Avatar {
 // ---------- Community Party (listening rooms) ----------
 
 model PartyRoom {
-  id          String    @id @default(cuid())
-  code        String    @unique
-  name        String
+  id         String           @id @default(cuid())
+  code       String           @unique
+  name       String
   // Null for an artist community room, which no listener hosts.
-  hostId      String?
+  hostId     String?
   // Set for an artist's official community room (one per artist).
-  artistId    String?   @unique
+  artistId   String?          @unique
   // Set for Brisic's always-open featured rooms on Home ("Join a Party"), e.g. "friday-night-vibes".
-  featureKey  String?   @unique
-  isPublic    Boolean   @default(true)
-  chatOpen    Boolean   @default(true)
-  nowItemId   String?
-  nowStarted  DateTime?
-  endedAt     DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  host        User?     @relation(fields: [hostId], references: [id], onDelete: Cascade)
-  members     PartyMember[]
-  queue       PartyQueueItem[]
-  messages    PartyMessage[]
+  featureKey String?          @unique
+  isPublic   Boolean          @default(true)
+  chatOpen   Boolean          @default(true)
+  nowItemId  String?
+  nowStarted DateTime?
+  endedAt    DateTime?
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  host       User?            @relation(fields: [hostId], references: [id], onDelete: Cascade)
+  members    PartyMember[]
+  queue      PartyQueueItem[]
+  messages   PartyMessage[]
 
   @@index([isPublic, endedAt, updatedAt])
   @@index([hostId])
@@ -280,7 +283,7 @@ model PartyMember {
 }
 
 model PartyQueueItem {
-  id          String    @id @default(cuid())
+  id          String      @id @default(cuid())
   roomId      String
   trackId     String
   title       String
@@ -288,10 +291,10 @@ model PartyQueueItem {
   durationSec Int
   addedById   String
   addedByName String
-  votes       Int       @default(0)
+  votes       Int         @default(0)
   playedAt    DateTime?
-  createdAt   DateTime  @default(now())
-  room        PartyRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  createdAt   DateTime    @default(now())
+  room        PartyRoom   @relation(fields: [roomId], references: [id], onDelete: Cascade)
   voters      PartyVote[]
 
   @@index([roomId, playedAt])
@@ -319,24 +322,30 @@ model PartyMessage {
 
 // ---------- Brisic catalog: creators, songs, videos, podcasts ----------
 
-/** A creator's public artist page. id is the URL slug, e.g. "ama-joy". */
+/**
+ * A creator's public artist page. id is the URL slug, e.g. "ama-joy".
+ */
 model ArtistProfile {
-  id        String   @id
-  userId    String   @unique
-  name      String
-  genre     String
-  bio       String   @default("")
-  imageKey  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  songs     Song[]
-  videos    Video[]
+  id         String      @id
+  userId     String      @unique
+  name       String
+  genre      String
+  bio        String      @default("")
+  imageKey   String?
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  songs      Song[]
+  videos     Video[]
+  exclusives Exclusive[]
+  merch      MerchItem[]
 }
 
-/** An uploaded song. Files live in object storage; rows keep the keys. */
+/**
+ * An uploaded song. Files live in object storage; rows keep the keys.
+ */
 model Song {
-  id          String        @id @default(cuid())
+  id          String                  @id @default(cuid())
   artistId    String
   title       String
   albumTitle  String?
@@ -344,16 +353,21 @@ model Song {
   audioKey    String
   audioType   String
   coverKey    String?
-  explicit    Boolean       @default(false)
-  plays       Int           @default(0)
-  createdAt   DateTime      @default(now())
-  artist      ArtistProfile @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  explicit    Boolean                 @default(false)
+  plays       Int                     @default(0)
+  // Lyrics as plain text; a line like [Chorus] starts a section.
+  lyrics      String?
+  createdAt   DateTime                @default(now())
+  artist      ArtistProfile           @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  playlists   EditorialPlaylistSong[]
 
   @@index([artistId, createdAt])
   @@index([createdAt])
 }
 
-/** Artist Spotlight videos and lives, played from YouTube inside Brisic. */
+/**
+ * Artist Spotlight videos and lives, played from YouTube inside Brisic.
+ */
 model Video {
   id          String        @id @default(cuid())
   artistId    String
@@ -371,7 +385,9 @@ model Video {
   @@index([artistId, createdAt])
 }
 
-/** A podcaster's show. id is the URL slug. */
+/**
+ * A podcaster's show. id is the URL slug.
+ */
 model PodcastShow {
   id        String           @id
   userId    String
@@ -388,7 +404,9 @@ model PodcastShow {
   @@index([userId])
 }
 
-/** An episode: a YouTube video (or live), an uploaded audio file, or both. */
+/**
+ * An episode: a YouTube video (or live), an uploaded audio file, or both.
+ */
 model PodcastEpisode {
   id          String      @id @default(cuid())
   showId      String
@@ -404,4 +422,83 @@ model PodcastEpisode {
   show        PodcastShow @relation(fields: [showId], references: [id], onDelete: Cascade)
 
   @@unique([showId, number])
+}
+
+// Paystack checkouts (B-Coin bundles). Coins are added once, when Paystack confirms the payment.
+model Payment {
+  id         String    @id @default(cuid())
+  reference  String    @unique
+  userId     String
+  kind       String // COINS | PREMIUM
+  months     Int       @default(0) // Premium months bought
+  coins      Int
+  amountKobo Int
+  status     String    @default("pending") // pending | success | failed
+  channel    String?
+  createdAt  DateTime  @default(now())
+  paidAt     DateTime?
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+// Brisic's own playlists, made by admins and shown on Home in named shelves.
+model EditorialPlaylist {
+  id        String                  @id // "pl-<slug>"
+  title     String
+  subtitle  String                  @default("")
+  shelf     String // Home shelf title, e.g. "Love Songs"
+  artFrom   String                  @default("#2f7a34")
+  artTo     String                  @default("#10381a")
+  hero      String? // design artwork variant for the playlist page, e.g. "x17"
+  position  Int                     @default(0)
+  createdAt DateTime                @default(now())
+  updatedAt DateTime                @updatedAt
+  songs     EditorialPlaylistSong[]
+
+  @@index([shelf, position])
+}
+
+model EditorialPlaylistSong {
+  playlistId String
+  songId     String
+  position   Int
+  addedAt    DateTime          @default(now())
+  playlist   EditorialPlaylist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+  song       Song              @relation(fields: [songId], references: [id], onDelete: Cascade)
+
+  @@id([playlistId, songId])
+  @@index([playlistId, position])
+}
+
+// Fan-only content an artist sells for B-Coins: a YouTube video (unlisted) and/or an audio file.
+model Exclusive {
+  id          String        @id @default(cuid())
+  artistId    String
+  title       String
+  description String        @default("")
+  kind        String // Song | Video | Story
+  price       Int
+  youtubeId   String?
+  audioKey    String?
+  audioType   String?
+  createdAt   DateTime      @default(now())
+  artist      ArtistProfile @relation(fields: [artistId], references: [id], onDelete: Cascade)
+
+  @@index([artistId, createdAt])
+}
+
+// Artist merch. Fans buy through the artist's own store link until Brisic checkout ships.
+model MerchItem {
+  id          String        @id @default(cuid())
+  artistId    String
+  name        String
+  priceNaira  Int
+  description String        @default("")
+  imageKey    String?
+  buyUrl      String?
+  createdAt   DateTime      @default(now())
+  artist      ArtistProfile @relation(fields: [artistId], references: [id], onDelete: Cascade)
+
+  @@index([artistId, createdAt])
 }

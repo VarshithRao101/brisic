@@ -4,7 +4,6 @@ import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { requireUserId } from "@/lib/session";
-import { catalog } from "@/lib/catalog";
 import { isAdminEmail, slugify, type CreatorRole } from "@/lib/creators";
 import { hit, waitText } from "@/lib/rate-limit";
 import { exists, newKey, removeFile, storageMode, uploadUrl, UPLOAD_RULES, type UploadKind } from "@/lib/storage";
@@ -44,13 +43,13 @@ const guard = async <T,>(fn: () => Promise<Result<T>>): Promise<Result<T>> => {
   }
 };
 
-/** A unique URL slug that does not clash with sample artists or existing creators. */
+/** A unique URL slug that does not clash with existing creators. */
 async function freeArtistId(name: string) {
   const base = slugify(name);
   for (let n = 1; n < 50; n++) {
     const id = n === 1 ? base : `${base}-${n}`;
-    const [taken, sample] = await Promise.all([prisma.artistProfile.findUnique({ where: { id }, select: { id: true } }), catalog.getArtist(id)]);
-    if (!taken && !sample) return id;
+    const taken = await prisma.artistProfile.findUnique({ where: { id }, select: { id: true } });
+    if (!taken) return id;
   }
   return `${base}-${Date.now().toString(36)}`;
 }
@@ -58,8 +57,8 @@ async function freeShowId(title: string) {
   const base = slugify(title);
   for (let n = 1; n < 50; n++) {
     const id = `sh-${n === 1 ? base : `${base}-${n}`}`;
-    const [taken, sample] = await Promise.all([prisma.podcastShow.findUnique({ where: { id }, select: { id: true } }), catalog.getShow(id)]);
-    if (!taken && !sample) return id;
+    const taken = await prisma.podcastShow.findUnique({ where: { id }, select: { id: true } });
+    if (!taken) return id;
   }
   return `sh-${base}-${Date.now().toString(36)}`;
 }
@@ -94,7 +93,7 @@ export async function adminRevokeCreator(userId: string): Promise<Result> {
 // ---------- Uploads (direct to storage) ----------
 
 /** Returns a signed URL the browser uploads one file to. `scope` picks the folder. */
-export async function startUpload(input: { kind: UploadKind; scope: "song" | "cover" | "artist" | "episode"; contentType: string; size: number; showId?: string }): Promise<Result<{ key: string; url: string; headers: Record<string, string> }>> {
+export async function startUpload(input: { kind: UploadKind; scope: "song" | "cover" | "artist" | "episode" | "exclusive" | "merch"; contentType: string; size: number; showId?: string }): Promise<Result<{ key: string; url: string; headers: Record<string, string> }>> {
   return guard<{ key: string; url: string; headers: Record<string, string> }>(async () => {
     const u = await me();
     const rules = UPLOAD_RULES[input.kind];
@@ -114,7 +113,8 @@ export async function startUpload(input: { kind: UploadKind; scope: "song" | "co
       prefix = `episodes/${show.id}`;
     } else {
       if (u.creatorRole !== "artist" || !u.artistProfile) throw new Error("FORBIDDEN");
-      prefix = `${input.scope === "song" ? "songs" : input.scope === "cover" ? "covers" : "artists"}/${u.artistProfile.id}`;
+      const folder = { song: "songs", cover: "covers", artist: "artists", exclusive: "exclusives", merch: "merch" }[input.scope];
+      prefix = `${folder}/${u.artistProfile.id}`;
     }
     const key = newKey(prefix, input.contentType);
     const signed = await uploadUrl(key, input.contentType);
@@ -123,6 +123,12 @@ export async function startUpload(input: { kind: UploadKind; scope: "song" | "co
 }
 
 const ownsKey = (key: string, prefix: string) => key.startsWith(prefix + "/") && !key.includes("..");
+
+/** Tells everyone following an artist (newest 2,000 followers) about a release or a live. */
+async function notifyFollowers(artistId: string, title: string, body: string, href: string) {
+  const fans = await prisma.follow.findMany({ where: { artistId }, select: { userId: true }, orderBy: { createdAt: "desc" }, take: 2000 });
+  if (fans.length) await prisma.notification.createMany({ data: fans.map((f) => ({ userId: f.userId, title: str(title, 120), body: str(body, 200), href })) });
+}
 
 // ---------- Artists ----------
 
@@ -144,7 +150,7 @@ export async function updateArtistProfile(input: { name: string; genre: string; 
   });
 }
 
-export async function publishSong(input: { title: string; albumTitle?: string; explicit: boolean; durationSec: number; audioKey: string; audioType: string; coverKey?: string | null }): Promise<Result<{ id: string }>> {
+export async function publishSong(input: { title: string; albumTitle?: string; explicit: boolean; durationSec: number; audioKey: string; audioType: string; coverKey?: string | null; lyrics?: string }): Promise<Result<{ id: string }>> {
   return guard<{ id: string }>(async () => {
     const { artist } = await artistOnly();
     const title = str(input.title, 100);
@@ -154,8 +160,9 @@ export async function publishSong(input: { title: string; albumTitle?: string; e
     if (!(UPLOAD_RULES.audio.types as readonly string[]).includes(input.audioType)) return { ok: false, error: "Unsupported audio file." };
     const durationSec = Math.max(1, Math.min(4 * 3600, Math.round(Number(input.durationSec) || 0)));
     const song = await prisma.song.create({
-      data: { artistId: artist.id, title, albumTitle: str(input.albumTitle, 100) || null, explicit: !!input.explicit, durationSec, audioKey: input.audioKey, audioType: input.audioType, coverKey: input.coverKey || null },
+      data: { artistId: artist.id, title, albumTitle: str(input.albumTitle, 100) || null, explicit: !!input.explicit, durationSec, audioKey: input.audioKey, audioType: input.audioType, coverKey: input.coverKey || null, lyrics: text(input.lyrics, 8000) || null },
     });
+    await notifyFollowers(artist.id, `New from ${artist.name}`, `"${title}" is out now on Brisic.`, `/artist/${artist.id}`);
     refresh();
     return { ok: true, id: song.id };
   });
@@ -187,7 +194,8 @@ export async function addVideo(input: { link: string; title: string; kind: strin
     if (!limit.ok) return { ok: false, error: `Too many videos at once. Try again in ${waitText(limit.retryAfterSec)}.` };
     const kind = input.live ? "Live" : (KINDS as readonly string[]).includes(input.kind) ? input.kind : "Video";
     if (input.live) await prisma.video.updateMany({ where: { artistId: artist.id, isLive: true }, data: { isLive: false } });
-    await prisma.video.create({ data: { artistId: artist.id, title, kind, youtubeId, isLive: !!input.live, blurb: text(input.blurb, 600) } });
+    const video = await prisma.video.create({ data: { artistId: artist.id, title, kind, youtubeId, isLive: !!input.live, blurb: text(input.blurb, 600) } });
+    if (input.live) await notifyFollowers(artist.id, `${artist.name} is live`, title, `/spotlight/v-${video.id}`);
     refresh();
     return { ok: true };
   });
@@ -297,6 +305,100 @@ export async function deleteEpisode(episodeId: string): Promise<Result> {
     if (!ep) return { ok: false, error: "Episode not found." };
     await prisma.podcastEpisode.delete({ where: { id: ep.id } });
     await removeFile(ep.audioKey);
+    refresh();
+    return { ok: true };
+  });
+}
+
+// ---------- Artists: edit songs, exclusives, merch ----------
+
+export async function updateSong(input: { id: string; title: string; albumTitle: string; explicit: boolean; lyrics: string }): Promise<Result> {
+  return guard(async () => {
+    const { artist } = await artistOnly();
+    const title = str(input.title, 100);
+    if (!title) return { ok: false, error: "Add the song title." };
+    const r = await prisma.song.updateMany({
+      where: { id: str(input.id, 40), artistId: artist.id },
+      data: { title, albumTitle: str(input.albumTitle, 100) || null, explicit: !!input.explicit, lyrics: text(input.lyrics, 8000) || null },
+    });
+    if (!r.count) return { ok: false, error: "Song not found." };
+    refresh();
+    return { ok: true };
+  });
+}
+
+const EXCLUSIVE_KINDS = ["Song", "Video", "Story"] as const;
+
+/** Fan-only content sold for B-Coins: a YouTube link (set the video to Unlisted) and/or an audio file. */
+export async function addExclusive(input: { title: string; description: string; kind: string; price: number; link?: string; audioKey?: string | null; audioType?: string | null }): Promise<Result> {
+  return guard(async () => {
+    const { artist } = await artistOnly();
+    const title = str(input.title, 100);
+    if (!title) return { ok: false, error: "Add a title." };
+    const price = Math.round(Number(input.price));
+    if (!(price >= 10 && price <= 100_000)) return { ok: false, error: "Set a price between 10 and 100,000 B-Coins." };
+    const youtubeId = input.link ? parseYouTubeId(input.link) : null;
+    if (input.link && !youtubeId) return { ok: false, error: "That YouTube link doesn't look right." };
+    let audioKey: string | null = null;
+    if (input.audioKey) {
+      if (!ownsKey(input.audioKey, `exclusives/${artist.id}`) || !(await exists(input.audioKey))) return { ok: false, error: "The audio upload did not finish. Try again." };
+      if (!(UPLOAD_RULES.audio.types as readonly string[]).includes(String(input.audioType))) return { ok: false, error: "Unsupported audio file." };
+      audioKey = input.audioKey;
+    }
+    if (!youtubeId && !audioKey) return { ok: false, error: "Add a YouTube link or upload the audio." };
+    if ((await prisma.exclusive.count({ where: { artistId: artist.id } })) >= 50) return { ok: false, error: "You can have up to 50 exclusives." };
+    const kind = (EXCLUSIVE_KINDS as readonly string[]).includes(input.kind) ? input.kind : youtubeId ? "Video" : "Song";
+    await prisma.exclusive.create({ data: { artistId: artist.id, title, description: text(input.description, 600), kind, price, youtubeId, audioKey, audioType: audioKey ? String(input.audioType) : null } });
+    await notifyFollowers(artist.id, `New exclusive from ${artist.name}`, title, `/artist/${artist.id}/exclusive`);
+    refresh();
+    return { ok: true };
+  });
+}
+
+export async function deleteExclusive(id: string): Promise<Result> {
+  return guard(async () => {
+    const { artist } = await artistOnly();
+    const x = await prisma.exclusive.findFirst({ where: { id: str(id, 40), artistId: artist.id }, select: { id: true, audioKey: true } });
+    if (!x) return { ok: false, error: "Not found." };
+    await prisma.exclusive.delete({ where: { id: x.id } });
+    await removeFile(x.audioKey);
+    refresh();
+    return { ok: true };
+  });
+}
+
+export async function addMerch(input: { name: string; priceNaira: number; description: string; buyUrl: string; imageKey?: string | null }): Promise<Result> {
+  return guard(async () => {
+    const { artist } = await artistOnly();
+    const name = str(input.name, 80);
+    if (!name) return { ok: false, error: "Name the item." };
+    const priceNaira = Math.round(Number(input.priceNaira));
+    if (!(priceNaira >= 100 && priceNaira <= 10_000_000)) return { ok: false, error: "Set a price in Naira (at least ₦100)." };
+    let buyUrl: string | null = str(input.buyUrl, 300) || null;
+    if (buyUrl) {
+      try {
+        const u = new URL(buyUrl.startsWith("http") ? buyUrl : `https://${buyUrl}`);
+        if (u.protocol !== "https:" && u.protocol !== "http:") throw new Error("bad");
+        buyUrl = u.toString();
+      } catch {
+        return { ok: false, error: "The buy link doesn't look like a web address." };
+      }
+    }
+    if (input.imageKey && (!ownsKey(input.imageKey, `merch/${artist.id}`) || !(await exists(input.imageKey)))) return { ok: false, error: "The photo upload did not finish. Try again." };
+    if ((await prisma.merchItem.count({ where: { artistId: artist.id } })) >= 60) return { ok: false, error: "You can list up to 60 items." };
+    await prisma.merchItem.create({ data: { artistId: artist.id, name, priceNaira, description: text(input.description, 400), buyUrl, imageKey: input.imageKey || null } });
+    refresh();
+    return { ok: true };
+  });
+}
+
+export async function deleteMerch(id: string): Promise<Result> {
+  return guard(async () => {
+    const { artist } = await artistOnly();
+    const m = await prisma.merchItem.findFirst({ where: { id: str(id, 40), artistId: artist.id }, select: { id: true, imageKey: true } });
+    if (!m) return { ok: false, error: "Not found." };
+    await prisma.merchItem.delete({ where: { id: m.id } });
+    await removeFile(m.imageKey);
     refresh();
     return { ok: true };
   });

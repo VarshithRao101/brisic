@@ -7,12 +7,10 @@ import { fmtCount } from "@/lib/format";
 import { BackButton } from "@/components/controls";
 import { ArtistFace } from "@/components/cover";
 import { TrendingFollow } from "@/components/artist-clients";
-import { GoldBadge } from "@/components/ui";
+import { Empty, GoldBadge } from "@/components/ui";
 
 export const metadata = { title: "Trending Artists · Brisic" };
 
-// Plays in the chart window, from the catalog's listener numbers (sample data until the API).
-const streamsFor = (a: Artist, period: "week" | "month") => Math.round(a.monthlyListeners * (period === "week" ? 0.075 : 0.32));
 
 /** 3D podium block from the design: front, lit top and shaded side. */
 function Block({ place, height }: { place: 1 | 2 | 3; height: number }) {
@@ -38,7 +36,7 @@ function Block({ place, height }: { place: 1 | 2 | 3; height: number }) {
 const DELAY = { 3: 0.25, 2: 1.05, 1: 1.85 } as const;
 const CROWN_AT = 2.75;
 
-function Podium({ a, place, period }: { a: Artist; place: 1 | 2 | 3; period: "week" | "month" }) {
+function Podium({ a, place, streams }: { a: Artist; place: 1 | 2 | 3; streams: number }) {
   const first = place === 1;
   return (
     <div className={`podium-rise relative flex flex-col items-center ${first ? "w-[38%]" : "w-[31%]"}`} style={{ animationDelay: `${DELAY[place]}s` }}>
@@ -59,7 +57,7 @@ function Podium({ a, place, period }: { a: Artist; place: 1 | 2 | 3; period: "we
       <p className="m-0 mt-2 flex max-w-full items-center gap-1 text-[13px] font-semibold text-white">
         <span className="truncate">{a.name}</span><GoldBadge size={14} />
       </p>
-      <p className="m-0 mb-1.5 text-[11.5px] text-ink/80">{fmtCount(streamsFor(a, period))} streams</p>
+      <p className="m-0 mb-1.5 text-[11.5px] text-ink/80">{fmtCount(streams)} streams</p>
       <Block place={place} height={first ? 150 : place === 2 ? 118 : 96} />
     </div>
   );
@@ -79,6 +77,8 @@ export default async function TrendingPage({ searchParams }: { searchParams: Pro
     return j < 0 ? 0 : j - i;
   };
   const [one, two, three] = top;
+  // Real plays in the chart window (7 or 30 days).
+  const plays = new Map(top.map((a) => [a.id, a.plays ?? 0]));
 
   return (
     <div className="mx-auto max-w-2xl">
@@ -102,17 +102,21 @@ export default async function TrendingPage({ searchParams }: { searchParams: Pro
         ))}
       </div>
 
+      {!top.length && (
+        <div className="mt-6"><Empty title="No chart yet" body="The chart fills up as people play songs from Brisic artists." action={<Link href="/" className="btn btn-primary">Go to Home</Link>} /></div>
+      )}
+
       {one && two && three && (
-        <div key={period} className="relative isolate mt-6 flex items-end justify-center gap-[2%] px-1">
-          <Podium a={two} place={2} period={period} />
-          <Podium a={one} place={1} period={period} />
-          <Podium a={three} place={3} period={period} />
+        <div key={`podium-${period}`} className="relative isolate mt-6 flex items-end justify-center gap-[2%] px-1">
+          <Podium a={two} place={2} streams={plays.get(two.id)!} />
+          <Podium a={one} place={1} streams={plays.get(one.id)!} />
+          <Podium a={three} place={3} streams={plays.get(three.id)!} />
         </div>
       )}
 
-      <ol key={period} className="m-0 mt-5 flex list-none flex-col gap-2.5 p-0">
-        {top.slice(3).map((a, k) => {
-          const i = k + 3;
+      <ol key={`list-${period}`} className="m-0 mt-5 flex list-none flex-col gap-2.5 p-0">
+        {top.slice(one && two && three ? 3 : 0).map((a, k) => {
+          const i = k + (one && two && three ? 3 : 0);
           const m = moved(a, i);
           return (
             <li key={a.id} className="fade-up flex items-center gap-3 rounded-2xl border border-line px-3 py-2.5" style={{ background: "color-mix(in srgb, var(--card) 80%, transparent)", animationDelay: `${CROWN_AT + 0.4 + k * 0.06}s` }}>
@@ -124,7 +128,7 @@ export default async function TrendingPage({ searchParams }: { searchParams: Pro
                 <span className="min-w-0">
                   <span className="flex items-center gap-1.5 text-[16px] font-semibold text-white"><span className="truncate">{a.name}</span><GoldBadge size={15} /></span>
                   <span className="block text-[12.5px] font-light text-ink/80">
-                    {fmtCount(streamsFor(a, period))} streams
+                    {fmtCount(plays.get(a.id)!)} streams
                     {m !== 0 && <span className={m > 0 ? "text-primary" : "text-[#ff6b6b]"}> · {m > 0 ? "▲" : "▼"} {Math.abs(m)}</span>}
                   </span>
                 </span>

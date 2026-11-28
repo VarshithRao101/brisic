@@ -6,20 +6,6 @@ import type { Track } from "@/lib/catalog/types";
 import { useLibrary, usePlayer, useToast } from "@/components/app-state";
 import { Icon } from "@/components/icons";
 
-/** Bio with "More" / "Less", as on the artist profile design. */
-export function ArtistBio({ text }: { text: string }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="mt-1 max-w-2xl">
-      <p className={`m-0 text-[14px] font-light leading-snug text-ink/90 ${open ? "" : "line-clamp-1"}`}>{text}</p>
-      <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open} className="mt-0.5 flex items-center gap-1 border-0 bg-transparent p-0 text-[13.5px] font-semibold text-primary">
-        {open ? "Less" : "More"}
-        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ transform: open ? "rotate(180deg)" : undefined }}><path d="M6 9l6 6 6-6" /></svg>
-      </button>
-    </div>
-  );
-}
-
 /** Play Artist / Follow(ing) / Support Artist pills from the design. */
 export function ArtistActions({ artistId, artistName, tracks }: { artistId: string; artistName: string; tracks: Track[] }) {
   const p = usePlayer();

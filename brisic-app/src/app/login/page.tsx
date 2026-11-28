@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { hasLiveSession } from "@/lib/session";
+import { socialProviders } from "@/lib/social";
 import { emailEnabled } from "@/lib/email";
 import { AuthFrame, LoginForm } from "@/components/auth-forms";
 
@@ -11,7 +12,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   const notice = reset ? "Password changed. Log in with your new password." : deleted ? "Your account was deleted." : undefined;
   return (
     <AuthFrame heading="Welcome back">
-      <LoginForm error={error} notice={notice} resetEnabled={emailEnabled()} />
+      <LoginForm error={error} notice={notice} resetEnabled={emailEnabled()} social={socialProviders()} />
     </AuthFrame>
   );
 }

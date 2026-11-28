@@ -9,6 +9,7 @@ import { requireUserId } from "@/lib/session";
 import { passwordProblem } from "@/lib/password";
 import { clientIp, hit, waitText } from "@/lib/rate-limit";
 import { emailEnabled, sendEmail, siteUrl } from "@/lib/email";
+import { sendVerificationEmail } from "@/lib/verify-email";
 
 type Result = { ok: true; message?: string } | { ok: false; error: string };
 
@@ -133,4 +134,13 @@ export async function resetPassword(token: string, password: string): Promise<Re
     prisma.passwordResetToken.deleteMany({ where: { userId: row.userId } }),
   ]);
   return { ok: true, message: "Your password was changed. You can log in now." };
+}
+
+/** Sends the "Confirm your email" link again (3 per hour). */
+export async function resendVerification(): Promise<Result> {
+  const userId = await requireUserId();
+  const lim = await hit("verify:" + userId, 3, 3600);
+  if (!lim.ok) return { ok: false, error: `Check your inbox (and spam). You can ask again in ${waitText(lim.retryAfterSec)}.` };
+  const sent = await sendVerificationEmail(userId, await headers());
+  return sent ? { ok: true, message: "Link sent. Check your inbox." } : { ok: false, error: "Could not send the email right now." };
 }

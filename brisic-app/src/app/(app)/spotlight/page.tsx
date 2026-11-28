@@ -6,7 +6,7 @@ import { fmtCount } from "@/lib/format";
 import { BackButton } from "@/components/controls";
 import { Icon } from "@/components/icons";
 import { FeaturedSpotlight, SpotlightPoster, SpotlightTile, spotLength } from "@/components/spotlight";
-import { DisplayTitle, Section, Shelf } from "@/components/ui";
+import { DisplayTitle, Empty, Section, Shelf } from "@/components/ui";
 
 const FILTERS: [string, string, SpotlightItem["kind"] | null][] = [
   ["all", "All", null], ["videos", "Videos", "Video"], ["audio", "Audio", "Audio"], ["live", "Live", "Live"], ["interviews", "Interviews", "Interview"],
@@ -23,6 +23,18 @@ export default async function SpotlightPage({ searchParams }: { searchParams: Pr
   const featured = byArtist.slice(0, 4);
   const live = items.filter((i) => i.kind === "Live");
   const top = [...byArtist].sort((a, b) => b.views - a.views).slice(0, 4);
+
+  if (!items.length) {
+    return (
+      <>
+        <div className="flex items-center gap-3">
+          <BackButton />
+          <DisplayTitle className="mb-3">Artist Spotlight</DisplayTitle>
+        </div>
+        <Empty title="Nothing in the Spotlight yet" body="Interviews, performances and live streams from Brisic artists appear here as soon as they post them." />
+      </>
+    );
+  }
 
   return (
     <>

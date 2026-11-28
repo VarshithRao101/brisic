@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getUserId } from "@/lib/session";
 import { catalog } from "@/lib/catalog";
-import { BackButton, ShareButton } from "@/components/controls";
+import { BackButton, MoreMenu } from "@/components/controls";
 import { Cover } from "@/components/cover";
 import { PlayButtons, TrackList } from "@/components/track-list";
 import { Hero } from "@/components/ui";
@@ -24,8 +24,9 @@ export default async function AlbumPage({ params }: { params: Promise<{ id: stri
         title={album.title}
         meta={`${album.year} · ${tracks.length} songs · ${minutes} min`}
       >
-        <PlayButtons tracks={tracks} />
-        <ShareButton title={`${album.title} by ${album.artistName}`} />
+        <PlayButtons tracks={tracks}>
+          <MoreMenu title={`${album.title} by ${album.artistName}`} artistId={album.artistId} artistName={album.artistName} />
+        </PlayButtons>
       </Hero>
       <p className="m-0 mt-4 text-[15px] text-muted">
         By <Link href={`/artist/${album.artistId}`} className="font-medium text-primary hover:underline">{album.artistName}</Link>

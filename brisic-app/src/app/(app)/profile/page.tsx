@@ -7,19 +7,27 @@ import { SignOutButton } from "@/components/controls";
 import { Icon } from "@/components/icons";
 import { RowLink } from "@/components/ui";
 import { getAccess } from "@/lib/creators";
+import { OpenStudioButton } from "@/components/creator-button";
+import { VerifyEmailBanner } from "@/components/account-clients";
+import { needsVerification } from "@/lib/verify-email";
 
-export default async function ProfilePage() {
+export default async function ProfilePage({ searchParams }: { searchParams: Promise<{ verified?: string }> }) {
   const userId = await getUserId();
-  const [user, following, playlists, likes, access] = await Promise.all([
+  const [user, following, playlists, likes, access, verify, sp] = await Promise.all([
     requireUser(),
     prisma.follow.count({ where: { userId } }),
     prisma.userPlaylist.count({ where: { userId } }),
     prisma.likedTrack.count({ where: { userId } }),
     getAccess(),
+    needsVerification(userId),
+    searchParams,
   ]);
 
   return (
     <div className="mx-auto max-w-2xl">
+      {sp.verified === "1" && <p role="status" className="m-0 mb-4 rounded-xl border border-primary/50 bg-primary/10 px-4 py-3 text-[14px] text-primary">Email confirmed. Thank you!</p>}
+      {sp.verified === "0" && <p role="status" className="m-0 mb-4 rounded-xl border border-[#ff9b9b]/50 bg-[#ff9b9b]/10 px-4 py-3 text-[14px] text-[#ff9b9b]">That confirmation link has expired or was already used.</p>}
+      {verify && user.email && <VerifyEmailBanner email={user.email} />}
       <div className="flex flex-col items-center text-center">
         <span className="ring-glow flex h-[112px] w-[112px] items-center justify-center overflow-hidden rounded-full p-[3px]">
           {user.image ? (
@@ -58,6 +66,7 @@ export default async function ProfilePage() {
 
       <h2 className="m-0 mb-2 mt-6 text-[18px] font-semibold text-white">Settings</h2>
       <div className="flex flex-col gap-2">
+        {access.role && <OpenStudioButton role={access.role} />}
         {!user.isPremium && (
           <Link href="/premium" className="panel-glow flex items-center gap-3.5 px-3 py-3">
             <Image src="/assets/crown.png" alt="" width={40} height={40} className="h-10 w-10 object-contain" />
@@ -68,7 +77,6 @@ export default async function ProfilePage() {
             <Icon name="chevron" size={18} className="text-primary" />
           </Link>
         )}
-        {access.role && <RowLink href="/studio" icon="mic" title={access.role === "artist" ? "Creator Studio" : "Podcast Studio"} subtitle={access.role === "artist" ? "Upload songs, add videos, go live" : "Publish episodes and go live"} />}
         {access.isAdmin && <RowLink href="/admin" icon="users" title="Admin" subtitle="Invite artists and podcasters" />}
         <RowLink href="/settings" icon="settings" title="Player color & Settings" subtitle="Change the player color, home style and playback" />
         <RowLink href="/info/account" icon="user" title="Account" subtitle="Email, password, username" />

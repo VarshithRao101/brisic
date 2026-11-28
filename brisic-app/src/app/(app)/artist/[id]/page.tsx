@@ -5,7 +5,7 @@ import { getUserId } from "@/lib/session";
 import { catalog } from "@/lib/catalog";
 import { fmtCount } from "@/lib/format";
 import { BackButton } from "@/components/controls";
-import { ArtistActions, ArtistBio, ArtistMenu, ArtistSongs } from "@/components/artist-clients";
+import { ArtistActions, ArtistMenu, ArtistSongs } from "@/components/artist-clients";
 import { Cover } from "@/components/cover";
 import { TrackList } from "@/components/track-list";
 import { SpotlightTile } from "@/components/spotlight";
@@ -34,34 +34,30 @@ export default async function ArtistPage({ params, searchParams }: { params: Pro
       <div className="relative -mx-4 -mt-3 overflow-hidden px-4 pt-3 sm:-mx-6 sm:px-6 lg:mx-0 lg:mt-0 lg:rounded-3xl lg:px-8 lg:pt-6">
         {/* Backlit silhouette of the artist behind the header, as in the design */}
         <div aria-hidden="true" className="absolute inset-0 -z-10" style={{ background: "radial-gradient(60% 55% at 85% 20%, rgba(74,222,128,0.22), transparent 70%), linear-gradient(180deg, #0f2a1c 0%, #07120c 70%, transparent 100%)" }} />
-        <svg aria-hidden="true" viewBox="0 0 200 260" className="absolute -right-6 top-6 -z-10 h-[300px] w-auto opacity-90 sm:right-6 sm:h-[340px]">
-          <ellipse cx="110" cy="70" rx="44" ry="52" fill="#040706" />
-          <path d="M66 60 C66 20 154 20 154 60 C150 36 70 36 66 60 Z" fill="#040706" />
-          <path d="M150 52 C175 40 192 60 186 90 L160 80 Z" fill="#040706" />
-          <rect x="94" y="112" width="34" height="34" rx="12" fill="#040706" />
-          <path d="M20 260 C20 180 60 146 112 146 C164 146 200 180 200 260 Z" fill="#040706" />
+        {/* Head-and-shoulders silhouette of the artist, large and behind the header (design) */}
+        <svg aria-hidden="true" viewBox="0 0 240 300" className="absolute -right-10 top-10 -z-10 h-[400px] w-auto opacity-80 sm:right-4 sm:h-[440px]">
+          <defs>
+            <radialGradient id="ah-sil" cx="50%" cy="30%" r="70%"><stop offset="0" stopColor="#0c1a12" /><stop offset="1" stopColor="#030604" /></radialGradient>
+          </defs>
+          <ellipse cx="120" cy="82" rx="46" ry="56" fill="url(#ah-sil)" />
+          <path d="M76 70 C74 26 166 26 164 70 C158 44 82 44 76 70 Z" fill="url(#ah-sil)" />
+          <rect x="102" y="128" width="36" height="34" rx="12" fill="url(#ah-sil)" />
+          <path d="M8 300 C8 210 58 160 120 160 C182 160 232 210 232 300 Z" fill="url(#ah-sil)" />
         </svg>
         <div className="flex items-center justify-between">
           <BackButton />
           <ArtistMenu artistName={artist.name} />
         </div>
-        <div className="flex items-center gap-4 sm:gap-6">
-          <div className="relative w-[96px] shrink-0 sm:w-[140px]">
+        <div className="mt-2">
+          <div className="relative w-[138px] rounded-full border-[3px] border-primary p-[3px] shadow-[0_0_18px_rgba(var(--primary-rgb),0.35)] sm:w-[170px]">
             <Cover seed={artist.id} src={artist.image} round className="keep-round" />
-            <span aria-hidden="true" className="absolute bottom-0 right-0"><GoldBadge size={26} /></span>
+            <span aria-hidden="true" className="absolute bottom-2 right-1"><GoldBadge size={30} /></span>
           </div>
-          <div className="min-w-0">
-            <h1 className="m-0 flex items-center gap-2 text-[26px] font-bold leading-tight text-white sm:text-[38px]">
-              <span className="truncate">{artist.name}</span>
-              <GoldBadge size={20} />
-            </h1>
-            <p className="m-0 text-[13px] font-light text-ink/80">Artist · {artist.genre}</p>
-          </div>
+          <h1 className="m-0 mt-2 truncate text-[34px] font-bold leading-tight text-white sm:text-[44px]">{artist.name}</h1>
+          <p className="m-0 mt-1 text-[14px] font-light text-ink/80">Artist · {artist.genre}</p>
         </div>
-        <p className="m-0 mt-4 text-[14px] font-semibold text-primary">Music. Culture. Africa <span aria-hidden="true">🌍</span></p>
-        <ArtistBio text={artist.bio} />
 
-        <div className="mt-4 grid max-w-lg grid-cols-3 divide-x divide-white/15 text-center">
+        <div className="mt-6 grid max-w-lg grid-cols-3 divide-x divide-white/15 text-center">
           <div><p className="m-0 text-[20px] font-semibold text-white">{fmtCount(followers)}</p><p className="m-0 text-[12px] font-light text-ink/80">Followers</p></div>
           <div><p className="m-0 text-[20px] font-semibold text-white">{fmtCount(artist.monthlyListeners)}</p><p className="m-0 text-[12px] font-light text-ink/80">Monthly Listeners</p></div>
           <div><p className="m-0 text-[20px] font-semibold text-white">{albums.length}</p><p className="m-0 text-[12px] font-light text-ink/80">{albums.length === 1 ? "Album" : "Albums"}</p></div>

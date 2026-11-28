@@ -1,16 +1,19 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 import bcrypt from "bcryptjs";
 import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { requireUserId } from "@/lib/session";
 import { setUpNewUser } from "@/lib/users";
 import { catalog } from "@/lib/catalog";
-import { EXCLUSIVES, GIFTS } from "@/lib/fan";
+import { COIN_PACKS, GIFTS } from "@/lib/fan";
+import { CHANNELS, initialize, newReference, paystackEnabled, premiumPriceNaira } from "@/lib/paystack";
 import { readSettings, type Settings } from "@/lib/settings";
 import { clientIp, hit, waitText } from "@/lib/rate-limit";
 import { passwordProblem } from "@/lib/password";
+import { sendVerificationEmail } from "@/lib/verify-email";
 
 export type TrackSnap = { id: string; title: string; artistId: string; artistName: string; durationSec: number };
 type Result<T = object> = ({ ok: true } & T) | { ok: false; error: string };
@@ -206,6 +209,13 @@ export async function sendGift(artistId: string, giftId: string, quantity: numbe
   const paid = await spend(userId, total, "GIFT", `${qty} × ${gift.name} to ${artist.name}`, async (tx) => {
     await tx.gift.create({ data: { userId, artistId: artist.id, artistName: artist.name, giftId: gift.id, giftName: gift.name, quantity: qty, coins: total, message: msg || null } });
     await tx.notification.create({ data: { userId, title: "Gift sent", body: `You sent ${qty} × ${gift.name} to ${artist.name}.`, href: `/artist/${artist.id}` } });
+    const owner = await tx.artistProfile.findUnique({ where: { id: artist.id }, select: { userId: true } });
+    const me = await tx.user.findUnique({ where: { id: userId }, select: { name: true, username: true } });
+    if (owner) {
+      await tx.notification.create({
+        data: { userId: owner.userId, title: "You got a gift", body: `${me?.name || me?.username || "A fan"} sent you ${qty} × ${gift.name} (${total} B)${msg ? `: "${msg}"` : "."}`, href: "/studio" },
+      });
+    }
   });
   if (!paid) return { ok: false, error: "Not enough B-Coins." };
   const user = await prisma.user.findUnique({ where: { id: userId }, select: { coins: true } });
@@ -213,19 +223,19 @@ export async function sendGift(artistId: string, giftId: string, quantity: numbe
   return { ok: true, balance: user?.coins ?? 0 };
 }
 
-export async function unlockExclusive(artistId: string, key: string): Promise<Result<{ balance: number }>> {
+export async function unlockExclusive(exclusiveId: string): Promise<Result<{ balance: number }>> {
   const userId = await requireUserId();
   const lim = await hit("coins:" + userId, 20, 60);
   if (!lim.ok) return { ok: false, error: `Slow down a little. Try again in ${waitText(lim.retryAfterSec)}.` };
-  const item = EXCLUSIVES.find((x) => x.key === key);
-  const found = await catalog.getArtist(str(artistId, 200));
-  if (!item || !found) return { ok: false, error: "That item could not be unlocked." };
-  const itemId = `${found.artist.id}:${item.key}`;
+  const item = await prisma.exclusive.findUnique({ where: { id: str(exclusiveId, 40) }, select: { id: true, title: true, price: true, artist: { select: { id: true, name: true, userId: true } } } });
+  if (!item) return { ok: false, error: "That item is no longer available." };
+  const itemId = "ex:" + item.id;
 
   const already = await prisma.unlock.findUnique({ where: { userId_itemId: { userId, itemId } } });
-  if (!already) {
-    const paid = await spend(userId, item.price, "UNLOCK", `Unlocked "${item.title}" from ${found.artist.name}`, async (tx) => {
+  if (!already && item.artist.userId !== userId) {
+    const paid = await spend(userId, item.price, "UNLOCK", `Unlocked "${item.title}" from ${item.artist.name}`, async (tx) => {
       await tx.unlock.create({ data: { userId, itemId } });
+      await tx.notification.create({ data: { userId: item.artist.userId, title: "A fan unlocked your exclusive", body: `"${item.title}" (+${item.price} B)`, href: "/studio" } });
     });
     if (!paid) return { ok: false, error: "Not enough B-Coins." };
   }
@@ -248,11 +258,13 @@ export async function registerUser(input: { name: string; email: string; passwor
   if (!lim.ok) return { ok: false, error: `Too many sign-ups from this network. Try again in ${waitText(lim.retryAfterSec)}.` };
   const existing = await prisma.user.findUnique({ where: { email }, select: { passwordHash: true } });
   if (existing) {
-    return { ok: false, error: existing.passwordHash ? "An account with this email already exists. Log in instead." : "This email is registered with Google. Use Continue with Google." };
+    return { ok: false, error: existing.passwordHash ? "An account with this email already exists. Log in instead." : "This email already signed up with Google, Apple or Facebook. Use that button to log in." };
   }
   const passwordHash = await bcrypt.hash(password, 12);
   const user = await prisma.user.create({ data: { name, email, passwordHash } });
   await setUpNewUser(user.id);
+  // Ask them to confirm the address (only when email sending is switched on).
+  await sendVerificationEmail(user.id, await headers()).catch(() => false);
   return { ok: true };
 }
 
@@ -303,4 +315,72 @@ export async function toggleSavedPlaylist(catalogPlaylistId: string): Promise<Re
   });
   refresh();
   return { ok: true, saved: true };
+}
+
+// ---------- Live search ----------
+
+/** Songs and artists for the live search screen while the user types. */
+export async function searchLive(query: string) {
+  await requireUserId();
+  const q = str(query, 80);
+  if (!q) return { tracks: [], artists: [] };
+  const r = await catalog.search(q);
+  return { tracks: r.tracks.slice(0, 10), artists: r.artists.slice(0, 5) };
+}
+
+// ---------- Paystack: buy B-Coins ----------
+
+/** Opens a Paystack checkout for a B-Coin bundle. Coins are added later, once Paystack confirms. */
+export async function startCoinPurchase(coins: number, method: string): Promise<Result<{ url: string }>> {
+  const userId = await requireUserId();
+  if (!paystackEnabled()) return { ok: false, error: "Payments are not switched on yet." };
+  const pack = COIN_PACKS.find((p) => p.coins === Number(coins));
+  if (!pack) return { ok: false, error: "Choose a bundle." };
+  const limit = await hit("pay:" + userId, 10, 600);
+  if (!limit.ok) return { ok: false, error: `Too many checkouts. Try again in ${waitText(limit.retryAfterSec)}.` };
+
+  const user = await prisma.user.findUnique({ where: { id: userId }, select: { email: true } });
+  // Paystack needs an email for the receipt; accounts without one (some Facebook sign-ins) get a placeholder.
+  const email = user?.email || `${userId}@users.brisic.app`;
+  const reference = newReference();
+  const amountKobo = pack.priceNaira * 100;
+  await prisma.payment.create({ data: { reference, userId, kind: "COINS", coins: pack.coins, amountKobo } });
+
+  const h = await headers();
+  const origin = process.env.AUTH_URL?.replace(/\/$/, "") || `${h.get("x-forwarded-proto") ?? "http"}://${h.get("host")}`;
+  try {
+    const url = await initialize({
+      email, amountKobo, reference,
+      callbackUrl: `${origin}/api/paystack/callback`,
+      channels: CHANNELS[method],
+      metadata: { userId, coins: pack.coins, cancel_action: `${origin}/coins` },
+    });
+    return { ok: true, url };
+  } catch {
+    await prisma.payment.update({ where: { reference }, data: { status: "failed" } });
+    return { ok: false, error: "Could not open Paystack. Try again in a moment." };
+  }
+}
+
+/** Opens a Paystack checkout for Brisic Premium (Individual), monthly or yearly, charged in Naira. */
+export async function startPremiumPurchase(yearly: boolean): Promise<Result<{ url: string }>> {
+  const userId = await requireUserId();
+  if (!paystackEnabled()) return { ok: false, error: "Payments are not switched on yet." };
+  const limit = await hit("pay:" + userId, 10, 600);
+  if (!limit.ok) return { ok: false, error: `Too many checkouts. Try again in ${waitText(limit.retryAfterSec)}.` };
+  const user = await prisma.user.findUnique({ where: { id: userId }, select: { email: true } });
+  const email = user?.email || `${userId}@users.brisic.app`;
+  const reference = newReference();
+  const amountKobo = premiumPriceNaira(!!yearly) * 100;
+  const months = yearly ? 12 : 1;
+  await prisma.payment.create({ data: { reference, userId, kind: "PREMIUM", months, coins: 0, amountKobo } });
+  const h = await headers();
+  const origin = process.env.AUTH_URL?.replace(/\/$/, "") || `${h.get("x-forwarded-proto") ?? "http"}://${h.get("host")}`;
+  try {
+    const url = await initialize({ email, amountKobo, reference, callbackUrl: `${origin}/api/paystack/callback`, metadata: { userId, plan: "individual", months, cancel_action: `${origin}/premium` } });
+    return { ok: true, url };
+  } catch {
+    await prisma.payment.update({ where: { reference }, data: { status: "failed" } });
+    return { ok: false, error: "Could not open Paystack. Try again in a moment." };
+  }
 }

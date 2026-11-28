@@ -8,6 +8,7 @@ import { signIn } from "next-auth/react";
 import { registerUser } from "@/app/actions";
 import { requestPasswordReset, resetPassword } from "@/app/account-actions";
 import { Icon } from "@/components/icons";
+import type { SocialProviders } from "@/lib/social";
 
 /** Live checklist of the password rules. */
 export function PasswordRules({ password }: { password: string }) {
@@ -116,8 +117,40 @@ export function AuthFrame({ heading, children }: { heading: string; children: Re
   );
 }
 
-function GoogleButton() {
-  const [loading, setLoading] = useState(false);
+const PROVIDERS = [
+  {
+    id: "google", name: "Google", className: "btn",
+    icon: (
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+        <path fill="#4285F4" d="M22 12.2c0-.7-.1-1.4-.2-2H12v3.9h5.6a4.8 4.8 0 0 1-2.1 3.1v2.6h3.4c2-1.8 3.1-4.5 3.1-7.6z" />
+        <path fill="#34A853" d="M12 22c2.8 0 5.2-.9 6.9-2.5l-3.4-2.6c-.9.6-2.1 1-3.5 1-2.7 0-5-1.8-5.8-4.3H2.7v2.7A10 10 0 0 0 12 22z" />
+        <path fill="#FBBC05" d="M6.2 13.6a6 6 0 0 1 0-3.8V7.1H2.7a10 10 0 0 0 0 9z" />
+        <path fill="#EA4335" d="M12 6c1.5 0 2.9.5 4 1.6l3-3A10 10 0 0 0 2.7 7.1l3.5 2.7C7 7.8 9.3 6 12 6z" />
+      </svg>
+    ),
+  },
+  {
+    id: "apple", name: "Apple", className: "btn !border-white/80 !bg-white !text-black",
+    icon: (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
+        <path d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8 1.6 0 2 .8 3.4.8 1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.7-1-2.7-4.1zM13.9 4.9c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.1.1 2.3-.6 3-1.5z" />
+      </svg>
+    ),
+  },
+  {
+    id: "facebook", name: "Facebook", className: "btn !border-[#1877f2] !bg-[#1877f2] !text-white",
+    icon: (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
+        <path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4H7.1V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-2 .9-2 1.9V12h3.4l-.5 3.5h-2.9v8.4A12 12 0 0 0 24 12z" />
+      </svg>
+    ),
+  },
+] as const;
+
+/** "Continue with Google / Apple / Facebook". A provider without keys yet says so instead of failing. */
+function SocialButtons({ enabled }: { enabled: SocialProviders }) {
+  const [loading, setLoading] = useState<string | null>(null);
+  const [note, setNote] = useState("");
   return (
     <>
       <div className="my-4 flex items-center gap-3 text-[13.5px] text-[#7f9d8b]">
@@ -125,28 +158,33 @@ function GoogleButton() {
         or continue with
         <div className="h-px flex-1 bg-[#26332b]" />
       </div>
-      <button
-        type="button" disabled={loading} className="btn w-full !h-[52px] !text-[16.5px]"
-        onClick={() => { setLoading(true); signIn("google", { callbackUrl: "/" }).catch(() => setLoading(false)); }}
-      >
-        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-          <path fill="#4285F4" d="M22 12.2c0-.7-.1-1.4-.2-2H12v3.9h5.6a4.8 4.8 0 0 1-2.1 3.1v2.6h3.4c2-1.8 3.1-4.5 3.1-7.6z" />
-          <path fill="#34A853" d="M12 22c2.8 0 5.2-.9 6.9-2.5l-3.4-2.6c-.9.6-2.1 1-3.5 1-2.7 0-5-1.8-5.8-4.3H2.7v2.7A10 10 0 0 0 12 22z" />
-          <path fill="#FBBC05" d="M6.2 13.6a6 6 0 0 1 0-3.8V7.1H2.7a10 10 0 0 0 0 9z" />
-          <path fill="#EA4335" d="M12 6c1.5 0 2.9.5 4 1.6l3-3A10 10 0 0 0 2.7 7.1l3.5 2.7C7 7.8 9.3 6 12 6z" />
-        </svg>
-        {loading ? "Opening Google…" : "Continue with Google"}
-      </button>
+      <div className="flex flex-col gap-2.5">
+        {PROVIDERS.map((p) => (
+          <button
+            key={p.id} type="button" disabled={loading !== null} className={`${p.className} w-full !h-[52px] !text-[16.5px]`}
+            onClick={() => {
+              if (!enabled[p.id]) return setNote(`${p.name} sign-in is being set up. Use ${enabled.google ? "Google or " : ""}your email for now.`);
+              setNote("");
+              setLoading(p.id);
+              signIn(p.id, { callbackUrl: "/" }).catch(() => setLoading(null));
+            }}
+          >
+            {p.icon}
+            {loading === p.id ? `Opening ${p.name}…` : `Continue with ${p.name}`}
+          </button>
+        ))}
+      </div>
+      {note && <p role="status" className="m-0 mt-2.5 text-center text-[13.5px] text-muted">{note}</p>}
     </>
   );
 }
 
 const OAUTH_ERRORS: Record<string, string> = {
-  OAuthAccountNotLinked: "This email already has a Brisic password. Log in with your email and password instead.",
+  OAuthAccountNotLinked: "This email already has a Brisic account. Log in the way you signed up (email and password, or the same Google, Apple or Facebook account).",
   AccessDenied: "Sign-in was cancelled or not allowed for this account.",
 };
 
-export function LoginForm({ error, notice, resetEnabled }: { error?: string; notice?: string; resetEnabled: boolean }) {
+export function LoginForm({ error, notice, resetEnabled, social }: { error?: string; notice?: string; resetEnabled: boolean; social: SocialProviders }) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -182,12 +220,12 @@ export function LoginForm({ error, notice, resetEnabled }: { error?: string; not
       <p className="m-0 mt-3.5 text-center text-[14.5px] font-light text-muted">
         New to Brisic? <Link href="/signup" className="font-semibold text-primary">Sign up</Link>
       </p>
-      <GoogleButton />
+      <SocialButtons enabled={social} />
     </>
   );
 }
 
-export function SignupForm() {
+export function SignupForm({ social }: { social: SocialProviders }) {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [name, setName] = useState("");
@@ -258,7 +296,7 @@ export function SignupForm() {
       <p className="m-0 mt-3.5 text-center text-[14.5px] font-light text-muted">
         Already have an account? <Link href="/login" className="font-semibold text-primary">Log in</Link>
       </p>
-      {step === 1 && <GoogleButton />}
+      {step === 1 && <SocialButtons enabled={social} />}
     </>
   );
 }

@@ -194,9 +194,9 @@ function TabLink({ href, label, icon, on }: { href: string; label: string; icon:
 }
 
 export function AppShell({
-  user, unread, playerColor, homeStyle, sample, children,
+  user, unread, playerColor, homeStyle, children,
 }: {
-  user: ShellUser; unread: number; playerColor: string; homeStyle: string; sample: boolean; children: ReactNode;
+  user: ShellUser; unread: number; playerColor: string; homeStyle: string; children: ReactNode;
 }) {
   const path = usePathname();
   const router = useRouter();
@@ -305,11 +305,6 @@ export function AppShell({
 
         <main className="mx-auto w-full max-w-6xl px-4 pb-48 pt-3 sm:px-6 lg:px-8 lg:pb-32 lg:pt-6">
           {children}
-          {sample && (
-            <p className="mt-10 text-center text-[12px] font-light text-muted/70">
-              Some shelves show sample music while Brisic artists upload their catalog.
-            </p>
-          )}
         </main>
       </div>
 

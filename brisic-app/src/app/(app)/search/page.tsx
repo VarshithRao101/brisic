@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { prisma } from "@/lib/prisma";
 import { getUserId } from "@/lib/session";
+import { hydrate, uniqueByTrack } from "@/lib/library";
 import { catalog } from "@/lib/catalog";
 import { SearchBox } from "@/components/search-box";
 import { TrackList } from "@/components/track-list";
@@ -12,23 +14,26 @@ const Heading = () => <h1 className="m-0 mb-4 hidden text-[30px] font-semibold t
 const TYPES = ["all", "songs", "artists", "albums", "playlists", "podcasts"] as const;
 
 export default async function SearchPage({ searchParams }: { searchParams: Promise<{ q?: string; type?: string }> }) {
-  await getUserId();
-  const sp = await searchParams;
+  const [userId, sp] = await Promise.all([getUserId(), searchParams]);
+  // Songs this user played recently, shown as soon as they tap the search field.
+  const recentRows = userId
+    ? await prisma.playHistory.findMany({ where: { userId }, orderBy: { playedAt: "desc" }, take: 60, select: { trackId: true, title: true, artistId: true, artistName: true, durationSec: true } })
+    : [];
   const q = (sp.q ?? "").trim();
   const type = (TYPES as readonly string[]).includes(sp.type ?? "") ? sp.type! : "all";
 
   if (!q) {
-    const [genres, artists] = await Promise.all([catalog.getGenres(), catalog.getTrendingArtists("week")]);
+    const [genres, artists, recentTracks] = await Promise.all([catalog.getGenres(), catalog.getTrendingArtists("week"), hydrate(uniqueByTrack(recentRows).slice(0, 20))]);
     return (
       <>
         <Heading />
-        <SearchBox initial="" />
+        <SearchBox initial="" recentTracks={recentTracks}>
         <Section title="Genre" href="/genres">
           <div className="grid grid-cols-3 gap-2.5 sm:gap-3 lg:grid-cols-4">
             {genres.filter((g) => g.group === "music").slice(0, 12).map((g) => <GenreTile key={g.id} id={g.id} name={g.name} />)}
           </div>
         </Section>
-        <Section title="Popular searches">
+        {artists.length > 0 && <Section title="Popular searches">
           <ul className="m-0 flex list-none flex-col gap-2 p-0">
             {artists.slice(0, 6).map((a) => (
               <li key={a.id}>
@@ -41,19 +46,20 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
               </li>
             ))}
           </ul>
-        </Section>
+        </Section>}
+        </SearchBox>
       </>
     );
   }
 
-  const r = await catalog.search(q);
+  const [r, recentTracks] = await Promise.all([catalog.search(q), hydrate(uniqueByTrack(recentRows).slice(0, 20))]);
   const total = r.tracks.length + r.artists.length + r.albums.length + r.playlists.length + r.shows.length;
   const show = (t: string) => type === "all" || type === t;
 
   return (
     <>
       <Heading />
-      <SearchBox key={q} initial={q} />
+      <SearchBox key={q} initial={q} recentTracks={recentTracks}>
       <div className="no-scrollbar -mx-4 mt-4 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:px-0">
         {TYPES.map((t) => (
           <Link
@@ -77,6 +83,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
       {show("albums") && r.albums.length > 0 && <Section title="Albums"><Shelf>{r.albums.map((a) => <AlbumCard key={a.id} a={a} />)}</Shelf></Section>}
       {show("playlists") && r.playlists.length > 0 && <Section title="Playlists"><Shelf>{r.playlists.map((p) => <PlaylistCard key={p.id} p={p} />)}</Shelf></Section>}
       {show("podcasts") && r.shows.length > 0 && <Section title="Podcasts"><Shelf>{r.shows.map((s) => <ShowCard key={s.id} s={s} />)}</Shelf></Section>}
+      </SearchBox>
     </>
   );
 }

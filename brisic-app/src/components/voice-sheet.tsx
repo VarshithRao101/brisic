@@ -173,7 +173,7 @@ export function VoiceSheet({ open, onClose }: { open: boolean; onClose: () => vo
             </span>
             <p className="m-0 mt-5 text-[18px] font-semibold text-white">Song recognition is almost here</p>
             <p className="m-0 mt-2 max-w-sm text-[14px] font-light text-muted">
-              Brisic will name the song playing around you once the Global Tune music catalog is connected.
+              Naming the song playing around you needs a song-recognition service, which Brisic is adding soon.
               Until then, say or type the song or artist and Brisic AI will find it.
             </p>
             <button type="button" className="btn btn-primary mt-5" onClick={() => { setMode("ask"); if (supported) listen(); }}>

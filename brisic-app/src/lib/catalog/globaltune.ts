@@ -7,10 +7,9 @@
 //      Track.streamUrl is what makes the player produce sound.
 //   3. Set CATALOG_PROVIDER="globaltune" in .env
 //
-// Any method you have not implemented yet falls back to the sample catalog,
-// so the app keeps working while the adapter is filled in one call at a time.
+// Any method you have not implemented yet falls back to Brisic's own catalog (creator uploads).
 
-import { mockCatalog } from "./mock";
+import { brisicCatalog } from "./brisic";
 import type { CatalogProvider } from "./types";
 
 const BASE = process.env.GLOBAL_TUNE_API_URL;
@@ -30,9 +29,7 @@ export async function gt<T>(path: string, params: Record<string, string> = {}): 
 }
 
 export const globalTuneCatalog: CatalogProvider = {
-  ...mockCatalog,
-  // Flip to false once the methods below return live data.
-  isSample: true,
+  ...brisicCatalog,
 
   // Example of one implemented call (uncomment and adapt to the real response):
   //

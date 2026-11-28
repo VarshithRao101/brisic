@@ -4,8 +4,9 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { Track } from "@/lib/catalog/types";
-import { askBrisicAI, sendGift, unlockExclusive } from "@/app/actions";
-import { EXCLUSIVES, GIFTS, GIFT_TIERS, MERCH } from "@/lib/fan";
+import { askBrisicAI, sendGift, startCoinPurchase, unlockExclusive } from "@/app/actions";
+import { GIFTS, GIFT_TIERS } from "@/lib/fan";
+import { YouTubePlayer } from "@/components/youtube-player";
 import { fmtCoins } from "@/lib/format";
 import { Cover } from "@/components/cover";
 import { GiftIcon } from "@/components/gift-icons";
@@ -142,12 +143,24 @@ export function GiftSender({ artistId, artistName }: { artistId: string; artistN
   );
 }
 
-export function ExclusiveList({ artistId, artistName, unlocked }: { artistId: string; artistName: string; unlocked: string[] }) {
+export type ExclusiveItem = { id: string; title: string; kind: string; description: string; price: number; youtubeId: string | null; hasAudio: boolean };
+
+/** The artist's fan-only content. Unlocked items play right here. */
+export function ExclusiveList({ artistName, items, unlocked, owner }: { artistName: string; items: ExclusiveItem[]; unlocked: string[]; owner: boolean }) {
   const lib = useLibrary();
   const toast = useToast();
   const [open, setOpen] = useState(() => new Set(unlocked));
-  const [confirm, setConfirm] = useState<(typeof EXCLUSIVES)[number] | null>(null);
+  const [confirm, setConfirm] = useState<ExclusiveItem | null>(null);
   const [busy, setBusy] = useState(false);
+
+  if (!items.length) {
+    return (
+      <div className="panel flex flex-col items-center gap-2 px-6 py-10 text-center">
+        <p className="m-0 text-[17px] font-semibold text-white">Nothing here yet</p>
+        <p className="m-0 max-w-sm text-[14px] font-light text-muted">{artistName} hasn&apos;t posted exclusive content yet. Follow them to hear when they do.</p>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -155,16 +168,19 @@ export function ExclusiveList({ artistId, artistName, unlocked }: { artistId: st
         Your balance <Link href="/coins" className="font-semibold text-[#f2c94c]">{fmtCoins(lib.coins)} B-Coins</Link>
       </p>
       <div className="grid gap-3 sm:grid-cols-2">
-        {EXCLUSIVES.map((it) => {
-          const has = open.has(it.key);
+        {items.map((it) => {
+          const has = owner || open.has(it.id);
           return (
-            <div key={it.key} className="panel flex flex-col gap-2 p-4">
+            <div key={it.id} className="panel flex flex-col gap-2 p-4">
               <p className="m-0 text-[11.5px] font-semibold uppercase tracking-[0.14em] text-accent">{it.kind}</p>
               <p className="m-0 text-[18px] font-semibold text-white">{it.title}</p>
-              <p className="m-0 flex-1 text-[14px] font-light text-ink/85">{it.desc}</p>
-              <p className="m-0 text-[12.5px] text-muted">{it.meta}</p>
+              {it.description && <p className="m-0 flex-1 text-[14px] font-light text-ink/85">{it.description}</p>}
               {has ? (
-                <p className="m-0 mt-1 flex items-center gap-2 text-[14.5px] font-medium text-primary"><Icon name="check" size={18} /> Unlocked. You will get it as soon as {artistName} releases it.</p>
+                <>
+                  {it.youtubeId && <YouTubePlayer id={it.youtubeId} title={it.title} />}
+                  {it.hasAudio && <audio controls preload="none" src={`/api/media/exclusive/${it.id}`} className="w-full" />}
+                  <p className="m-0 flex items-center gap-2 text-[13.5px] font-medium text-primary"><Icon name="check" size={16} /> {owner ? "Your exclusive" : "Unlocked"}</p>
+                </>
               ) : (
                 <button type="button" className="btn btn-primary mt-1" onClick={() => setConfirm(it)}><Icon name="lock" size={17} /> Unlock · {it.price} B</button>
               )}
@@ -184,13 +200,13 @@ export function ExclusiveList({ artistId, artistName, unlocked }: { artistId: st
                   type="button" className="btn btn-primary mt-4 w-full" disabled={busy}
                   onClick={async () => {
                     setBusy(true);
-                    const r = await unlockExclusive(artistId, confirm.key).catch(() => null);
+                    const r = await unlockExclusive(confirm.id).catch(() => null);
                     setBusy(false);
                     if (!r || !r.ok) return toast(r && !r.ok ? r.error : "Could not unlock. Try again.");
                     lib.setCoins(r.balance);
-                    setOpen((s) => new Set(s).add(confirm.key));
+                    setOpen((s) => new Set(s).add(confirm.id));
                     setConfirm(null);
-                    toast("Unlocked");
+                    toast("Unlocked. Enjoy!");
                   }}
                 >
                   {busy ? "Unlocking…" : `Pay ${confirm.price} B-Coins`}
@@ -210,39 +226,39 @@ export function ExclusiveList({ artistId, artistName, unlocked }: { artistId: st
   );
 }
 
-export function MerchGrid() {
-  const [cart, setCart] = useState<Set<string>>(new Set());
-  const total = MERCH.filter((m) => cart.has(m.id)).reduce((n, m) => n + m.price, 0);
+export type MerchView = { id: string; name: string; priceNaira: number; description: string; image: string | null; buyUrl: string | null };
+
+/** The artist's merch. "Buy" opens the artist's own store link until Brisic checkout ships. */
+export function MerchGrid({ artistName, items }: { artistName: string; items: MerchView[] }) {
+  if (!items.length) {
+    return (
+      <div className="panel flex flex-col items-center gap-2 px-6 py-10 text-center">
+        <p className="m-0 text-[17px] font-semibold text-white">No merch yet</p>
+        <p className="m-0 max-w-sm text-[14px] font-light text-muted">{artistName} hasn&apos;t listed any merch yet.</p>
+      </div>
+    );
+  }
   return (
-    <>
-      <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3">
-        {MERCH.map((m) => {
-          const on = cart.has(m.id);
-          return (
-            <div key={m.id} className="panel overflow-hidden">
-              <div className="flex aspect-[4/3] items-center justify-center text-white/90" style={{ background: m.bg }}><Icon name="bag" size={44} /></div>
-              <div className="flex items-center gap-2 p-3">
-                <div className="min-w-0 flex-1">
-                  <p className="m-0 truncate text-[15px] font-medium text-white">{m.name}</p>
-                  <p className="m-0 text-[13.5px] text-muted">${m.price}</p>
-                </div>
-                <button
-                  type="button" aria-pressed={on} className={`btn btn-sm ${on ? "btn-primary" : ""}`}
-                  onClick={() => setCart((c) => { const n = new Set(c); if (on) n.delete(m.id); else n.add(m.id); return n; })}
-                >
-                  {on ? "Added" : "Add"}
-                </button>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-      <div className="panel mt-5 flex flex-wrap items-center gap-3 p-4">
-        <p className="m-0 flex-1 text-[15px] text-ink">{cart.size} in cart · <span className="font-semibold text-white">${total}</span></p>
-        <button type="button" className="btn btn-primary" disabled>Checkout</button>
-        <p className="m-0 w-full text-[12.5px] font-light text-muted">Merch checkout opens when payments and shipping go live. Nothing is ordered or charged.</p>
-      </div>
-    </>
+    <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3">
+      {items.map((m) => (
+        <div key={m.id} className="panel flex flex-col overflow-hidden">
+          <div className="flex aspect-square items-center justify-center bg-[linear-gradient(135deg,#2f7a34,#10381a)] text-white/90">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            {m.image ? <img src={m.image} alt={m.name} className="h-full w-full object-cover" /> : <Icon name="bag" size={44} />}
+          </div>
+          <div className="flex flex-1 flex-col gap-1 p-3">
+            <p className="m-0 truncate text-[15px] font-medium text-white">{m.name}</p>
+            <p className="m-0 text-[14px] font-semibold text-primary">₦{m.priceNaira.toLocaleString("en-US")}</p>
+            {m.description && <p className="m-0 line-clamp-2 text-[12.5px] font-light text-muted">{m.description}</p>}
+            {m.buyUrl ? (
+              <a href={m.buyUrl} target="_blank" rel="noopener noreferrer nofollow" className="btn btn-primary btn-sm mt-auto">Buy</a>
+            ) : (
+              <span className="mt-auto text-[12.5px] font-light text-muted">Ask {artistName} how to order</span>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
   );
 }
 
@@ -299,10 +315,12 @@ function CoinStack({ gold, size = 44 }: { gold: boolean; size?: number }) {
   );
 }
 
-/** Naira top-up bundles, checked out with Paystack once payments go live. */
-export function CoinShop({ packs }: { packs: { coins: number; metal: string; priceNaira: number }[] }) {
+/** Naira top-up bundles, paid with Paystack. Coins arrive once Paystack confirms the payment. */
+export function CoinShop({ packs, payEnabled, testMode }: { packs: { coins: number; metal: string; priceNaira: number }[]; payEnabled: boolean; testMode: boolean }) {
+  const toast = useToast();
   const [sel, setSel] = useState(packs[2]?.coins ?? packs[0].coins);
   const [method, setMethod] = useState<(typeof PAY_METHODS)[number]>("Card");
+  const [busy, setBusy] = useState(false);
   const pack = packs.find((p) => p.coins === sel) ?? packs[0];
   return (
     <>
@@ -343,11 +361,20 @@ export function CoinShop({ packs }: { packs: { coins: number; metal: string; pri
             <button key={m} type="button" aria-pressed={method === m} onClick={() => setMethod(m)} className="chip">{m}</button>
           ))}
         </div>
-        <button type="button" disabled className="btn btn-primary mt-4 w-full !h-[50px]">
-          Pay ₦{fmtCoins(pack.priceNaira)} with Paystack
+        <button
+          type="button" disabled={!payEnabled || busy} className="btn btn-primary mt-4 w-full !h-[50px]"
+          onClick={async () => {
+            setBusy(true);
+            const r = await startCoinPurchase(pack.coins, method).catch(() => null);
+            if (r?.ok) { window.location.href = r.url; return; }
+            setBusy(false);
+            toast(r && !r.ok ? r.error : "Could not open Paystack. Check your connection.");
+          }}
+        >
+          {busy ? "Opening Paystack…" : `Pay ₦${fmtCoins(pack.priceNaira)} with Paystack`}
         </button>
         <p className="m-0 mt-2 flex items-center justify-center gap-1.5 text-center text-[12.5px] font-light text-muted">
-          <Icon name="lock" size={13} /> Secured by Paystack · Checkout opens when payments go live
+          <Icon name="lock" size={13} /> Secured by Paystack{!payEnabled ? " · Checkout opens when payments go live" : testMode ? " · Test mode: no real money is charged" : ""}
         </p>
       </div>
     </>

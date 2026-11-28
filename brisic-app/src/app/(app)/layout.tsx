@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { prisma } from "@/lib/prisma";
 import { getUserId, requireUser } from "@/lib/session";
-import { catalog } from "@/lib/catalog";
 import { readSettings } from "@/lib/settings";
 import { AppState } from "@/components/app-state";
 import { AppShell } from "@/components/app-shell";
@@ -33,7 +32,6 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
         unread={unread}
         playerColor={settings.playerColor}
         homeStyle={settings.homeStyle}
-        sample={catalog.isSample}
       >
         {children}
       </AppShell>

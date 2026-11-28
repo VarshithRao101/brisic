@@ -1,4 +1,4 @@
-// Shapes every screen reads. The Global Tune API adapter must return these.
+// Shapes every screen reads.
 
 export type Track = {
   id: string;
@@ -24,6 +24,8 @@ export type Artist = {
   bio: string;
   monthlyListeners: number;
   image?: string | null;
+  /** Plays in the chart window (Trending). */
+  plays?: number;
 };
 
 export type Album = {
@@ -36,7 +38,7 @@ export type Album = {
   artwork?: string | null;
 };
 
-/** Drawn poster artwork (sample catalog), used when there is no artwork image. */
+/** Drawn poster artwork, used when there is no artwork image. */
 export type CoverArt = {
   from: string;
   to: string;
@@ -66,6 +68,8 @@ export type Playlist = {
   art?: CoverArt;
   /** Where the card opens, when it is not a playlist (a podcast, a party, a spotlight). */
   href?: string;
+  /** Design artwork variant for the playlist page (admin's pick). */
+  hero?: string | null;
 };
 
 export type Genre = {
@@ -148,7 +152,7 @@ export type TrackDetails = {
 
 /** Everything the app needs from a music source. */
 export interface CatalogProvider {
-  /** True when the data is placeholder content, not a live catalog. */
+  /** True when the data is placeholder content (no longer used: Brisic has no sample content). */
   readonly isSample: boolean;
   getHomeSections(): Promise<HomeSection[]>;
   getSection(id: string): Promise<HomeSection | null>;
